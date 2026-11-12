@@ -34,4 +34,15 @@ fs.renameSync(astro, path.join(out, 'astro'));
 for (const f of fs.readdirSync(out).filter((f) => f.endsWith('.html'))) {
   rw(path.join(out, f), (s) => s.replaceAll('./_astro/', './astro/').replace(/ style="--mask:url\(\/\.\/[^"]*"/, ''));
 }
+// a hospedagem de prévia não serve .m4a: o mesmo arquivo AAC vai como .mp4 (o contêiner é o mesmo)
+const audioDir = path.join(out, 'audio');
+if (fs.existsSync(audioDir)) {
+  for (const f of fs.readdirSync(audioDir).filter((f) => f.endsWith('.m4a'))) {
+    const mp4 = f.replace(/\.m4a$/, '-aac.mp4');
+    fs.renameSync(path.join(audioDir, f), path.join(audioDir, mp4));
+    for (const h of fs.readdirSync(out).filter((h) => h.endsWith('.html'))) {
+      rw(path.join(out, h), (s) => s.replaceAll(`audio/${f}`, `audio/${mp4}`));
+    }
+  }
+}
 console.log('prévia relativa pronta em dist-artifact/');
