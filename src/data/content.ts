@@ -10,7 +10,7 @@ export const CONTACT = {
   instagram: 'https://www.instagram.com/backe.co/',
   instagramHandle: '@backe.co',
   city: 'Brasília, DF',
-  hours: ['Seg a sex · 9h às 18h', 'Sáb · 9h às 13h'],
+  hours: ['Segunda a sexta, das 9h às 18h', 'Sábado, das 9h às 13h'],
 };
 
 /** Confirmados pela Backe em 12/11/2026. */
@@ -89,7 +89,7 @@ export const FRONTS: Front[] = [
     id: 'demanda',
     name: 'Demanda',
     promise: 'As pessoas certas chegando todos os dias.',
-    intro: 'Mídia paga e presença social trabalhando juntas para gerar oportunidades previsíveis — não só alcance.',
+    intro: 'Mídia paga e presença social trabalhando juntas para gerar oportunidades previsíveis, não só alcance.',
     services: [
       {
         id: 'trafego-pago',
@@ -152,7 +152,7 @@ export const FRONTS: Front[] = [
     id: 'imagem',
     name: 'Imagem',
     promise: 'O que as palavras não conseguem mostrar.',
-    intro: 'Produção audiovisual própria — no chão e no ar — para campanhas, redes sociais e institucionais.',
+    intro: 'Produção audiovisual própria, no chão e no ar, para campanhas, redes sociais e vídeos institucionais.',
     services: [
       {
         id: 'audiovisual',
@@ -180,7 +180,7 @@ export const DIFFERENTIALS = [
   { theme: 'Estratégia antes da execução', them: 'Começa pelo post e pelo anúncio.', us: 'Começa pelo diagnóstico do seu negócio, mercado e oportunidades reais.' },
   { theme: 'Plano sob medida', them: 'Pacote padrão que serve para todo mundo.', us: 'Cada estratégia é construída do zero para a sua empresa.' },
   { theme: 'Criatividade com objetivo', them: 'Peça bonita que não sabe o que precisa gerar.', us: 'Execução criativa que nasce dos dados e trabalha por uma meta.' },
-  { theme: 'Visão de negócio', them: 'Fala de curtidas e alcance.', us: 'Conecta marketing a metas comerciais — e ao seu time de vendas.' },
+  { theme: 'Visão de negócio', them: 'Fala de curtidas e alcance.', us: 'Conecta o marketing às metas comerciais e ao seu time de vendas.' },
   { theme: 'Tudo integrado', them: 'Um fornecedor para cada coisa, ninguém responsável pelo todo.', us: 'Estratégia, mídia, marca e imagem no mesmo time, no mesmo plano.' },
   { theme: 'Responsabilidade', them: 'Relatório que ninguém entende.', us: 'Time sênior, sem terceirizar atendimento, com acompanhamento transparente.' },
 ];
@@ -211,7 +211,7 @@ export const FAQ = [
   },
   {
     q: 'Quem vai cuidar da minha empresa?',
-    a: 'Um time sênior da própria Backe. Não terceirizamos o atendimento — nem o pensamento estratégico.',
+    a: 'Um time sênior da própria Backe. Não terceirizamos o atendimento, e muito menos o pensamento estratégico.',
   },
   {
     q: 'Como acompanho os resultados?',

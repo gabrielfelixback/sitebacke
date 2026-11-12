@@ -20,8 +20,8 @@ em{font-family:S;font-weight:400;font-style:italic;letter-spacing:-.02em;backgro
 .k{position:absolute;left:72px;top:84px;font:600 18px system-ui;letter-spacing:.16em;color:#a3a09c;text-transform:uppercase}
 .u{position:absolute;left:72px;bottom:72px;font:500 26px system-ui;color:#c9c5c0;z-index:2}
 </style></head><body><div class="sun"></div><img src="${symData}"><div class="fade"></div>
-<p class="k">BACKE.co · Agência de marketing</p>
-<p class="t">Estratégia<br>com <em>criatividade.</em></p><p class="u">Diagnóstico estratégico gratuito · backe.com.br</p></body></html>`;
+<p class="k">BACKE.co, agência de marketing</p>
+<p class="t">Estratégia<br>com <em>criatividade.</em></p><p class="u">Diagnóstico estratégico gratuito em backe.com.br</p></body></html>`;
 
 const icon = (size, pad, bg) => `<html><body style="margin:0;width:${size}px;height:${size}px;background:${bg};display:grid;place-items:center"><img src="${symData}" style="width:${size - pad * 2}px"></body></html>`;
 

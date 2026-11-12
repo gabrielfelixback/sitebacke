@@ -158,3 +158,20 @@ if (mcta && hero) {
   if (footer) formObs.observe(footer);
   if (banner) new MutationObserver(update).observe(banner, { attributes: true, attributeFilter: ['hidden'] });
 }
+
+/* ───── Prints dos cases: ampliar ao clicar ───── */
+const lb = document.querySelector<HTMLDialogElement>('[data-lightbox-dialog]');
+const lbImg = lb?.querySelector<HTMLImageElement>('[data-lightbox-img]');
+if (lb && lbImg) {
+  document.querySelectorAll<HTMLButtonElement>('[data-lightbox]').forEach((b) =>
+    b.addEventListener('click', () => {
+      lbImg.src = b.dataset.lightbox!;
+      lbImg.alt = b.dataset.lightboxAlt || '';
+      lb.showModal();
+      track('case_print_open', { src: b.dataset.lightbox });
+    }),
+  );
+  lb.addEventListener('click', (e) => {
+    if (e.target === lb) lb.close();
+  });
+}

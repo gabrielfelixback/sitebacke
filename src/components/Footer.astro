@@ -24,7 +24,7 @@ const year = new Date().getFullYear();
           <p class="ftr__h">Atendimento</p>
           <ul>
             {CONTACT.hours.map((h) => <li>{h}</li>)}
-            <li>{CONTACT.city} · todo o Brasil</li>
+            <li>{CONTACT.city}, atendendo todo o Brasil</li>
           </ul>
         </div>
         <div>
@@ -45,7 +45,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="ftr__bottom">
-      <p>© {year} BACKE.co · Todos os direitos reservados.</p>
+      <p>© {year} BACKE.co. Todos os direitos reservados.</p>
       <div class="ftr__legal">
         <a href={asset('privacidade.html')}>Política de Privacidade</a>
         <button type="button" data-consent-open>Preferências de privacidade</button>

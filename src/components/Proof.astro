@@ -1,6 +1,7 @@
 ---
 import { STATS } from '../data/content';
 import Symbol from './Symbol.astro';
+import { asset } from '../lib/url';
 const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }).replace(',', '.');
 ---
 <section class="proof section" id="resultados" aria-labelledby="proof-title">
@@ -30,7 +31,7 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
     <!-- Caso real enviado pela Backe (print do Gerenciador de Anúncios da Meta, 24 campanhas). Cliente não identificado. -->
     <article class="case" data-reveal aria-labelledby="case-title">
       <div class="case__copy">
-        <p class="case__tag"><span aria-hidden="true"></span>Caso real · Meta Ads · 24 campanhas de vendas</p>
+        <p class="case__tag"><span aria-hidden="true"></span>Caso real em Meta Ads, com 24 campanhas de vendas</p>
         <h3 class="case__title" id="case-title">R$ 35,9 mil em mídia. R$ 310,9 mil em vendas.</h3>
         <p class="case__p">
           Números de um cliente da Backe, tirados direto do gerenciador de anúncios: cada real investido voltou quase nove
@@ -58,7 +59,7 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
     <!-- Caso real enviado pela Backe (print do Gerenciador de Anúncios: perfil criado do zero, 2 meses). Cliente não identificado. -->
     <article class="case case--alt" data-reveal aria-labelledby="case2-title">
       <div class="case__copy">
-        <p class="case__tag"><span aria-hidden="true"></span>Caso real · Instagram · perfil criado do zero</p>
+        <p class="case__tag"><span aria-hidden="true"></span>Caso real no Instagram, com um perfil criado do zero</p>
         <h3 class="case__title" id="case2-title">Do zero a 3.574 seguidores em dois meses.</h3>
         <p class="case__p">
           Um perfil novo, sem audiência nenhuma: em dois meses foram 17.819 visitas ao perfil e mais de 20 mil cliques, a
@@ -82,7 +83,19 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
           <div class="report__hl"><dt>Custo por clique</dt><dd>R$ 0,22</dd></div>
         </dl>
       </div>
+      <figure class="print">
+        <button class="print__btn" type="button" data-lightbox={asset('cases/instagram-meta-ads.webp')} data-lightbox-alt="Print do Gerenciador de Anúncios da Meta: 20.531 cliques, CTR de 4,63%, CPC de R$ 0,22, 17.819 visitas ao perfil e 3.574 seguidores no Instagram.">
+          <span class="print__bar" aria-hidden="true"><i></i><i></i><i></i><span>Print original do Gerenciador de Anúncios</span></span>
+          <img src={asset('cases/instagram-meta-ads.webp')} alt="Print do Gerenciador de Anúncios da Meta: 20.531 cliques, CTR de 4,63%, CPC de R$ 0,22, 17.819 visitas ao perfil e 3.574 seguidores no Instagram." width="1576" height="500" loading="lazy" decoding="async" />
+          <span class="print__zoom">Ampliar print</span>
+        </button>
+      </figure>
     </article>
+
+    <dialog class="lightbox" data-lightbox-dialog aria-label="Print ampliado">
+      <img alt="" data-lightbox-img />
+      <form method="dialog"><button class="lightbox__close" type="submit">Fechar</button></form>
+    </dialog>
   </div>
 </section>
 
@@ -222,6 +235,108 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
   }
   .case--alt .report {
     order: -1;
+  }
+  /* print original do gerenciador: prova, não decoração */
+  .print {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: min(100%, 760px);
+    margin: 0;
+  }
+  .print__btn {
+    position: relative;
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #fff;
+    text-align: left;
+    box-shadow: 0 30px 80px -30px rgb(0 0 0 / 0.9), 0 0 0 1px rgb(255 255 255 / 0.08);
+    cursor: zoom-in;
+    transition: transform 0.6s var(--ease-out), box-shadow 0.6s;
+  }
+  .print__btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 40px 90px -30px rgb(254 67 77 / 0.35), 0 0 0 1px rgb(255 255 255 / 0.12);
+  }
+  .print__bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    background: #f1f1f1;
+    border-bottom: 1px solid #e3e3e3;
+    font-size: 0.78rem;
+    color: #6b6b6b;
+  }
+  .print__bar i {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #d4d4d4;
+  }
+  .print__bar span {
+    margin-left: 8px;
+  }
+  .print__btn img {
+    width: 100%;
+    height: auto;
+  }
+  .print__zoom {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    padding: 7px 12px;
+    border-radius: 999px;
+    background: rgb(0 0 0 / 0.75);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s, transform 0.4s var(--ease-out);
+  }
+  .print__btn:hover .print__zoom,
+  .print__btn:focus-visible .print__zoom {
+    opacity: 1;
+    transform: none;
+  }
+  .lightbox {
+    max-width: min(1400px, 94vw);
+    max-height: 90vh;
+    padding: 0;
+    border: 0;
+    border-radius: 16px;
+    background: #fff;
+    overflow: auto;
+  }
+  .lightbox::backdrop {
+    background: rgb(0 0 0 / 0.85);
+    backdrop-filter: blur(6px);
+  }
+  .lightbox img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .lightbox form {
+    position: sticky;
+    bottom: 0;
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px;
+    background: linear-gradient(transparent, rgb(255 255 255 / 0.95) 40%);
+  }
+  .lightbox__close {
+    min-height: 44px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 999px;
+    background: #111;
+    color: #fff;
+    font-weight: 600;
   }
   .follow {
     display: grid;

@@ -14,9 +14,9 @@ import { track, trackLead } from '../lib/tracking';
 
 const DRAFT_KEY = 'backe_form_draft';
 const STEPS = [
-  { name: 'Sobre você', next: 'Continuar' },
-  { name: 'Sobre o seu negócio', next: 'Continuar' },
-  { name: 'Por onde começar', next: '' },
+  { name: 'sobre você', next: 'Continuar' },
+  { name: 'sobre o seu negócio', next: 'Continuar' },
+  { name: 'por onde começar', next: '' },
 ];
 
 const form = document.querySelector<HTMLFormElement>('[data-form]');
