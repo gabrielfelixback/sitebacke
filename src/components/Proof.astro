@@ -54,6 +54,35 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
         </dl>
       </div>
     </article>
+
+    <!-- Caso real enviado pela Backe (print do Gerenciador de Anúncios: perfil criado do zero, 2 meses). Cliente não identificado. -->
+    <article class="case case--alt" data-reveal aria-labelledby="case2-title">
+      <div class="case__copy">
+        <p class="case__tag"><span aria-hidden="true"></span>Caso real · Instagram · perfil criado do zero</p>
+        <h3 class="case__title" id="case2-title">Do zero a 3.574 seguidores em dois meses.</h3>
+        <p class="case__p">
+          Um perfil novo, sem audiência nenhuma: em dois meses foram 17.819 visitas ao perfil e mais de 20 mil cliques, a
+          R$ 0,22 cada.
+        </p>
+        <a class="link-arrow" href="#diagnostico" data-interest="Gestão de Redes Sociais" data-cta="case-instagram">
+          Quero construir a audiência da minha marca
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg>
+        </a>
+      </div>
+      <div class="report" aria-label="Resumo do resultado">
+        <div class="follow" aria-hidden="true">
+          <span class="follow__from">0</span>
+          <span class="follow__line"><i></i></span>
+          <span class="follow__to"><b data-count="3574" data-decimals="0">3.574</b> seguidores</span>
+        </div>
+        <dl class="report__grid">
+          <div><dt>Visitas ao perfil</dt><dd>17.819</dd></div>
+          <div><dt>Cliques</dt><dd>20.531</dd></div>
+          <div><dt>Taxa de cliques (CTR)</dt><dd>4,63%</dd></div>
+          <div class="report__hl"><dt>Custo por clique</dt><dd>R$ 0,22</dd></div>
+        </dl>
+      </div>
+    </article>
   </div>
 </section>
 
@@ -184,9 +213,81 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
     background-clip: text;
     color: transparent;
   }
+  .case--alt {
+    margin-top: 24px;
+    grid-template-columns: 1.1fr 1fr;
+    background:
+      radial-gradient(60% 80% at 0% 100%, rgb(241 143 52 / 0.18), transparent 60%),
+      linear-gradient(200deg, #1b1918, #0e0d0c 70%);
+  }
+  .case--alt .report {
+    order: -1;
+  }
+  .follow {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 16px;
+    padding: 6px 0 4px;
+  }
+  .follow__from {
+    font-family: var(--f-display);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--mute);
+  }
+  .follow__line {
+    position: relative;
+    height: 2px;
+    background: var(--line);
+  }
+  .follow__line i {
+    position: absolute;
+    inset: 0;
+    background: var(--sun);
+    box-shadow: 0 0 20px rgb(254 67 77 / 0.6);
+    transform-origin: left;
+  }
+  .follow__line i::after {
+    content: '';
+    position: absolute;
+    right: -6px;
+    top: -5px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--sun-3);
+    box-shadow: 0 0 0 5px rgb(254 67 77 / 0.2);
+  }
+  :global(.js) .case .follow__line i {
+    transform: scaleX(0);
+    transition: transform 1.8s var(--ease-out) 0.3s;
+  }
+  :global(.js) .case.is-in .follow__line i {
+    transform: none;
+  }
+  .follow__to {
+    font-size: 0.9rem;
+    color: var(--mute);
+    white-space: nowrap;
+  }
+  .follow__to b {
+    display: block;
+    font-family: var(--f-display);
+    font-size: clamp(2rem, 3.4vw, 3rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--text);
+    font-variant-numeric: tabular-nums;
+  }
   @media (max-width: 900px) {
-    .case {
+    .case,
+    .case--alt {
       grid-template-columns: 1fr;
+    }
+    .case--alt .report {
+      order: 0;
     }
     .report {
       padding: 18px;

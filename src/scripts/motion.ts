@@ -43,7 +43,8 @@ function countUp(el: HTMLElement) {
   const tick = (t: number) => {
     const k = Math.min(1, (t - t0) / dur);
     const eased = 1 - Math.pow(1 - k, 4);
-    el.textContent = (target * eased).toFixed(dec);
+    const v = target * eased;
+    el.textContent = dec ? v.toFixed(dec) : Math.round(v).toLocaleString('pt-BR');
     if (k < 1) requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);
