@@ -46,19 +46,19 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
 <style>
   .hero {
     /* tamanho do símbolo e onde fica o miolo do “b” (frações do quadro 504x506 do vetor) */
-    --S0: max(104vw, 168vh);
+    --S0: max(104vw, calc(var(--vh, 1svh) * 168));
     --ax: 0.476;
     --ay: 0.613;
     --cx: 50vw;
-    --cy: 50svh;
+    --cy: calc(var(--vh, 1svh) * 50);
     position: relative;
-    height: 230vh;
+    height: calc(var(--vh, 1svh) * 230);
     background: #000;
   }
   .hero__stick {
     position: sticky;
     top: 0;
-    height: 100svh;
+    height: calc(var(--vh, 1svh) * 100);
     overflow: hidden;
     isolation: isolate;
   }
@@ -151,7 +151,7 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
     position: absolute;
     left: var(--gutter);
     right: var(--gutter);
-    bottom: clamp(3rem, 12vh, 7rem);
+    bottom: clamp(3rem, calc(var(--vh, 1svh) * 12), 7rem);
     max-width: 18ch;
     font-family: var(--f-display);
     font-size: clamp(2.2rem, 5.4vw, 5.4rem);
@@ -252,8 +252,8 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
     .hero {
       --S0: 124vw;
       --cx: calc(124vw * 0.476 + 10px);
-      --cy: 38svh;
-      height: 200vh;
+      --cy: calc(var(--vh, 1svh) * 38);
+      height: calc(var(--vh, 1svh) * 200);
     }
     .hero__copy {
       width: calc(var(--S0) * 0.39);

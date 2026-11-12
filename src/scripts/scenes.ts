@@ -60,7 +60,7 @@ export default function scenes() {
     const A1 = { x: 232 / 504, y: 440 / 506 };
     const apply = (p: number) => {
       const vw = innerWidth;
-      const vh = innerHeight;
+      const vh = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--vh')) * 100 || innerHeight;
       const mobile = vw <= 900;
       const s0 = mobile ? vw * 1.24 : Math.max(vw * 1.04, vh * 1.68);
       const s1 = Math.max(vw, vh) * 9;

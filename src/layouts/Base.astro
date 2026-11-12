@@ -9,7 +9,7 @@ import fontSerif from '@fontsource/instrument-serif/files/instrument-serif-latin
 // marca JS ativo e detecta quando a página roda num quadro esticado até a altura do conteúdo
 // (acontece em prévias embutidas no iPhone): aí as unidades de tela não valem e usamos a altura real do aparelho
 const jsFlag =
-  "var d=document.documentElement;d.classList.add('js');function t(){var s=screen.height||844;var on=innerHeight>s*1.4&&innerHeight>1100;d.classList.toggle('frame-tall',on);d.style.setProperty('--sh',Math.min(s,innerHeight)+'px')}t();addEventListener('resize',t)";
+  "var d=document.documentElement;d.classList.add('js');var emb=false;try{emb=window.self!==window.top}catch(e){emb=true}var last='';function t(){var s=screen.height||innerHeight;var tall=innerHeight>s*1.25&&innerHeight>1000;d.classList.toggle('frame-tall',tall);var h=emb&&(tall||innerHeight<s*0.6)?s:Math.min(innerHeight,s);var key=innerWidth+'/'+tall+'/'+(emb?0:h);if(key!==last){last=key;d.style.setProperty('--vh',h/100+'px');d.style.setProperty('--sh',h+'px')}}t();addEventListener('resize',t)";
 const jsFlagHash = `'sha256-${createHash('sha256').update(jsFlag).digest('base64')}'`;
 
 interface Props {

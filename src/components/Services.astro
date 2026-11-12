@@ -100,7 +100,7 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
     top: calc(var(--header-h) + 20px + var(--i) * 18px);
     display: grid;
     grid-template-columns: 1.05fr 1fr;
-    min-height: min(78vh, 720px);
+    min-height: min(calc(var(--vh, 1svh) * 78), 720px);
     border-radius: 36px;
     overflow: hidden;
     background:

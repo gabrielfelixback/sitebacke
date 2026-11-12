@@ -312,7 +312,7 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
   }
   .lightbox {
     max-width: min(1400px, 94vw);
-    max-height: 90vh;
+    max-height: calc(var(--vh, 1svh) * 90);
     padding: 0;
     border: 0;
     border-radius: 16px;
