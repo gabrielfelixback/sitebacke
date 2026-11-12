@@ -4,8 +4,7 @@ import { asset } from '../lib/url';
 <div class="consent" data-consent hidden role="dialog" aria-modal="false" aria-labelledby="consent-title">
   <p class="consent__t" id="consent-title">Privacidade e medição</p>
   <p class="consent__p">
-    Usamos o Meta Pixel para medir campanhas somente com sua permissão. A proteção do formulário continua funcionando se
-    você recusar. <a href={asset('privacidade.html')}>Política de Privacidade</a>.
+    Usamos o Meta Pixel para medir campanhas, só com a sua permissão. <a href={asset('privacidade.html')}>Política de Privacidade</a>.
   </p>
   <div class="consent__a">
     <button type="button" class="consent__no" data-consent-choice="rejected">Recusar</button>
@@ -27,6 +26,30 @@ import { asset } from '../lib/url';
     -webkit-backdrop-filter: blur(16px);
     box-shadow: inset 0 0 0 1px var(--line-strong), 0 30px 80px -20px rgb(0 0 0 / 0.8);
     animation: consent-in 0.7s var(--ease-out) both;
+  }
+  @media (max-width: 600px) {
+    .consent {
+      left: 10px;
+      right: 10px;
+      width: auto;
+      bottom: calc(10px + env(safe-area-inset-bottom));
+      padding: 14px 16px;
+      border-radius: 16px;
+    }
+    .consent__t {
+      display: none;
+    }
+    .consent__p {
+      margin: 0;
+      font-size: 0.8rem;
+    }
+    .consent__a {
+      margin-top: 10px;
+    }
+    .consent__a button {
+      height: 40px;
+      flex: 1;
+    }
   }
   .consent[hidden] {
     display: none;

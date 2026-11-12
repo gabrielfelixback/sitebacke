@@ -60,7 +60,7 @@ export default function scenes() {
       const vw = innerWidth;
       const vh = innerHeight;
       const mobile = vw <= 900;
-      const s0 = mobile ? vw * 2.32 : Math.max(vw * 1.04, vh * 1.68);
+      const s0 = mobile ? vw * 1.24 : Math.max(vw * 1.04, vh * 1.68);
       const s1 = Math.max(vw, vh) * 9;
       const k = clamp(p / 0.62);
       const size = lerp(s0, s1, k * k * k);

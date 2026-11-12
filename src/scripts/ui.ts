@@ -180,3 +180,19 @@ if (lb && lbImg) {
 /* ───── Máscara do hero com URL absoluta (vale em qualquer hospedagem/subpasta) ───── */
 const heroEl = document.querySelector<HTMLElement>('[data-hero]');
 heroEl?.style.setProperty('--mask', `url("${new URL(asset('backe-symbol.svg'), location.href).href}")`);
+
+/* ───── Sempre abrir no topo (o navegador restauraria o meio de uma cena de scroll) ───── */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+if (!location.hash) scrollTo(0, 0);
+
+/* ───── Vídeo do hero: pôster certo no celular e play garantido (iOS bloqueia autoplay às vezes) ───── */
+const heroVideo = document.querySelector<HTMLVideoElement>('[data-hero-video]');
+if (heroVideo && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  if (matchMedia('(max-width: 900px)').matches) heroVideo.poster = asset('video/reel-vertical-poster.jpg');
+  heroVideo.muted = true;
+  heroVideo.setAttribute('webkit-playsinline', '');
+  const kick = () => heroVideo.play().catch(() => {});
+  kick();
+  heroVideo.addEventListener('canplay', kick, { once: true });
+  ['touchstart', 'pointerdown', 'scroll'].forEach((ev) => addEventListener(ev, kick, { once: true, passive: true }));
+}

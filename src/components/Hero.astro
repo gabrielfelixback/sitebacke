@@ -248,20 +248,31 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
   }
 
   @media (max-width: 900px) {
+    /* celular: o “b” inteiro com o vídeo, a frase no miolo e o texto logo abaixo da letra */
     .hero {
-      --S0: 232vw;
+      --S0: 124vw;
+      --cx: calc(124vw * 0.476 + 10px);
       --cy: 38svh;
       height: 200vh;
     }
     .hero__copy {
-      width: calc(100vw - 2 * var(--gutter));
-      translate: -50% -50%;
+      width: calc(var(--S0) * 0.39);
+      text-shadow: 0 2px 24px rgb(0 0 0 / 0.6);
     }
     .hero__title {
-      font-size: min(11.5vw, 3.4rem);
+      font-size: min(7.4vw, 2.2rem);
     }
-    .hero__copy {
-      text-shadow: 0 2px 24px rgb(0 0 0 / 0.6);
+    .hero__more {
+      position: absolute;
+      left: calc(50vw - var(--cx) + 50%);
+      top: calc(50% + var(--S0) * 0.39 + 22px);
+      translate: -50% 0;
+      width: calc(100vw - 2 * var(--gutter));
+      margin: 0;
+      gap: 18px;
+    }
+    .hero__lede {
+      font-size: 0.98rem;
     }
     .hero__actions :global(.btn) {
       width: calc(100vw - 2 * var(--gutter));
