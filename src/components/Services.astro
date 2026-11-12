@@ -1,12 +1,12 @@
 ---
 import { FRONTS } from '../data/content';
 import { asset } from '../lib/url';
-const media: Record<string, { img: string; video?: string }> = {
+const media: Record<string, { img: string; video?: string; pos?: string }> = {
   // cada frente aceita foto (img) ou vídeo em loop (video + img como capa).
   // fotos de banco (Unsplash) só até a Backe mandar o vídeo próprio de cada frente
   estrategia: { img: 'fotos/estrategia.webp' },
   demanda: { img: 'video/frente-demanda-poster.jpg', video: 'video/frente-demanda.mp4' },
-  marca: { img: 'fotos/marca.webp' },
+  marca: { img: 'fotos/marca-backe.webp', pos: '78% 50%' },
   imagem: { img: 'video/drone-poster.jpg', video: 'video/drone-loop.mp4' },
 };
 const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
@@ -54,7 +54,7 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
                   <source src={asset(media[f.id].video!)} type="video/mp4" />
                 </video>
               ) : (
-                <img src={asset(media[f.id].img)} alt="" loading="lazy" decoding="async" class="fcard__photo" />
+                <img src={asset(media[f.id].img)} alt="" loading="lazy" decoding="async" class="fcard__photo" style={media[f.id].pos ? `object-position:${media[f.id].pos}` : undefined} />
               )}
             </div>
           </article>
