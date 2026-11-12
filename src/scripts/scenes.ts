@@ -33,21 +33,6 @@ export default function scenes() {
     });
   }
 
-  /* ───── Manifesto: as palavras acendem conforme a leitura ───── */
-  const ws = $$('[data-words] .w');
-  if (ws.length) {
-    ScrollTrigger.create({
-      trigger: '[data-words]',
-      start: 'top 80%',
-      end: 'bottom 45%',
-      scrub: true,
-      onUpdate: (st) => {
-        const n = Math.round(st.progress * ws.length);
-        ws.forEach((w, i) => w.classList.toggle('on', i < n));
-      },
-    });
-  }
-
   /* ───── Hero: a câmera mergulha no disco do “b” até o vídeo tomar a tela ───── */
   const hero = document.querySelector<HTMLElement>('[data-hero]');
   if (hero && !tallFrame) {

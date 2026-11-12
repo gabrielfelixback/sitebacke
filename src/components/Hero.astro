@@ -23,7 +23,7 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
       <!-- TÍTULO PROVISÓRIO: aguardando definição da Backe -->
       <h1 class="hero__title" id="hero-title">
         <span class="line"><span data-hero-line style="--i:0">Estratégia</span></span>
-        <span class="line"><span data-hero-line style="--i:1">com criatividade.</span></span>
+        <span class="line"><span data-hero-line style="--i:1">com <em class="hero__em">criatividade</em>.</span></span>
       </h1>
       <div class="hero__more">
         <p class="hero__lede" data-hero-in style="--i:1">
@@ -36,7 +36,7 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
     </div>
 
     <p class="hero__after" data-hero-after aria-hidden="true">
-      Criatividade sem estratégia não escala. Estratégia sem criatividade não é lembrada.
+      Criatividade sem estratégia não <em class="hl">escala</em>. Estratégia sem criatividade não é <em class="hl">lembrada</em>.
     </p>
 
     <a class="hero__scroll" href="#custo" data-hero-in style="--i:4"><span aria-hidden="true"></span>Role para ver</a>
@@ -134,6 +134,20 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
     color: transparent;
     padding-bottom: 0.04em;
   }
+  /* o span da linha usa background-clip:text, então o destaque leva o próprio degradê do sol */
+  .hero__title .hero__em {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: transparent;
+    background: linear-gradient(180deg, var(--sun-1), var(--sun-2) 55%, var(--sun-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    text-shadow: none;
+    filter: drop-shadow(0 0 28px rgb(254 67 77 / 0.35));
+    padding-right: 0.06em;
+  }
   .hero__more {
     display: grid;
     justify-items: center;
@@ -162,6 +176,16 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
     opacity: 0;
     z-index: 2;
     text-shadow: 0 10px 50px rgb(0 0 0 / 0.5);
+  }
+  .hero__after .hl {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--sun-1);
+    text-shadow:
+      0 2px 30px rgb(0 0 0 / 0.6),
+      0 0 24px rgb(254 67 77 / 0.35);
   }
   .hero__scroll {
     position: absolute;

@@ -73,6 +73,9 @@
 
   var cards = Array.prototype.slice.call(document.querySelectorAll('[data-fcard]'));
   var footer = $('footer');
+  // manifesto do Custo: cada linha liga (.on) quando o topo passa da fração da tela em data-mani
+  var mani = Array.prototype.slice.call(document.querySelectorAll('[data-mani]'));
+  var contact = $('#diagnostico');
 
   function update() {
     ticking = false;
@@ -95,6 +98,18 @@
     // cards de serviço acendem quando o topo passa de 62% da tela
     for (var i = 0; i < cards.length; i++) {
       cards[i].classList.toggle('is-lit', cards[i].getBoundingClientRect().top < vh * 0.62);
+    }
+
+    // manifesto: alterna nos dois sentidos; com reduced-motion fica tudo no estado final
+    for (var m = 0; m < mani.length; m++) {
+      var at = parseFloat(mani[m].getAttribute('data-mani')) || 0.7;
+      mani[m].classList.toggle('on', reduce || mani[m].getBoundingClientRect().top < vh * at);
+    }
+
+    // sol nascendo atrás do formulário: 0 com o topo da seção no pé da tela → 1 quando ela ocupa ~70% da tela
+    if (contact) {
+      var rise = reduce ? 1 : clamp((vh - contact.getBoundingClientRect().top) / (vh * 0.7), 0, 1);
+      contact.style.setProperty('--rise', easeInOut(rise).toFixed(3));
     }
 
     // pôr do sol do rodapé: 0 com o topo do rodapé no pé da tela → 1 depois de ~85% da tela

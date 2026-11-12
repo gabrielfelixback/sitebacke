@@ -20,20 +20,6 @@ const io = new IntersectionObserver(
 );
 $$('[data-reveal]').forEach((el) => io.observe(el));
 
-/* ───── Manifesto palavra a palavra (o texto completo fica no aria-label) ───── */
-const words = document.querySelector<HTMLElement>('[data-words]');
-if (words) {
-  const text = words.textContent!.trim().replace(/\s+/g, ' ');
-  const sr = document.createElement('span');
-  sr.className = 'sr-only';
-  sr.textContent = text;
-  words.innerHTML = text
-    .split(' ')
-    .map((w) => `<span class="w" aria-hidden="true">${w}</span>`)
-    .join(' ');
-  words.prepend(sr);
-}
-
 /* ───── Contadores (sem biblioteca) ───── */
 function countUp(el: HTMLElement) {
   const target = Number(el.dataset.count);
@@ -62,7 +48,6 @@ const cio = new IntersectionObserver(
 );
 
 if (reduce) {
-  $$('[data-words] .w').forEach((w) => w.classList.add('on'));
   $$('.proc [data-step]').forEach((s) => s.classList.add('is-active'));
   // sem autoplay: os vídeos ficam no pôster
   $$<HTMLVideoElement>('video').forEach((v) => {

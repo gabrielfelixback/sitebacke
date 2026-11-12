@@ -123,6 +123,22 @@ ol {
   display: none !important;
 }
 
+/* palavra em destaque dentro de títulos (cor sólida: os h2 passam pelo SplitText) */
+.hl {
+  font-family: var(--f-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: var(--sun-2);
+  text-shadow: 0 0 28px rgb(254 67 77 / 0.35);
+  padding-right: 0.04em;
+}
+
+/* mantém a última palavra e a pontuação juntas */
+.nobr {
+  white-space: nowrap;
+}
+
 .sr-only {
   position: absolute !important;
   width: 1px;

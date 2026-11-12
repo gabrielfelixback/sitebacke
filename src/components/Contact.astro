@@ -20,7 +20,7 @@ const next = [
     <div class="cta__info">
       <p class="eyebrow" data-reveal>Diagnóstico estratégico gratuito</p>
       <h2 class="h2 cta__title" id="cta-title" data-reveal>
-        Seu próximo passo é uma conversa.
+        Descubra onde seu marketing está <em class="hl">perdendo</em> <span class="nobr"><em class="hl">dinheiro</em>.</span>
       </h2>
       <p class="lede" data-reveal>
         Conte rapidamente sobre o seu negócio. Um especialista da Backe analisa o seu cenário e volta com um
@@ -29,12 +29,16 @@ const next = [
 
     </div>
 
+    <div class="cta__rise" aria-hidden="true"></div>
+
     <div class="card" data-reveal style="--d:.1s">
+      <span class="card__ring" aria-hidden="true"></span>
+      <p class="card__badge">Gratuito · Resposta em até 24h úteis</p>
       <div class="card__state" data-form-state>
         <header class="card__head">
           <div>
             <p class="card__kicker"><span data-step-label>Etapa 1 de 3</span>: <span data-step-name>sobre você</span></p>
-            <h3 class="card__title">Solicite seu diagnóstico</h3>
+            <h3 class="card__title">Leva menos de 2 minutos.</h3>
           </div>
           <svg class="card__progress" viewBox="0 0 200 40" aria-hidden="true">
             <path class="card__track" d="M2 30 C 50 30 70 8 108 10 C 146 12 160 34 198 26"></path>
@@ -219,8 +223,26 @@ const next = [
   }
   .card {
     grid-area: card;
+    z-index: 1;
+  }
+  /* sol nascendo atrás do card: --rise vem de public/sol.js (0 → 1 conforme a seção entra) */
+  .cta__rise {
+    --rise-size: clamp(220px, 26vw, 380px);
+    grid-area: card;
+    justify-self: end;
+    align-self: start;
+    z-index: 0;
+    width: var(--rise-size);
+    height: var(--rise-size);
+    border-radius: 50%;
+    background: var(--sun);
+    box-shadow: 0 0 90px rgb(254 67 77 / 0.45);
+    transform: translate(38%, calc(-42% + (1 - var(--rise, 1)) * 55%));
+    pointer-events: none;
   }
   .cta__info {
+    position: relative;
+    z-index: 1;
     grid-area: info;
     display: grid;
     gap: 28px;
@@ -296,12 +318,44 @@ const next = [
     border-radius: var(--radius);
     padding: clamp(24px, 3.2vw, 40px);
     background: linear-gradient(180deg, rgb(28 26 25 / 0.86), rgb(16 15 14 / 0.9));
-    box-shadow:
-      inset 0 0 0 1px rgb(255 255 255 / 0.08),
-      inset 0 1px 0 rgb(255 255 255 / 0.1),
-      0 40px 120px -40px rgb(254 67 77 / 0.45);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.06),
+      0 40px 120px -40px rgb(254 67 77 / 0.6),
+      0 0 70px -20px rgb(241 143 52 / 0.35);
+  }
+  /* borda em degradê: o fundo vira só contorno pela máscara */
+  .card__ring {
+    position: absolute;
+    inset: 0;
+    padding: 1.5px;
+    border-radius: inherit;
+    background: linear-gradient(160deg, var(--sun-1), var(--sun-2), var(--sun-3));
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask:
+      linear-gradient(#000 0 0) content-box exclude,
+      linear-gradient(#000 0 0);
+    pointer-events: none;
+  }
+  .card__badge {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    padding: 7px 16px;
+    border-radius: 999px;
+    background: var(--sun);
+    color: #1a0b05;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    box-shadow: 0 10px 30px -8px rgb(254 67 77 / 0.6);
   }
   .card__head {
     display: flex;
@@ -628,6 +682,11 @@ const next = [
       grid-template-areas: 'info' 'card' 'more';
       grid-template-columns: 1fr;
     }
+    .cta__rise {
+      --rise-size: min(44vw, 220px);
+      opacity: 0.75;
+      transform: translate(26%, calc(-46% + (1 - var(--rise, 1)) * 55%));
+    }
   }
   @media (max-width: 560px) {
     .form__row {
@@ -635,7 +694,11 @@ const next = [
     }
     .card {
       margin-inline: calc(var(--gutter) * -0.5);
-      padding: 22px 18px;
+      padding: 30px 18px 22px;
+    }
+    .card__badge {
+      font-size: 0.74rem;
+      padding: 6px 13px;
     }
     .card__progress {
       width: 80px;
