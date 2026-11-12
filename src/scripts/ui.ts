@@ -194,5 +194,17 @@ if (heroVideo && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
   const kick = () => heroVideo.play().catch(() => {});
   kick();
   heroVideo.addEventListener('canplay', kick, { once: true });
-  ['touchstart', 'pointerdown', 'scroll'].forEach((ev) => addEventListener(ev, kick, { once: true, passive: true }));
+  // iOS (ex.: modo de pouca energia) só libera vídeo após um gesto real: “soltar o dedo” ou clique.
+  // No primeiro gesto, dá play em todos os vídeos visíveis da página.
+  const unlock = () => {
+    kick();
+    document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]').forEach((v) => {
+      const r = v.getBoundingClientRect();
+      if (r.bottom > 0 && r.top < innerHeight) v.play().catch(() => {});
+    });
+  };
+  ['touchend', 'click', 'keydown'].forEach((ev) => addEventListener(ev, unlock, { once: true, passive: true }));
+  addEventListener('scroll', kick, { once: true, passive: true });
+  // se o vídeo travar sem tocar, tenta de novo quando a página volta a ficar visível
+  document.addEventListener('visibilitychange', () => !document.hidden && kick());
 }
