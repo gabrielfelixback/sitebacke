@@ -12,6 +12,8 @@ npm run build     # gera o site estático em dist/
 npm run preview   # serve o build localmente
 npm test          # testes do módulo de leads (vitest)
 node scripts/make-images.cjs   # regenera og-image.png e ícones a partir dos SVGs
+bash scripts/encode-videos.sh  # gera vídeos (desktop/celular) e capas WebP a partir de assets-originais/video
+node scripts/build-preview-relative.cjs  # build de prévia com caminhos relativos (dist-artifact/)
 ```
 
 ## Estrutura
@@ -25,6 +27,9 @@ node scripts/make-images.cjs   # regenera og-image.png e ícones a partir dos SV
 | `src/data/content.ts` | **Todo o conteúdo** (serviços, FAQ, números, clientes, etapas). Edite aqui. |
 | `src/components/*.astro` | Uma seção por componente. |
 | `src/scripts/` | `ui.ts` (cabeçalho, menus, acordeões, consentimento), `form.ts` (formulário em 3 etapas), `motion.ts` (revelações leves), `scenes.ts` (cenas de scroll com GSAP, lazy). |
+| `src/scripts/video.ts` + `src/components/Vbox.astro` | Todos os vídeos: capa sempre visível, fonte por JS (celular/desktop), botão de play quando o autoplay é bloqueado, carregamento a uma tela de distância. |
+| `public/sol.js` | Sol que percorre a página (desktop), manifesto do Custo, sol do formulário e pôr do sol do rodapé. |
+| `assets-originais/video/` | Vídeos originais (fora de `public/`, não vão para o site). |
 | `public/` | Logos de clientes otimizados, ícones, OG image, `privacidade.html`, robots, sitemap. |
 | `referencia/` | Briefing, análise da Fase 01, referências e arquivos originais da marca. |
 

@@ -5,6 +5,9 @@ import { defineConfig } from 'astro/config';
 export default defineConfig({
   site: process.env.SITE_URL || 'https://backe.com.br',
   base: process.env.BASE_PATH || '/',
-  build: { inlineStylesheets: 'auto' },
+  // CSS embutido no HTML (sem folha de estilos bloqueando a primeira pintura).
+  build: { inlineStylesheets: 'always' },
+  // scripts sempre como arquivo: a CSP só permite scripts do próprio domínio (sem 'unsafe-inline')
+  vite: { build: { assetsInlineLimit: 0 } },
   compressHTML: true,
 });

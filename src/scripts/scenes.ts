@@ -124,7 +124,7 @@ export default function scenes() {
 
   /* ───── Títulos entram palavra por palavra ao aparecer na tela ───── */
   document.fonts?.ready.then(() => {
-    $$('main h2, .case__title, .fcard__promise').forEach((el) => {
+    $$('main h2, .case__title').forEach((el) => {
       if (getComputedStyle(el).backgroundClip === 'text' || el.closest('[data-hero]')) return; // texto com degradê não se divide bem
       const split = SplitText.create(el, { type: 'words,lines', mask: 'lines', linesClass: 'split-line' });
       gsap.from(split.words, {
@@ -137,20 +137,6 @@ export default function scenes() {
       });
     });
     ScrollTrigger.refresh();
-  });
-
-  /* ───── Celular: cards das frentes e dos cases entram crescendo ───── */
-  mm.add('(max-width: 900px)', () => {
-    $$('.case').forEach((card) => {
-      gsap.from(card, {
-        y: 70,
-        scale: 0.92,
-        opacity: 0,
-        duration: 1.1,
-        ease: 'expo.out',
-        scrollTrigger: { trigger: card, start: 'top 94%', once: true },
-      });
-    });
   });
 
 
