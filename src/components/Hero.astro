@@ -1,0 +1,257 @@
+---
+import Symbol from './Symbol.astro';
+import Button from './Button.astro';
+---
+<section class="hero grain" id="topo" aria-labelledby="hero-title" data-hero>
+  <div class="hero__light" aria-hidden="true">
+    <div class="sunrise hero__sun"></div>
+    <div class="hero__cursor" data-cursor-light></div>
+  </div>
+
+  <div class="hero__mark" aria-hidden="true" data-hero-mark>
+    <Symbol class="hero__sym" />
+  </div>
+
+  <div class="hero__in wrap">
+    <p class="eyebrow hero__eyebrow" data-hero-in style="--i:0">Agência de marketing estratégico & criativo</p>
+
+    <!-- TÍTULO PROVISÓRIO — aguardando definição da Backe -->
+    <h1 class="display hero__title" id="hero-title">
+      <span class="line"><span data-hero-line style="--i:0">Estratégia</span></span>
+      <span class="line"><span data-hero-line style="--i:1">com <em class="serif lit">criatividade.</em></span></span>
+    </h1>
+
+    <div class="hero__foot">
+      <p class="lede hero__lede" data-hero-in style="--i:1">
+        Estruturamos <strong>posicionamento, demanda, marca e imagem</strong> para empresas que querem crescer com
+        método. Do diagnóstico à execução, com um time sênior que pensa o seu negócio como se fosse o nosso.
+      </p>
+      <div class="hero__actions" data-hero-in style="--i:2">
+        <Button href="#diagnostico" data-cta="hero">Quero meu diagnóstico estratégico</Button>
+        <a class="link-arrow" href="#servicos" data-cta="hero-servicos">
+          Ver como trabalhamos
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg>
+        </a>
+      </div>
+      <ul class="hero__proof" data-hero-in style="--i:3" aria-label="Em números">
+        <li><strong>+200</strong> marcas atendidas</li>
+        <li><strong>3.8x</strong> ROI médio entregue</li>
+        <li>Resposta em <strong>24h úteis</strong></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    background:
+      radial-gradient(120% 70% at 85% 120%, rgb(234 104 50 / 0.16), transparent 60%),
+      linear-gradient(180deg, #000 0%, #060505 60%, #0b0807 100%);
+    padding-top: calc(var(--header-h) + 40px);
+    padding-bottom: clamp(2.5rem, 6vw, 5rem);
+  }
+  .hero__light {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  /* horizonte: o símbolo “afunda” no escuro na base do hero */
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 28%;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(180deg, transparent, rgb(11 8 7 / 0.85) 70%, #0b0807);
+  }
+
+  .hero__sun {
+    width: 120vmax;
+    height: 120vmax;
+    right: -38vmax;
+    bottom: -78vmax;
+    opacity: 0.95;
+  }
+  .hero__cursor {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.8s;
+    background: radial-gradient(600px circle at var(--mx, 70%) var(--my, 60%), rgb(255 106 0 / 0.1), transparent 60%);
+  }
+  .hero:hover .hero__cursor {
+    opacity: 1;
+  }
+  .hero__mark {
+    position: absolute;
+    right: -9vw;
+    bottom: -15vw;
+    width: min(50vw, 820px);
+    aspect-ratio: 504 / 506;
+    will-change: transform;
+  }
+  .hero__sym {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 0 80px rgb(254 67 77 / 0.35));
+  }
+  .hero__in {
+    position: relative;
+    z-index: 2;
+  }
+  .hero__eyebrow {
+    margin-bottom: clamp(1.25rem, 3vw, 2rem);
+  }
+  .hero__title {
+    font-size: clamp(3.1rem, 8.4vw, 9rem);
+  }
+  @media (min-width: 901px) {
+    .hero__title .line {
+      white-space: nowrap;
+    }
+  }
+  .hero__title .line {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.06em;
+    margin-bottom: -0.06em;
+  }
+  .hero__title .line > span {
+    display: inline-block;
+  }
+  .hero__title em {
+    font-size: 1.04em;
+    line-height: 0.8;
+  }
+  .hero__foot {
+    margin-top: clamp(1.75rem, 3.2vw, 2.75rem);
+    display: grid;
+    gap: 26px;
+    max-width: 600px;
+  }
+  .hero__lede {
+    color: #c9c5c0;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px 28px;
+  }
+  .hero__proof {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    font-size: 0.875rem;
+    color: var(--mute);
+  }
+  .hero__proof li {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+  }
+  .hero__proof li + li::before {
+    content: '';
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--mute-2);
+    margin-right: 16px;
+    align-self: center;
+  }
+  .hero__proof strong {
+    color: var(--text);
+    font-weight: 600;
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      align-items: flex-end;
+    }
+    .hero__mark {
+      width: 104vw;
+      right: -52vw;
+      top: calc(var(--header-h) - 6vw);
+      bottom: auto;
+      opacity: 0.34;
+    }
+    .hero__sun {
+      right: -60vmax;
+      bottom: auto;
+      top: -40vmax;
+      opacity: 0.55;
+    }
+    .hero__proof li + li::before {
+      display: none;
+    }
+  }
+  /* tablets em pé: o símbolo ocupa o espaço de cima, sem tocar o texto */
+  @media (orientation: portrait) and (min-width: 600px) and (max-width: 1200px) {
+    .hero__mark {
+      width: 72vw;
+      right: -16vw;
+      top: calc(var(--header-h) + 2vh);
+      bottom: auto;
+      opacity: 1;
+    }
+    .hero__sun {
+      right: -50vmax;
+      top: -30vmax;
+      bottom: auto;
+      opacity: 0.8;
+    }
+  }
+  @media (max-width: 480px) {
+    .hero__actions :global(.btn) {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  /* ── entrada: o sol nasce, o título sobe (CSS puro, sem bloquear o carregamento) ── */
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.js) .hero__sym {
+      animation: hero-rise 2.2s var(--ease-out) both;
+    }
+    :global(.js) .hero__sun {
+      animation: hero-glow 2.6s var(--ease-out) both;
+    }
+    :global(.js) [data-hero-line] {
+      animation: hero-line 1.3s var(--ease-out) both;
+      animation-delay: calc(0.15s + var(--i) * 0.12s);
+    }
+    :global(.js) [data-hero-in] {
+      animation: hero-in 1.2s var(--ease-out) both;
+      animation-delay: calc(0.45s + var(--i) * 0.08s);
+    }
+  }
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(18%) scale(0.92);
+    }
+  }
+  @keyframes hero-glow {
+    from {
+      opacity: 0;
+      transform: scale(0.85);
+    }
+  }
+  @keyframes hero-line {
+    from {
+      transform: translateY(110%);
+    }
+  }
+  @keyframes hero-in {
+    from {
+      opacity: 0;
+      transform: translateY(24px);
+    }
+  }
+</style>

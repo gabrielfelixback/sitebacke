@@ -1,0 +1,183 @@
+---
+import { CONTACT } from '../data/content';
+import { whatsappLink } from '../lib/lead';
+const year = new Date().getFullYear();
+---
+<footer class="ftr">
+  <div class="wrap">
+    <div class="ftr__top">
+      <a class="ftr__big" href="#diagnostico" data-cta="footer">
+        <span>Vamos</span>
+        <span>conversar<em class="serif lit">?</em></span>
+      </a>
+      <div class="ftr__cols">
+        <div>
+          <p class="ftr__h">Contato</p>
+          <ul>
+            <li><a href={whatsappLink(CONTACT.whatsappText)} target="_blank" rel="noopener" data-cta="footer-whatsapp">WhatsApp {CONTACT.whatsappDisplay}</a></li>
+            <li><a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a></li>
+            <li><a href={CONTACT.instagram} target="_blank" rel="noopener" data-cta="footer-instagram">Instagram {CONTACT.instagramHandle}</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="ftr__h">Atendimento</p>
+          <ul>
+            {CONTACT.hours.map((h) => <li>{h}</li>)}
+            <li>{CONTACT.city} · todo o Brasil</li>
+          </ul>
+        </div>
+        <div>
+          <p class="ftr__h">Navegação</p>
+          <ul>
+            <li><a href="#servicos">Serviços</a></li>
+            <li><a href="#metodo">Método</a></li>
+            <li><a href="#faq">Perguntas frequentes</a></li>
+            <li><a href="#diagnostico">Diagnóstico gratuito</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="ftr__mark">
+      <img src="/backe-wordmark.svg" alt="backe" width="904" height="684" loading="lazy" decoding="async" />
+      <p class="ftr__tag">Estratégia com criatividade.</p>
+    </div>
+
+    <div class="ftr__bottom">
+      <p>© {year} BACKE.co · Todos os direitos reservados.</p>
+      <div class="ftr__legal">
+        <a href="/privacidade.html">Política de Privacidade</a>
+        <button type="button" data-consent-open>Preferências de privacidade</button>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    position: relative;
+    background: var(--black);
+    padding-top: clamp(5rem, 10vw, 8rem);
+    padding-bottom: calc(32px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .ftr__top {
+    display: grid;
+    grid-template-columns: 1.1fr 1.4fr;
+    gap: 48px;
+    align-items: end;
+  }
+  .ftr__big {
+    display: grid;
+    font-family: var(--f-display);
+    font-weight: 600;
+    font-size: clamp(3.2rem, 8vw, 7.5rem);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    text-decoration: none;
+  }
+  .ftr__big span:last-child {
+    transition: transform 0.6s var(--ease-out);
+  }
+  .ftr__big:hover span:last-child {
+    transform: translateX(16px);
+  }
+  .ftr__cols {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .ftr__h {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mute-2);
+    margin-bottom: 14px;
+  }
+  .ftr__cols ul {
+    display: grid;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: var(--mute);
+  }
+  .ftr__cols a {
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .ftr__cols a:hover {
+    color: var(--text);
+  }
+  .ftr__mark {
+    position: relative;
+    margin-top: clamp(4rem, 9vw, 8rem);
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .ftr__mark img {
+    width: min(58vw, 720px);
+    height: auto;
+  }
+  .ftr__tag {
+    font-family: var(--f-serif);
+    font-style: italic;
+    font-size: clamp(1.2rem, 2.4vw, 2rem);
+    color: var(--mute);
+    text-align: right;
+    padding-bottom: 1.5%;
+  }
+  .ftr__bottom {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 12px 24px;
+    font-size: 0.85rem;
+    color: var(--mute-2);
+  }
+  .ftr__legal {
+    display: flex;
+    gap: 20px;
+  }
+  .ftr__legal a,
+  .ftr__legal button {
+    color: var(--mute);
+    background: none;
+    border: 0;
+    padding: 0;
+    text-decoration: none;
+    font-size: inherit;
+  }
+  .ftr__legal a:hover,
+  .ftr__legal button:hover {
+    color: var(--text);
+  }
+  @media (max-width: 960px) {
+    .ftr__top {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 640px) {
+    .ftr__cols {
+      grid-template-columns: 1fr 1fr;
+    }
+    .ftr__cols > div:last-child {
+      display: none;
+    }
+    .ftr__mark {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    .ftr__mark img {
+      width: 82vw;
+    }
+    .ftr__tag {
+      text-align: left;
+    }
+  }
+</style>

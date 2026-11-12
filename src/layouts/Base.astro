@@ -1,0 +1,129 @@
+---
+import '../styles/global.css';
+import { createHash } from 'node:crypto';
+import { SYMBOL_PATH } from '../lib/logo-paths';
+import fontDisplay from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url';
+import fontSerif from '@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2?url';
+
+const jsFlag = "document.documentElement.classList.add('js')";
+const jsFlagHash = `'sha256-${createHash('sha256').update(jsFlag).digest('base64')}'`;
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+const {
+  title = 'BACKE.co — Agência de marketing estratégico e criativo',
+  description = 'Estratégia com criatividade. A Backe estrutura posicionamento, demanda, marca e imagem para empresas que querem crescer com método. Peça seu diagnóstico estratégico gratuito.',
+} = Astro.props;
+
+const site = 'https://backe.com.br';
+const ogImage = `${site}/og-image.png`;
+
+// CSP herdada do site atual, ajustada: scripts só do próprio domínio + Turnstile, Meta Pixel e Cloudflare Analytics.
+const csp = [
+  "default-src 'self'",
+  `script-src 'self' ${jsFlagHash} https://challenges.cloudflare.com https://connect.facebook.net https://static.cloudflareinsights.com`,
+  "connect-src 'self' https://backe-lead-proxy.backeco.workers.dev https://challenges.cloudflare.com https://www.facebook.com https://cloudflareinsights.com",
+  'frame-src https://challenges.cloudflare.com',
+  "img-src 'self' data: https://www.facebook.com",
+  "style-src 'self' 'unsafe-inline'",
+  "font-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+  "worker-src 'none'",
+  "manifest-src 'self'",
+  'upgrade-insecure-requests',
+].join('; ');
+
+const ld = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': `${site}/#localbusiness`,
+    name: 'BACKE.co',
+    description:
+      'Agência de marketing estratégico e criativo. Estratégia & performance, tráfego pago, gestão de redes sociais, branding, criação de sites, design, audiovisual, captação com drone e capacitação de vendas.',
+    url: site,
+    telephone: '+556192240234',
+    email: 'contato@backe.co',
+    image: ogImage,
+    logo: `${site}/backe-symbol.svg`,
+    priceRange: '$$',
+    areaServed: { '@type': 'Country', name: 'Brasil' },
+    sameAs: ['https://www.instagram.com/backe.co/'],
+    address: { '@type': 'PostalAddress', addressLocality: 'Brasília', addressRegion: 'DF', addressCountry: 'BR' },
+    geo: { '@type': 'GeoCoordinates', latitude: -15.7934, longitude: -47.8822 },
+    openingHoursSpecification: [
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'], opens: '09:00', closes: '18:00' },
+      { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday'], opens: '09:00', closes: '13:00' },
+    ],
+    paymentAccepted: ['PIX', 'Cartão de Crédito', 'Cartão de Débito', 'Boleto', 'Transferência Bancária'],
+    currenciesAccepted: 'BRL',
+  },
+];
+---
+
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta http-equiv="Content-Security-Policy" content={csp} />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="BACKE.co" />
+    <meta name="theme-color" content="#000000" />
+    <link rel="canonical" href={`${site}/`} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="pt_BR" />
+    <meta property="og:site_name" content="BACKE.co" />
+    <meta property="og:url" content={`${site}/`} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="BACKE.co — Estratégia com criatividade" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preload" href={fontDisplay} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={fontSerif} as="font" type="font/woff2" crossorigin />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+    <script is:inline set:html={jsFlag} />
+  </head>
+  <body>
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+
+    <!-- Sprite: símbolo oficial (vetorizado do arquivo da marca) e degradê “nascer do sol” -->
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="sun-v" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#F18F34"></stop>
+          <stop offset=".5" stop-color="#EA6832"></stop>
+          <stop offset="1" stop-color="#FE434D"></stop>
+        </linearGradient>
+        <path id="b-symbol" fill-rule="evenodd" d={SYMBOL_PATH}></path>
+        <clipPath id="clip-stem" clipPathUnits="userSpaceOnUse">
+          <polygon points="-10,-10 72,-10 72,294 90,299 -10,346"></polygon>
+        </clipPath>
+        <clipPath id="clip-bowl" clipPathUnits="userSpaceOnUse">
+          <polygon points="72,-10 520,-10 520,520 -10,520 -10,346 90,299 72,294"></polygon>
+        </clipPath>
+      </defs>
+    </svg>
+
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,633 @@
+---
+import { GUARANTEES, INTEREST_OPTIONS, CONTACT } from '../data/content';
+import { NICHES, REVENUE_RANGES, whatsappLink } from '../lib/lead';
+import Symbol from './Symbol.astro';
+import Arrow from './Arrow.astro';
+const next = [
+  { t: 'Você conta sobre a sua empresa', d: 'Leva menos de dois minutos.' },
+  { t: 'Um especialista analisa o seu cenário', d: 'Negócio, mercado e oportunidades reais.' },
+  { t: 'Conversamos com o diagnóstico em mãos', d: 'Em até 24h úteis. Sem compromisso.' },
+];
+---
+<section class="cta grain" id="diagnostico" aria-labelledby="cta-title" data-contact>
+  <div class="cta__light" aria-hidden="true">
+    <div class="sunrise cta__sun"></div>
+    <Symbol class="cta__sym" />
+  </div>
+
+  <div class="wrap cta__grid">
+    <div class="cta__info">
+      <p class="eyebrow" data-reveal>Diagnóstico estratégico gratuito</p>
+      <h2 class="h2 cta__title" id="cta-title" data-reveal>
+        Seu próximo passo é <span class="serif lit">uma conversa.</span>
+      </h2>
+      <p class="lede" data-reveal>
+        Conte rapidamente sobre o seu negócio. Um especialista da Backe analisa o seu cenário e volta com um
+        diagnóstico real do que pode ser feito agora — <strong>sem custo e sem compromisso.</strong>
+      </p>
+
+      <ol class="cta__next" data-reveal aria-label="O que acontece depois que você envia">
+        {
+          next.map((n, i) => (
+            <li>
+              <span class="cta__next-n">{i + 1}</span>
+              <div>
+                <strong>{n.t}</strong>
+                <span>{n.d}</span>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <ul class="cta__g" data-reveal>
+        {GUARANTEES.map((g) => <li>{g}</li>)}
+      </ul>
+    </div>
+
+    <div class="card" data-reveal style="--d:.1s">
+      <div class="card__state" data-form-state>
+        <header class="card__head">
+          <div>
+            <p class="card__kicker"><span data-step-label>Etapa 1 de 3</span> · <span data-step-name>Sobre você</span></p>
+            <h3 class="card__title">Solicite seu diagnóstico</h3>
+          </div>
+          <svg class="card__progress" viewBox="0 0 200 40" aria-hidden="true">
+            <path class="card__track" d="M2 30 C 50 30 70 8 108 10 C 146 12 160 34 198 26"></path>
+            <path class="card__fill" data-progress d="M2 30 C 50 30 70 8 108 10 C 146 12 160 34 198 26" pathLength="100"></path>
+          </svg>
+        </header>
+        <div class="card__bar" role="progressbar" aria-label="Progresso do formulário" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1" data-progressbar></div>
+
+        <form class="form" novalidate data-form autocomplete="on">
+          <!-- honeypot: humanos não veem este campo -->
+          <div class="hp" aria-hidden="true">
+            <label for="lead-website">Website</label>
+            <input id="lead-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+          </div>
+
+          <fieldset class="step" data-step="1">
+            <legend class="sr-only">Etapa 1 de 3: sobre você</legend>
+            <div class="field">
+              <label for="lead-nome">Nome completo</label>
+              <input id="lead-nome" name="nome" type="text" autocomplete="name" maxlength="120" required placeholder="Como podemos te chamar?" aria-describedby="err-nome" />
+              <p class="field__err" id="err-nome" data-err="nome"></p>
+            </div>
+            <div class="field">
+              <label for="lead-whatsapp">WhatsApp</label>
+              <input id="lead-whatsapp" name="whatsapp" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="16" required placeholder="(00) 90000-0000" aria-describedby="err-whatsapp" />
+              <p class="field__err" id="err-whatsapp" data-err="whatsapp"></p>
+            </div>
+          </fieldset>
+
+          <fieldset class="step" data-step="2" hidden>
+            <legend class="sr-only">Etapa 2 de 3: sobre o seu negócio</legend>
+            <div class="form__row">
+              <div class="field">
+                <label for="lead-empresa">Empresa ou Instagram</label>
+                <input id="lead-empresa" name="empresa" type="text" autocomplete="organization" maxlength="120" required placeholder="@suamarca" aria-describedby="err-empresa" />
+                <p class="field__err" id="err-empresa" data-err="empresa"></p>
+              </div>
+              <div class="field">
+                <label for="lead-email">E-mail</label>
+                <input id="lead-email" name="email" type="email" inputmode="email" autocomplete="email" maxlength="255" required placeholder="voce@empresa.com" aria-describedby="err-email" />
+                <p class="field__err" id="err-email" data-err="email"></p>
+              </div>
+            </div>
+            <div class="field" role="radiogroup" aria-labelledby="lbl-nicho" aria-describedby="err-nicho">
+              <p class="field__label" id="lbl-nicho">Nicho de atuação</p>
+              <div class="chips">
+                {NICHES.map((n) => (
+                  <label class="chip"><input type="radio" name="nicho" value={n} /><span>{n}</span></label>
+                ))}
+              </div>
+              <p class="field__err" id="err-nicho" data-err="nicho"></p>
+            </div>
+            <div class="field" role="radiogroup" aria-labelledby="lbl-fat" aria-describedby="err-faturamento">
+              <p class="field__label" id="lbl-fat">Faturamento médio mensal</p>
+              <div class="chips">
+                {REVENUE_RANGES.map((n) => (
+                  <label class="chip"><input type="radio" name="faturamento" value={n} /><span>{n}</span></label>
+                ))}
+              </div>
+              <p class="field__err" id="err-faturamento" data-err="faturamento"></p>
+            </div>
+          </fieldset>
+
+          <fieldset class="step" data-step="3" hidden>
+            <legend class="sr-only">Etapa 3 de 3: por onde começar</legend>
+            <div class="field" role="radiogroup" aria-labelledby="lbl-int">
+              <p class="field__label" id="lbl-int">Por onde você quer começar? <span>(opcional)</span></p>
+              <div class="chips">
+                {INTEREST_OPTIONS.map((n, i) => (
+                  <label class="chip"><input type="radio" name="interesse" value={n} checked={i === 0} /><span>{n}</span></label>
+                ))}
+              </div>
+            </div>
+            <div class="form__ts" data-turnstile aria-label="Verificação de segurança"></div>
+          </fieldset>
+
+          <div class="form__alert" role="alert" aria-live="assertive" data-alert hidden>
+            <p data-alert-msg></p>
+            <div class="form__alert-actions">
+              <button type="button" class="form__retry" data-retry>Tentar novamente</button>
+              <a class="form__wa" href={whatsappLink(CONTACT.whatsappText)} target="_blank" rel="noopener" data-cta="form-error-whatsapp">Falar no WhatsApp</a>
+            </div>
+          </div>
+
+          <div class="form__nav">
+            <button type="button" class="form__back" data-back hidden aria-label="Voltar para a etapa anterior">
+              <Arrow />
+            </button>
+            <button type="button" class="btn btn--primary btn--block" data-next>
+              <span class="btn__label" data-next-label>Continuar</span>
+              <span class="btn__disc"><Arrow /></span>
+            </button>
+            <button type="submit" class="btn btn--primary btn--block" data-submit hidden>
+              <span class="btn__label" data-submit-label>Enviar e garantir meu diagnóstico</span>
+              <span class="btn__disc"><Arrow /></span>
+            </button>
+          </div>
+
+          <p class="form__legal">
+            Seus dados são usados só para retornar o contato. Veja a <a href="/privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.
+          </p>
+        </form>
+      </div>
+
+      <div class="success" data-success hidden tabindex="-1" aria-live="polite">
+        <div class="success__sun" aria-hidden="true"><span></span></div>
+        <p class="eyebrow">Solicitação recebida</p>
+        <h3 class="success__title">Obrigado<span data-success-name></span>. <span class="serif lit">A conversa começou.</span></h3>
+        <p class="success__p">
+          Um especialista da Backe vai analisar o seu negócio e entrar em contato pelo WhatsApp em até <strong>24h úteis</strong>.
+        </p>
+        <a class="btn btn--ghost" href={whatsappLink('Olá! Acabei de pedir meu diagnóstico pelo site da BACKE.co.')} target="_blank" rel="noopener" data-cta="success-whatsapp">
+          <span class="btn__label">Adiantar a conversa no WhatsApp</span>
+          <span class="btn__disc"><Arrow /></span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    overflow: hidden;
+    padding-block: clamp(5rem, 11vw, 9rem);
+    background:
+      radial-gradient(90% 60% at 50% 115%, rgb(254 67 77 / 0.35), rgb(234 104 50 / 0.18) 40%, transparent 70%),
+      linear-gradient(180deg, var(--ink), #0d0806 60%, #170a06);
+  }
+  .cta__light {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .cta__sun {
+    width: 140vmax;
+    height: 140vmax;
+    left: 50%;
+    bottom: -112vmax;
+    translate: -50% 0;
+  }
+  .cta__sym {
+    position: absolute;
+    left: -14vw;
+    bottom: -30vw;
+    width: 60vw;
+    opacity: 0.1;
+  }
+  .cta__grid {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr minmax(0, 560px);
+    gap: clamp(40px, 6vw, 96px);
+    align-items: start;
+  }
+  .cta__info {
+    display: grid;
+    gap: 28px;
+    align-content: start;
+    padding-top: 8px;
+  }
+  .cta__title {
+    max-width: 12ch;
+  }
+  .cta__info .lede {
+    color: #c9c5c0;
+  }
+  .cta__next {
+    display: grid;
+    gap: 0;
+    margin-top: 8px;
+    border-top: 1px solid var(--line);
+  }
+  .cta__next li {
+    display: grid;
+    grid-template-columns: 40px 1fr;
+    gap: 12px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .cta__next-n {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--black);
+    background: var(--sun);
+  }
+  .cta__next strong {
+    display: block;
+    font-weight: 600;
+  }
+  .cta__next span {
+    color: var(--mute);
+    font-size: 0.92rem;
+  }
+  .cta__g {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .cta__g li {
+    font-size: 0.82rem;
+    padding: 7px 14px 7px 12px;
+    border-radius: 999px;
+    color: #d6d2cd;
+    background: rgb(255 255 255 / 0.04);
+    box-shadow: inset 0 0 0 1px var(--line);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cta__g li::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+
+  /* ───── card do formulário ───── */
+  .card {
+    position: relative;
+    border-radius: var(--radius);
+    padding: clamp(24px, 3.2vw, 40px);
+    background: linear-gradient(180deg, rgb(28 26 25 / 0.86), rgb(16 15 14 / 0.9));
+    box-shadow:
+      inset 0 0 0 1px rgb(255 255 255 / 0.08),
+      inset 0 1px 0 rgb(255 255 255 / 0.1),
+      0 40px 120px -40px rgb(254 67 77 / 0.45);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+  .card__head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .card__kicker {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mute);
+  }
+  .card__kicker span:first-child {
+    color: var(--orange);
+    font-weight: 600;
+  }
+  .card__title {
+    margin-top: 8px;
+    font-family: var(--f-display);
+    font-size: clamp(1.6rem, 2.4vw, 2rem);
+    font-weight: 600;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+  }
+  .card__progress {
+    width: 110px;
+    flex: none;
+    overflow: visible;
+  }
+  .card__track,
+  .card__fill {
+    fill: none;
+    stroke-width: 3;
+    stroke-linecap: round;
+  }
+  .card__track {
+    stroke: rgb(255 255 255 / 0.1);
+  }
+  .card__fill {
+    stroke: url(#sun-v);
+    stroke-dasharray: 100;
+    stroke-dashoffset: calc(100 - var(--progress, 33));
+    transition: stroke-dashoffset 0.8s var(--ease-out);
+  }
+  .card__bar {
+    height: 0;
+  }
+
+  .form {
+    margin-top: 28px;
+    display: grid;
+    gap: 22px;
+  }
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .step {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    min-width: 0;
+    display: grid;
+    gap: 22px;
+  }
+  .step.is-entering {
+    animation: step-in 0.6s var(--ease-out) both;
+  }
+  @keyframes step-in {
+    from {
+      opacity: 0;
+      transform: translateX(var(--dir, 24px));
+    }
+  }
+  .form__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 22px;
+  }
+  .field {
+    display: grid;
+    gap: 8px;
+    min-width: 0;
+  }
+  .field > label,
+  .field__label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #bdb8b2;
+  }
+  .field__label span {
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 400;
+    color: var(--mute-2);
+  }
+  .field input[type='text'],
+  .field input[type='tel'],
+  .field input[type='email'] {
+    width: 100%;
+    height: 52px;
+    padding: 0 2px;
+    border: 0;
+    border-bottom: 1px solid var(--line-strong);
+    border-radius: 0;
+    background: transparent;
+    font-size: 1.1rem;
+    color: var(--text);
+    transition: border-color 0.3s;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  .field input::placeholder {
+    color: #5f5c58;
+  }
+  .field input:focus {
+    outline: none;
+    border-bottom-color: var(--orange);
+    box-shadow: 0 1px 0 var(--orange);
+  }
+  .field input[aria-invalid='true'] {
+    border-bottom-color: #ff6b6b;
+  }
+  .field input:-webkit-autofill {
+    -webkit-text-fill-color: var(--text);
+    -webkit-box-shadow: 0 0 0 100px #1a1817 inset;
+  }
+  .field__err {
+    min-height: 0;
+    font-size: 0.82rem;
+    color: #ff8a8a;
+  }
+  .field__err:empty {
+    display: none;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .chip {
+    position: relative;
+    cursor: pointer;
+  }
+  .chip input {
+    position: absolute;
+    opacity: 0;
+    inset: 0;
+    margin: 0;
+    cursor: pointer;
+  }
+  .chip span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
+    padding: 8px 15px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    line-height: 1.2;
+    color: #d6d2cd;
+    background: rgb(255 255 255 / 0.03);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+    transition: background 0.25s, box-shadow 0.25s, color 0.25s;
+  }
+  .chip:hover span {
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.35);
+  }
+  .chip input:checked + span {
+    color: var(--black);
+    background: var(--orange);
+    box-shadow: none;
+    font-weight: 600;
+  }
+  .chip input:focus-visible + span {
+    outline: 2px solid var(--orange);
+    outline-offset: 2px;
+  }
+  .form__ts {
+    min-height: 65px;
+  }
+  .form__nav {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .form__back {
+    flex: none;
+    width: 60px;
+    height: 60px;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 0;
+    background: rgb(255 255 255 / 0.05);
+    box-shadow: inset 0 0 0 1px var(--line-strong);
+  }
+  .form__back :global(svg) {
+    width: 20px;
+    transform: rotate(180deg);
+  }
+  .form__back:hover {
+    box-shadow: inset 0 0 0 1px var(--text);
+  }
+  .form__nav .btn {
+    flex: 1;
+  }
+  .form__nav .btn.is-loading .btn__disc {
+    animation: spin 1s linear infinite;
+  }
+  .form__nav .btn.is-loading .btn__disc :global(svg) {
+    opacity: 0;
+  }
+  .form__nav .btn.is-loading .btn__disc::after {
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border-radius: 50%;
+    border: 2px solid rgb(255 255 255 / 0.25);
+    border-top-color: #fff;
+  }
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .form__alert {
+    padding: 16px 18px;
+    border-radius: 16px;
+    background: rgb(255 80 80 / 0.08);
+    box-shadow: inset 0 0 0 1px rgb(255 107 107 / 0.35);
+    font-size: 0.92rem;
+  }
+  .form__alert-actions {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .form__retry,
+  .form__wa {
+    padding: 9px 16px;
+    border-radius: 999px;
+    border: 0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .form__retry {
+    background: var(--text);
+    color: var(--black);
+  }
+  .form__wa {
+    background: #25d366;
+    color: #04210f;
+  }
+  .form__legal {
+    font-size: 0.8rem;
+    color: var(--mute-2);
+  }
+  .form__legal a {
+    color: var(--mute);
+  }
+
+  /* ───── sucesso ───── */
+  .success {
+    display: grid;
+    gap: 18px;
+    justify-items: start;
+    padding-block: 12px;
+    outline: none;
+  }
+  .success[hidden] {
+    display: none;
+  }
+  .success__sun {
+    position: relative;
+    width: 120px;
+    height: 60px;
+    overflow: hidden;
+    border-bottom: 2px solid var(--text);
+    margin-bottom: 8px;
+  }
+  .success__sun span {
+    position: absolute;
+    left: 0;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 50% 35%, var(--sun-1), var(--sun-2) 50%, var(--sun-3));
+    box-shadow: 0 0 50px rgb(254 67 77 / 0.6);
+    animation: rise 1.6s var(--ease-out) 0.1s both;
+  }
+  @keyframes rise {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  .success__title {
+    font-family: var(--f-display);
+    font-size: clamp(1.9rem, 3vw, 2.6rem);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1.02;
+  }
+  .success__p {
+    color: var(--mute);
+    max-width: 40ch;
+  }
+  .success__p strong {
+    color: var(--text);
+  }
+
+  @media (max-width: 980px) {
+    .cta__grid {
+      grid-template-columns: 1fr;
+    }
+    .cta__g {
+      display: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .form__row {
+      grid-template-columns: 1fr;
+    }
+    .card {
+      margin-inline: calc(var(--gutter) * -0.5);
+      padding: 22px 18px;
+    }
+    .card__progress {
+      width: 80px;
+    }
+    .cta__next {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,152 @@
+---
+import { DIFFERENTIALS } from '../data/content';
+import Button from './Button.astro';
+---
+<section class="diff section grain" id="diferenca" aria-labelledby="diff-title">
+  <div class="sunrise diff__sun" aria-hidden="true"></div>
+  <div class="wrap">
+    <p class="eyebrow" data-reveal>A diferença</p>
+    <h2 class="h2 diff__title" id="diff-title" data-reveal>
+      Toda agência promete resultado. <span class="serif lit">A diferença está no caminho.</span>
+    </h2>
+
+    <div class="diff__table" role="table" aria-label="Agência convencional comparada com a Backe">
+      <div class="diff__row diff__row--head" role="row">
+        <span role="columnheader" class="sr-only">Tema</span>
+        <span role="columnheader">Agência convencional</span>
+        <span role="columnheader" class="diff__us-h">Backe</span>
+      </div>
+      {
+        DIFFERENTIALS.map((d, i) => (
+          <div class="diff__row" role="row" data-reveal style={`--d:${i * 0.05}s`}>
+            <span role="rowheader" class="diff__theme">
+              <i>{String(i + 1).padStart(2, '0')}</i>
+              {d.theme}
+            </span>
+            <span role="cell" class="diff__them">{d.them}</span>
+            <span role="cell" class="diff__us">{d.us}</span>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="diff__cta" data-reveal>
+      <p class="lede">Se é esse tipo de parceiro que você procura, o próximo passo é simples.</p>
+      <Button href="#diagnostico" data-cta="diferenciais">Quero conversar com a Backe</Button>
+    </div>
+  </div>
+</section>
+
+<style>
+  .diff {
+    background: var(--ink);
+    overflow: hidden;
+  }
+  .diff__sun {
+    width: 80vmax;
+    height: 80vmax;
+    right: -40vmax;
+    top: 10%;
+    opacity: 0.35;
+  }
+  .diff__title {
+    margin-top: 24px;
+    max-width: 18ch;
+  }
+  .diff__table {
+    position: relative;
+    margin-top: clamp(3rem, 6vw, 5rem);
+  }
+  .diff__row {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr 1.25fr;
+    gap: 32px;
+    padding: 26px 0;
+    border-bottom: 1px solid var(--line);
+    align-items: baseline;
+    transition: background 0.4s;
+  }
+  .diff__row--head {
+    padding: 0 0 16px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mute-2);
+  }
+  .diff__row--head span:nth-child(2) {
+    grid-column: 2;
+  }
+  .diff__us-h {
+    color: var(--orange);
+  }
+  .diff__theme {
+    display: flex;
+    gap: 16px;
+    align-items: baseline;
+    font-family: var(--f-display);
+    font-size: clamp(1.25rem, 2vw, 1.7rem);
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+  .diff__theme i {
+    font-style: normal;
+    font-family: var(--f-body);
+    font-size: 0.75rem;
+    font-weight: 400;
+    color: var(--mute-2);
+    letter-spacing: 0;
+  }
+  .diff__them {
+    color: var(--mute-2);
+    text-decoration: line-through;
+    text-decoration-color: rgb(255 255 255 / 0.25);
+    text-decoration-thickness: 1px;
+  }
+  .diff__us {
+    color: var(--text);
+    padding-left: 22px;
+    position: relative;
+  }
+  .diff__us::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.62em;
+    width: 10px;
+    height: 5px;
+    border-radius: 10px 10px 0 0;
+    background: var(--sun);
+  }
+  .diff__row:not(.diff__row--head):hover {
+    background: linear-gradient(90deg, transparent, rgb(255 106 0 / 0.06));
+  }
+  .diff__cta {
+    margin-top: clamp(3rem, 6vw, 4.5rem);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  @media (max-width: 860px) {
+    .diff__row--head {
+      display: none;
+    }
+    .diff__row {
+      grid-template-columns: 1fr;
+      gap: 10px;
+      padding: 24px 0;
+    }
+    .diff__them::before {
+      content: 'Convencional: ';
+      text-decoration: none;
+      display: inline-block;
+      margin-right: 4px;
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+  }
+</style>

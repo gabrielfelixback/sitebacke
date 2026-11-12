@@ -1,0 +1,118 @@
+---
+import { STATS } from '../data/content';
+import Symbol from './Symbol.astro';
+const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d }).replace(',', '.');
+---
+<section class="proof section" id="resultados" aria-labelledby="proof-title">
+  <div class="proof__bg" aria-hidden="true">
+    <Symbol class="proof__sym" />
+  </div>
+  <div class="wrap">
+    <div class="proof__head">
+      <p class="eyebrow" data-reveal>Resultados</p>
+      <h2 class="h2 proof__title" id="proof-title" data-reveal>
+        Números que a gente <span class="serif lit">assina embaixo.</span>
+      </h2>
+    </div>
+    <ul class="proof__stats">
+      {
+        STATS.map((s, i) => (
+          <li data-reveal style={`--d:${i * 0.08}s`}>
+            <p class="proof__num"><span class="sr-only">{`${s.prefix}${fmt(s.value, s.decimals)}${s.suffix}`}</span>
+              <span aria-hidden="true"><span class="proof__pre">{s.prefix}</span><span data-count={s.value} data-decimals={s.decimals}>{fmt(s.value, s.decimals)}</span><span class="proof__suf">{s.suffix}</span></span>
+            </p>
+            <p class="proof__label">{s.label}</p>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .proof {
+    position: relative;
+    background: var(--black);
+    overflow: hidden;
+  }
+  .proof__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .proof__sym {
+    position: absolute;
+    left: -12vw;
+    top: 50%;
+    width: 54vw;
+    max-width: 820px;
+    translate: 0 -50%;
+    opacity: 0.08;
+  }
+  .proof__head {
+    display: grid;
+    gap: 24px;
+    max-width: 900px;
+    margin-left: auto;
+  }
+  .proof__stats {
+    position: relative;
+    margin-top: clamp(3.5rem, 7vw, 6rem);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid var(--line);
+  }
+  .proof__stats li {
+    padding: 32px 24px 0;
+  }
+  .proof__stats li + li {
+    border-left: 1px solid var(--line);
+  }
+  .proof__stats li:first-child {
+    padding-left: 0;
+  }
+  .proof__num {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: clamp(3rem, 6.6vw, 6.4rem);
+    letter-spacing: -0.05em;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+  .proof__pre,
+  .proof__suf {
+    background: var(--sun);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .proof__pre {
+    font-size: 0.55em;
+    vertical-align: 0.6em;
+    margin-right: 0.04em;
+  }
+  .proof__label {
+    margin-top: 14px;
+    color: var(--mute);
+  }
+  @media (max-width: 900px) {
+    .proof__stats {
+      grid-template-columns: 1fr 1fr;
+    }
+    .proof__stats li:nth-child(3) {
+      border-left: 0;
+      padding-left: 0;
+    }
+    .proof__stats li:nth-child(n + 3) {
+      border-top: 1px solid var(--line);
+      margin-top: 32px;
+    }
+    .proof__stats li {
+      padding: 26px 16px 0;
+    }
+    .proof__stats li:nth-child(odd) {
+      padding-left: 0;
+    }
+  }
+</style>
