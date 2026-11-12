@@ -27,7 +27,7 @@ import Button from './Button.astro';
       <ol class="proc__steps">
         {
           STEPS.map((s, i) => (
-            <li class="step" data-step data-reveal>
+            <li class="step" data-step data-card>
               <span class="step__n">{s.n}</span>
               <div>
                 <h3 class="h3 step__t">{s.title}</h3>
@@ -201,7 +201,7 @@ import Button from './Button.astro';
   }
   @media (max-width: 860px) {
     .proc__body {
-      padding-block: 2.5rem 4rem;
+      padding-block: 2.5rem 3.25rem;
     }
     .proc__sticky {
       display: grid;

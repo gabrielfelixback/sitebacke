@@ -123,65 +123,31 @@ ol {
   display: none !important;
 }
 
-/* ───── Sol que percorre a página (criado por public/sol.js; só desktop) ───── */
-.sol {
-  position: fixed;
-  left: 0;
-  top: 0;
-  z-index: 30;
-  width: 78vmax;
-  height: 78vmax;
-  pointer-events: none;
-  mix-blend-mode: screen;
-  opacity: 0;
-  will-change: transform, opacity;
-}
-.sol__in {
-  position: absolute;
-  inset: 0;
-  animation: sol-breathe 6s ease-in-out infinite;
-}
-.sol__in > i {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-}
-/* 3. brilho externo (o de antes) */
-.sol__glow {
-  width: 100%;
-  height: 100%;
+/* ───── Pôr do sol em WebGL (public/sol3d.js) ───── */
+/* plano B: sem WebGL ou com “reduzir movimento”, o canvas mostra um degradê estático (nunca um buraco) */
+.sol3d--static {
   background: radial-gradient(
-    closest-side,
-    rgb(241 143 52 / 0.5) 0%,
-    rgb(234 104 50 / 0.26) 24%,
-    rgb(254 67 77 / 0.1) 50%,
-    transparent
+    circle at 50% 50%,
+    #f38a3a 0,
+    #e8402e 22%,
+    #c81b22 34%,
+    rgb(200 27 34 / 0.25) 42%,
+    transparent 62%
   );
 }
-/* 2. coroa */
-.sol__corona {
-  width: 40vmin;
-  height: 40vmin;
-  opacity: 0.5;
-  background: radial-gradient(closest-side, rgb(255 140 60 / 0.95), rgb(255 106 0 / 0.45) 55%, transparent);
+/* transições custo → serviços e vídeo → diferença */
+.rise3d {
+  background: linear-gradient(#0a0a0a, #000 40%);
+  line-height: 0;
 }
-/* 1. núcleo visível */
-.sol__core {
-  width: 14vmin;
-  height: 14vmin;
-  background: var(--sun);
-  filter: blur(2px);
+.rise3d canvas {
+  display: block;
+  width: 100%;
+  height: min(56vw, 300px);
 }
-@keyframes sol-breathe {
-  50% {
-    transform: scale(1.04);
-  }
-}
-@media (max-width: 900px) {
-  .sol {
-    display: none;
+@media (min-width: 901px) {
+  .rise3d canvas {
+    height: 320px;
   }
 }
 
@@ -480,6 +446,38 @@ ol {
   opacity: 0;
   transform: translateY(28px);
 }
+/* cards (frentes, diferença, casos, depoimento, etapas): entram com animação, não com transição,
+   para não brigar com as transições próprias de cada card nem com o GSAP depois que terminam */
+.js [data-card]:not(.is-in) {
+  opacity: 0;
+}
+.js [data-card].is-in {
+  animation: card-in 1s var(--ease-out) var(--d, 0s) backwards;
+}
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+}
+@media (max-width: 900px) {
+  .js [data-card].is-in {
+    animation: card-in-m 1.1s var(--ease-out) var(--d, 0s) backwards;
+  }
+}
+@keyframes card-in-m {
+  from {
+    opacity: 0;
+    transform: translateY(70px) scale(0.92);
+  }
+}
+/* desktop: as frentes já têm a cena de empilhar do GSAP */
+@media (min-width: 901px) {
+  .js [data-fcard][data-card] {
+    opacity: 1;
+    animation: none;
+  }
+}
 .js [data-reveal].is-in {
   opacity: 1;
   transform: none;
@@ -487,9 +485,12 @@ ol {
   transition-delay: var(--d, 0s);
 }
 @media (prefers-reduced-motion: reduce) {
-  .js [data-reveal] {
+  .js [data-reveal],
+  .js [data-card],
+  .js [data-card]:not(.is-in) {
     opacity: 1;
     transform: none;
+    animation: none;
   }
   *,
   *::before,

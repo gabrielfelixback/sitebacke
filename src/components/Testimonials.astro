@@ -47,7 +47,7 @@ const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).p
     <div class="tst__list">
       {
         items.map((t) => (
-          <article class="voice" data-voice data-track={t.track} aria-label={`Depoimento de ${t.name}`}>
+          <article class="voice" data-voice data-card data-track={t.track} aria-label={`Depoimento de ${t.name}`}>
             <header class="voice__who">
               <span class="voice__avatar">
                 <img src={asset(t.logo)} alt="" width="44" height="44" loading="lazy" decoding="async" />
@@ -313,6 +313,9 @@ const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).p
   }
 
   @media (max-width: 900px) {
+    .tst {
+      padding-block: 3.25rem;
+    }
     .tst__head {
       justify-items: center;
       text-align: center;

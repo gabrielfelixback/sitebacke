@@ -16,7 +16,7 @@ import Button from './Button.astro';
     <ul class="dgrid">
       {
         DIFFERENTIALS.map((d, i) => (
-          <li class="dcard" style={`--i:${i}`}>
+          <li class="dcard" style={`--i:${i};--d:${(i % 2) * 0.08}s`} data-card>
             <div class="dcard__inner">
               <div class="dcard__face dcard__face--us" data-face="us">
                 <span class="dcard__who">Backe</span>

@@ -29,7 +29,7 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
     </ul>
 
     <!-- Caso real enviado pela Backe (print do Gerenciador de Anúncios da Meta, 24 campanhas). Cliente não identificado. -->
-    <article class="case" data-reveal aria-labelledby="case-title">
+    <article class="case" data-card aria-labelledby="case-title">
       <div class="case__copy">
         <p class="case__tag"><span aria-hidden="true"></span>Caso real em Meta Ads, com 24 campanhas de vendas</p>
         <h3 class="case__title" id="case-title">R$ 35,9 mil em mídia. R$ 310,9 mil em vendas.</h3>
@@ -61,14 +61,10 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
           <span class="print__zoom">Ampliar print</span>
         </button>
       </figure>
-      <button class="print__open" type="button" data-lightbox={asset('cases/vendas-meta-ads.webp')} data-lightbox-alt="Print do Gerenciador de Anúncios da Meta: resultados de 24 campanhas, com R$ 35.906,90 investidos, 2.691 compras e R$ 310.935,90 em valor de conversão.">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 9h16M9 9v10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg>
-        Ver print original
-      </button>
     </article>
 
     <!-- Caso real enviado pela Backe (print do Gerenciador de Anúncios: perfil criado do zero, 2 meses). Cliente não identificado. -->
-    <article class="case case--alt" data-reveal aria-labelledby="case2-title">
+    <article class="case case--alt" data-card aria-labelledby="case2-title">
       <div class="case__copy">
         <p class="case__tag"><span aria-hidden="true"></span>Caso real no Instagram, com um perfil criado do zero</p>
         <h3 class="case__title" id="case2-title">Do zero a 3.574 seguidores em dois meses.</h3>
@@ -101,10 +97,6 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
           <span class="print__zoom">Ampliar print</span>
         </button>
       </figure>
-      <button class="print__open" type="button" data-lightbox={asset('cases/instagram-meta-ads.webp')} data-lightbox-alt="Print do Gerenciador de Anúncios da Meta: 20.531 cliques, CTR de 4,63%, CPC de R$ 0,22, 17.819 visitas ao perfil e 3.574 seguidores no Instagram.">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16v14H4zM4 9h16M9 9v10" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" /></svg>
-        Ver print original
-      </button>
     </article>
 
     <dialog class="lightbox" data-lightbox-dialog aria-label="Print ampliado">
@@ -503,9 +495,6 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
       padding-left: 0;
     }
   }
-  .print__open {
-    display: none;
-  }
   @media (max-width: 900px) {
     .proof {
       padding-block: 3.25rem;
@@ -558,30 +547,28 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
     .report__grid dd {
       font-size: 1.15rem;
     }
-    /* o print fica atrás de um botão: abre o lightbox que já existe */
-    .print {
+    /* no celular o print já mostra os números: as barras saem para encurtar a página */
+    .report__bars {
       display: none;
     }
-    .print__open {
-      grid-column: 1 / -1;
-      justify-self: center;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      min-height: 44px;
-      padding: 0 18px;
-      border: 0;
-      border-radius: 999px;
-      background: rgb(255 255 255 / 0.06);
-      box-shadow: inset 0 0 0 1px var(--line-strong);
-      color: var(--text);
-      font-weight: 600;
-      font-size: 0.9rem;
+    /* o print aparece logo abaixo do resumo; o toque abre o lightbox */
+    .print__btn {
+      border-radius: 14px;
     }
-    .print__open svg {
-      width: 18px;
-      height: 18px;
-      color: var(--sun-2);
+    .print__bar {
+      padding: 8px 10px;
+      font-size: 0.7rem;
+    }
+    .print__bar i {
+      width: 8px;
+      height: 8px;
+    }
+    .print__zoom {
+      right: 8px;
+      bottom: 8px;
+      opacity: 1;
+      transform: none;
+      font-size: 0.75rem;
     }
   }
 </style>

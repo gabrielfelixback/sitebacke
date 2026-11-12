@@ -18,7 +18,7 @@ const io = new IntersectionObserver(
   },
   { rootMargin: '0px 0px -8% 0px', threshold: 0.01 },
 );
-$$('[data-reveal]').forEach((el) => io.observe(el));
+$$('[data-reveal], [data-card]').forEach((el) => io.observe(el));
 
 /* ───── Contadores (sem biblioteca) ───── */
 function countUp(el: HTMLElement) {

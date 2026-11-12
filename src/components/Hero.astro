@@ -280,11 +280,12 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
     /* celular: o “b” inteiro com o vídeo, a frase no miolo e o texto logo abaixo da letra */
     .hero {
       --S0: 124vw;
-      --cx: calc(124vw * 0.476 + 10px);
+      --cx: calc(55vw + 10px);
       --cy: calc(var(--vh, 1svh) * 38);
-      height: calc(var(--vh, 1svh) * 170);
+      height: calc(var(--vh, 1svh) * 155);
     }
     .hero__copy {
+      left: calc(50vw + 2vw);
       width: calc(var(--S0) * 0.39);
       text-shadow: 0 2px 24px rgb(0 0 0 / 0.6);
     }
@@ -293,7 +294,7 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
     }
     .hero__more {
       position: absolute;
-      left: calc(50vw - var(--cx) + 50%);
+      left: calc(50% - 2vw); /* centro da tela: a frase está em 52vw */
       top: calc(50% + var(--S0) * 0.39 + 22px);
       translate: -50% 0;
       width: calc(100vw - 2 * var(--gutter));

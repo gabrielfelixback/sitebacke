@@ -25,7 +25,7 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
     <div class="stack" data-stack aria-label="As quatro frentes da Backe">
       {
         FRONTS.map((f, i) => (
-          <article class={`fcard fcard--${f.id}`} style={`--i:${i}`} data-fcard aria-labelledby={`fc-${f.id}`}>
+          <article class={`fcard fcard--${f.id}`} style={`--i:${i}`} data-fcard data-card aria-labelledby={`fc-${f.id}`}>
             <div class="fcard__body">
               <p class="fcard__count">
                 Frente {i + 1} de {FRONTS.length}
@@ -66,54 +66,11 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
         ))
       }
     </div>
-
-    <div class="svc__nav" data-stack-nav>
-      <div class="svc__dots">
-        {FRONTS.map((f, i) => (
-          <button type="button" class="svc__dot" aria-label={`Ir para a frente ${f.name}`} aria-current={i === 0 ? 'true' : undefined} data-dot={i}></button>
-        ))}
-      </div>
-      <p class="svc__hint" data-stack-hint>Deslize para ver as 4 frentes</p>
-    </div>
   </div>
 </section>
 
 <script>
-  // celular: carrossel das frentes (pontinhos, dica que some) e “Ver detalhes”
-  const stack = document.querySelector<HTMLElement>('[data-stack]');
-  const nav = document.querySelector<HTMLElement>('[data-stack-nav]');
-  if (stack && nav) {
-    const cards = Array.from(stack.querySelectorAll<HTMLElement>('[data-fcard]'));
-    const dots = Array.from(nav.querySelectorAll<HTMLButtonElement>('[data-dot]'));
-    const hint = nav.querySelector<HTMLElement>('[data-stack-hint]');
-    const current = () => {
-      const mid = stack.scrollLeft + stack.clientWidth / 2;
-      let best = 0;
-      cards.forEach((c, i) => {
-        if (Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid) < Math.abs(cards[best].offsetLeft + cards[best].offsetWidth / 2 - mid)) best = i;
-      });
-      return best;
-    };
-    let raf = 0;
-    stack.addEventListener(
-      'scroll',
-      () => {
-        if (stack.scrollLeft > 12) hint?.classList.add('is-gone');
-        cancelAnimationFrame(raf);
-        raf = requestAnimationFrame(() => {
-          const c = current();
-          dots.forEach((d, i) => (i === c ? d.setAttribute('aria-current', 'true') : d.removeAttribute('aria-current')));
-        });
-      },
-      { passive: true },
-    );
-    dots.forEach((d, i) =>
-      d.addEventListener('click', () => {
-        const c = cards[i];
-        stack.scrollTo({ left: c.offsetLeft - (stack.clientWidth - c.offsetWidth) / 2, behavior: 'smooth' });
-      }),
-    );
-  }
+  // celular: descrições e tags de cada frente ficam atrás de “Ver detalhes”
   document.querySelectorAll<HTMLButtonElement>('[data-more]').forEach((b) =>
     b.addEventListener('click', () => {
       const card = b.closest('[data-fcard]')!;
@@ -177,7 +134,7 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
     will-change: transform;
     transition: box-shadow 1.2s var(--ease-out);
   }
-  /* aceso pelo sol (public/sol.js) quando o topo do card passa de 62% da tela */
+  /* aceso pelo sol (public/efeitos.js) quando o topo do card passa de 62% da tela */
   .fcard.is-lit {
     box-shadow:
       inset 0 1px rgb(241 143 52 / 0.55),
@@ -315,8 +272,7 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
   .fcard:hover .fcard__photo {
     transform: scale(1.03);
   }
-  .fcard__more,
-  .svc__nav {
+  .fcard__more {
     display: none;
   }
   .svc__head .eyebrow {
@@ -332,26 +288,14 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
       gap: 16px;
       margin-bottom: 2rem;
     }
-    /* carrossel horizontal: o próximo card aparece na borda */
+    /* celular: as 4 frentes empilhadas, uma embaixo da outra */
     .stack {
-      display: flex;
-      gap: 12px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      margin-inline: calc(var(--gutter) * -1);
-      padding-inline: var(--gutter);
-      padding-bottom: 4px;
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-    .stack::-webkit-scrollbar {
-      display: none;
+      display: grid;
+      gap: 14px;
     }
     .fcard {
       position: relative;
       top: auto;
-      flex: 0 0 86%;
-      scroll-snap-align: center;
       grid-template-columns: 1fr;
       grid-template-rows: auto 1fr;
       align-content: start;
@@ -410,6 +354,10 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
     .srv__go {
       display: none;
     }
+    /* fechado: só imagem, nome e promessa; a lista de serviços abre em “Ver detalhes” */
+    .fcard:not(.is-open) .fcard__list {
+      display: none;
+    }
     .fcard.is-open .fcard__list {
       display: grid;
       gap: 0;
@@ -452,49 +400,6 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
     }
     .fcard__more[aria-expanded='true'] svg {
       transform: rotate(180deg);
-    }
-    .svc__nav {
-      display: grid;
-      justify-items: center;
-      gap: 8px;
-      margin-top: 16px;
-    }
-    .svc__dots {
-      display: flex;
-      gap: 4px;
-    }
-    .svc__dot {
-      position: relative;
-      width: 28px;
-      height: 28px;
-      padding: 0;
-      border: 0;
-      background: none;
-    }
-    .svc__dot::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 8px;
-      height: 8px;
-      margin: -4px 0 0 -4px;
-      border-radius: 999px;
-      background: rgb(255 255 255 / 0.22);
-      transition: width 0.3s, margin 0.3s, background 0.3s;
-    }
-    .svc__dot[aria-current='true']::after {
-      width: 22px;
-      margin-left: -11px;
-      background: var(--sun-2);
-    }
-    .svc__hint {
-      font-size: 0.85rem;
-      color: var(--mute);
-      transition: opacity 0.4s;
-    }
-    .svc__hint.is-gone {
-      opacity: 0;
     }
   }
   @media (max-width: 900px) {
