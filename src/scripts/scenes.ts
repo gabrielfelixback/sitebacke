@@ -55,7 +55,8 @@ export default function scenes() {
     const r = reel.querySelector<HTMLElement>('[data-reel-r]')!;
     const end = reel.querySelector<HTMLElement>('[data-reel-end]')!;
     const shade = reel.querySelector<HTMLElement>('[data-reel-shade]')!;
-    media.style.setProperty('--mask', `url("${asset('backe-symbol.svg')}")`);
+    // URL absoluta: dentro de variável CSS, um caminho relativo seria resolvido a partir do arquivo .css
+    media.style.setProperty('--mask', `url("${new URL(asset('backe-symbol.svg'), location.href).href}")`);
     media.classList.add('is-masked');
     // ponto sólido do disco inferior do símbolo: o zoom termina “dentro” dele
     const AX = 232 / 504;
