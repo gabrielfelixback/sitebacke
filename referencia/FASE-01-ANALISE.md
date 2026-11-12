@@ -13,7 +13,7 @@
 | Hospedagem, CSP, pixel, Turnstile, worker de leads | ✅ |
 | Logo oficial (PNG do site + 3 imagens enviadas) | ✅ |
 | **Kontour Studios** — site real no ar (kontour.studio), analisado em navegador | ✅ ver §3.1 |
-| **5 referências do Behance** (Biorg, Marketing Agency, Pure Lines, Nymera, OCTO) | ❌ **Bloqueadas.** O Behance responde 403 com desafio anti-robô para o navegador automatizado e para a ferramenta de leitura. Não contornei a proteção. **Nenhuma análise das referências foi feita — preciso de prints/exports (ver §10).** |
+| **6 referências do Behance** — análise feita no navegador do cliente, rolando cada projeto até o fim (Google Doc "Análise de direção de arte - 6 referências Behance") | ✅ ver §3.2 |
 | Código-fonte do site atual | ❌ Não está neste repositório (vazio). Ver §7. |
 
 ---
@@ -93,6 +93,32 @@ Print: `refs/kontour-site-ao-vivo.png`. Fontes: Urbanist (títulos) + Manrope (t
 **O que NÃO trazer:** títulos em peso light demais (perde força comercial para o público da Backe); repetição do bloco "Featured Work" idêntico 5 vezes; tabela de preços em dólar (a Backe vende por diagnóstico); CTA fraco ("Get in touch" pequeno).
 
 **Incorporar na Backe:** luz lateral dramática sobre o preto (com o sol/degradê da logo no lugar do verde); manifesto revelado no scroll (seção 2 — "O custo do improviso"); serviços como índice editorial numerado com sub-entregas; título fixo + conteúdo rolando para Prova/Cases; seção clara pontual para respiro.
+
+## 3.2 As 6 referências — o que levar e o que rejeitar
+
+| Ref. | O melhor dela | Vai para a Backe como… | Rejeitamos |
+|---|---|---|---|
+| **Biorg** | Paleta restrita de 4 cores; contraste de **cor** (não de peso) dentro do título; render 3D como protagonista; rodapé com contato em display gigante | Títulos com palavra-chave iluminada pelo degradê da logo; rodapé "Vamos conversar" gigante; disciplina de paleta (preto, grafite, branco, laranja) | Bento claro de e-commerce; verde/oliva |
+| **NDM (Marketing Agency)** | Alternância claro/escuro por seção; **halo de luz atrás dos objetos**; números grandes e finos com divisórias; **formulário só com linhas** | Uma seção off-white quente (Processo) para respiro; stats grandes com divisórias; campos do formulário minimalistas (sublinhado que acende em laranja no foco) | Grade 3×2 de cards com ícone (o que temos hoje); magenta |
+| **Pure Lines** | **Tipografia gigante cortada pelas bordas** como imagem; grid editorial rígido; CTAs como links de texto com seta diagonal; "nenhuma decoração sem propósito" | Palavras enormes saindo da tela no hero e nas aberturas de seção; CTAs secundários em texto + seta **no ângulo de 25° da haste** | Monocromático total (a Backe precisa de calor) |
+| **Nymera** | **Um elemento-protagonista animado** (água-viva) que reaparece e "costura" a página; destaque com degradê só nas palavras-chave; serviços com glow interno partindo de um canto; depoimentos em layout **orbital** | O **símbolo da Backe é o nosso protagonista**: luz viva no hero, reaparece em Serviços (máscara), Prova (depoimentos orbitando o "sol") e Conversão; glow nascendo do canto dos itens de serviço no hover | Roxo/magenta; títulos Thin (fracos para vender a empresário) |
+| **OCTO** | Protagonista que **interage com o layout** (entra nos cards); acento único saturado; filtros em pílula nos resultados; texto curvo animado | O "sol" atravessa a divisória entre seções (horizonte) e ilumina o card ativo; texto curvo em círculo ao redor do disco no CTA final ("diagnóstico gratuito • resposta em 24h •") | Mascote cartoon, pink, caixa baixa extended — jovem demais para o posicionamento |
+| **Kontour** | Cor-luz assinatura (laranja→vermelho→preto) em tudo; **serviços em acordeão numerado [01]** com CTA dentro; **animação de traçado do logo**; nome gigante atrás do protagonista no hero | Serviços como índice numerado expansível com CTA "Começar por aqui"; loader com a logo sendo traçada e preenchida; "backe" gigante parcialmente atrás do símbolo | Caixa alta espaçada em Montserrat (é a fonte do site atual da Backe e deixa genérico) |
+
+### ⚠️ Atenção — risco de parecer o Kontour
+O Kontour no Behance usa **laranja→vermelho incandescente sobre preto**, quase a mesma temperatura da Backe. Para não parecer derivado, a diferenciação vem do que só a Backe tem:
+1. **A geometria da logo** (disco/horizonte, curva em S, corte de 25°) como sistema — o Kontour usa letras "abertas".
+2. **O degradê é vertical, "nascer do sol"** (dourado no topo → coral na base, igual à logo), não um glow lateral genérico.
+3. **Tipografia diferente**: nada de Montserrat em caixa alta; display com personalidade, em caixa mista, e uma itálica de ênfase.
+4. **O ciclo de luz da página** (amanhecer → meio-dia na conversão) — nenhuma das 6 faz isso.
+
+### O que todas fazem e decidimos fazer *diferente*
+- **CTA "pílula + círculo com seta"** está nas 6 → virou clichê de 2025–26. O CTA da Backe: pílula com o **meio-disco (sol nascendo)** na ponta, de onde a seta sai no ângulo de 25°; no hover o disco "nasce" e preenche o botão de luz.
+- **Bento grid de cards** → a Backe usa índice editorial (lista), que transmite consultoria/estratégia em vez de "cardápio".
+- **Render 3D genérico** → em vez de comprar um objeto 3D, o protagonista é a própria marca, iluminada (vidro/luz) — identidade reconhecível sem a logo.
+
+### Padrões validados (presentes em 5–6 das referências e já no plano)
+Fundo escuro dominante com respiro claro pontual · uma cor-acento usada como luz · protagonista visual no hero + tipografia gigante · destaque por cor dentro do título · prova social com números grandes · elemento recorrente que costura a página · rodapé com contato em display gigante.
 
 ## 4. Cor, degradê e luz
 
@@ -191,7 +217,7 @@ Cada CTA tem uma função. O formulário é **"Diagnóstico estratégico"**, nun
 ---
 
 ## 10. O que preciso de vocês
-1. **Referências do Behance:** prints/exports das 6 páginas completas (ou PDFs com "salvar como PDF"). Sem isso, a análise das referências fica pendente.
+1. ~~Referências do Behance~~ ✅ recebidas.
 2. **Logo em vetor** (SVG/AI/PDF), versões símbolo e wordmark, e o nome da fonte do "creative .co", se souberem.
 3. **Confirmação da cor:** #FF6A00 como cor de ação e o degradê da logo como luz (§4). Ok?
 4. **Números:** os 4 indicadores (+200 marcas, 3.8x ROI, +R$5M, 98%) são comprováveis? Quais mantenho?
