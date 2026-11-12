@@ -9,7 +9,7 @@
 export const LEAD_ENDPOINT = 'https://backe-lead-proxy.backeco.workers.dev/api/leads';
 export const UTM_STORAGE_KEY = 'backe_utm_params';
 export const DEFAULT_INTEREST = 'Diagnóstico gratuito';
-export const WHATSAPP_NUMBER = '556192240234';
+export const WHATSAPP_NUMBER = '5561982640887';
 export const GENERIC_ERROR =
   'Não conseguimos enviar sua solicitação agora. Tente novamente ou fale conosco pelo WhatsApp.';
 

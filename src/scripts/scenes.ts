@@ -46,65 +46,43 @@ export default function scenes() {
     });
   }
 
-  /* ───── Reel: o vídeo dentro do símbolo, que se abre até tomar a tela ───── */
-  const reel = document.querySelector<HTMLElement>('[data-reel]');
-  if (reel) {
-    const media = reel.querySelector<HTMLElement>('[data-reel-media]')!;
-    const video = reel.querySelector<HTMLVideoElement>('[data-reel-video]')!;
-    const l = reel.querySelector<HTMLElement>('[data-reel-l]')!;
-    const r = reel.querySelector<HTMLElement>('[data-reel-r]')!;
-    const end = reel.querySelector<HTMLElement>('[data-reel-end]')!;
-    const shade = reel.querySelector<HTMLElement>('[data-reel-shade]')!;
-    // URL absoluta: dentro de variável CSS, um caminho relativo seria resolvido a partir do arquivo .css
-    media.style.setProperty('--mask', `url("${new URL(asset('backe-symbol.svg'), location.href).href}")`);
-    media.classList.add('is-masked');
-    // ponto sólido do disco inferior do símbolo: o zoom termina “dentro” dele
-    const AX = 232 / 504;
-    const AY = 432 / 506;
+  /* ───── Hero: a câmera mergulha no disco do “b” até o vídeo tomar a tela ───── */
+  const hero = document.querySelector<HTMLElement>('[data-hero]');
+  if (hero) {
+    const copy = hero.querySelector<HTMLElement>('[data-hero-copy]')!;
+    const after = hero.querySelector<HTMLElement>('[data-hero-after]')!;
+    const video = hero.querySelector<HTMLVideoElement>('[data-hero-video]');
+    const tint = hero.querySelector<HTMLElement>('.hero__tint');
+    // miolo (onde está a frase) → ponto sólido do disco inferior
+    const A0 = { x: 0.476, y: 0.613 };
+    const A1 = { x: 232 / 504, y: 440 / 506 };
     const apply = (p: number) => {
       const vw = innerWidth;
       const vh = innerHeight;
-      const s0 = Math.min(vw, vh) * (vw < 900 ? 0.62 : 0.42);
-      const s1 = Math.max(vw, vh) * 7;
-      const k = clamp(p / 0.7);
-      const e = k * k * k; // acelera no fim, como uma lente
-      const size = lerp(s0, s1, e);
-      const ax = lerp(0.5, AX, clamp(k * 1.6));
-      const ay = lerp(0.5, AY, clamp(k * 1.6));
-      media.style.setProperty('--ms', `${size}px`);
-      media.style.setProperty('--mx', `${vw / 2 - ax * size}px`);
-      media.style.setProperty('--my', `${vh / 2 - ay * size * (506 / 504)}px`);
-      media.classList.toggle('is-masked', k < 0.995);
-      const sides = 1 - clamp(p / 0.35);
-      l.style.opacity = r.style.opacity = String(sides);
-      l.style.transform = `translateX(${(1 - sides) * -60}px)`;
-      r.style.transform = `translateX(${(1 - sides) * 60}px)`;
-      const fin = clamp((p - 0.72) / 0.18);
-      end.style.opacity = String(fin);
-      end.style.transform = `translateY(${(1 - fin) * 40}px)`;
-      shade.style.setProperty('--shade', String(lerp(0.25, 1, fin)));
+      const mobile = vw <= 900;
+      const s0 = mobile ? vw * 2.32 : Math.max(vw * 1.04, vh * 1.68);
+      const s1 = Math.max(vw, vh) * 9;
+      const k = clamp(p / 0.62);
+      const size = lerp(s0, s1, k * k * k);
+      const m = clamp(k * 1.8);
+      hero.style.setProperty('--S', `${size}px`);
+      hero.style.setProperty('--axz', String(lerp(A0.x, A1.x, m)));
+      hero.style.setProperty('--ayz', String(lerp(A0.y, A1.y, m)));
+      hero.classList.toggle('is-open', k > 0.99);
+      const c = 1 - clamp(p / 0.22);
+      copy.style.opacity = String(c);
+      copy.style.transform = `translateY(${(1 - c) * -40}px) scale(${1 - (1 - c) * 0.06})`;
+      const a = clamp((p - 0.62) / 0.2);
+      after.style.opacity = String(a);
+      after.style.transform = `translateY(${(1 - a) * 40}px)`;
+      tint?.style.setProperty('--tint', String(lerp(1, 1.6, a)));
     };
     apply(0);
-    ScrollTrigger.create({ trigger: reel, start: 'top top', end: 'bottom bottom', scrub: true, onUpdate: (st) => apply(st.progress) });
-    addEventListener('resize', () => ScrollTrigger.refresh());
-
-    // o vídeo só carrega/toca perto da tela
-    let userPaused = false;
-    new IntersectionObserver(
-      ([e]) => {
-        if (e.isIntersecting && !userPaused) video.play().catch(() => {});
-        else video.pause();
-      },
-      { rootMargin: '200px 0px' },
-    ).observe(reel);
-    const btn = reel.querySelector<HTMLButtonElement>('[data-reel-toggle]')!;
-    btn.addEventListener('click', () => {
-      userPaused = !video.paused;
-      if (userPaused) video.pause();
-      else video.play().catch(() => {});
-      btn.setAttribute('aria-pressed', String(userPaused));
-      btn.querySelector('[data-reel-toggle-label]')!.textContent = userPaused ? 'Tocar vídeo' : 'Pausar vídeo';
-    });
+    ScrollTrigger.create({ trigger: hero, start: 'top top', end: 'bottom bottom', scrub: true, onUpdate: (st) => apply(st.progress) });
+    addEventListener('resize', () => apply(0));
+    if (video) {
+      new IntersectionObserver(([e]) => (e.isIntersecting ? video.play().catch(() => {}) : video.pause())).observe(hero);
+    }
   }
 
   /* ───── Frentes: cada card empilha sobre o anterior, que recua ───── */
@@ -159,13 +137,6 @@ export default function scenes() {
       });
     });
   }
-
-  /* ───── Vídeos de cards: tocam só quando visíveis ───── */
-  $$<HTMLVideoElement>('video[data-autoplay]').forEach((v) =>
-    new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), {
-      rootMargin: '100px 0px',
-    }).observe(v),
-  );
 
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
 }

@@ -1,4 +1,5 @@
 import { readConsent, saveConsent, loadPixel, track } from '../lib/tracking';
+import { asset } from '../lib/url';
 
 const $ = <T extends Element = HTMLElement>(s: string, root: ParentNode = document) => root.querySelector<T>(s);
 const $$ = <T extends Element = HTMLElement>(s: string, root: ParentNode = document) =>
@@ -175,3 +176,7 @@ if (lb && lbImg) {
     if (e.target === lb) lb.close();
   });
 }
+
+/* ───── Máscara do hero com URL absoluta (vale em qualquer hospedagem/subpasta) ───── */
+const heroEl = document.querySelector<HTMLElement>('[data-hero]');
+heroEl?.style.setProperty('--mask', `url("${new URL(asset('backe-symbol.svg'), location.href).href}")`);

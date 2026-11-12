@@ -1,203 +1,124 @@
 ---
 import Button from './Button.astro';
 import { asset } from '../lib/url';
+const mask = `--mask:url(${asset('backe-symbol.svg')})`;
 ---
-<section class="hero" id="topo" aria-labelledby="hero-title" data-hero>
-  <div class="hero__bg" aria-hidden="true">
-    <div class="hero__sun"></div>
-    <svg class="hero__horizon" viewBox="0 0 1440 200" preserveAspectRatio="none">
-      <defs>
-        <linearGradient id="hz" x1="0" x2="1">
-          <stop offset="0" stop-color="#fe434d" stop-opacity="0"></stop>
-          <stop offset=".55" stop-color="#ff8a3d"></stop>
-          <stop offset="1" stop-color="#fe434d" stop-opacity="0"></stop>
-        </linearGradient>
-      </defs>
-      <path d="M0 120 C 300 120 420 70 700 74 C 980 78 1100 140 1440 128" stroke="url(#hz)" stroke-width="1.5" fill="none"></path>
-    </svg>
-    <div class="hero__grain"></div>
-  </div>
-
-  <div class="hero__stage" data-hero-stage aria-hidden="true">
-    <img class="hero__poster" data-poster src={asset('render/hero.webp')} alt="" width="1400" height="1400" fetchpriority="high" decoding="async" />
-    <canvas class="hero__canvas"></canvas>
-    <div class="chip chip--a" data-float>
-      <strong>+200</strong>
-      <span>marcas atendidas</span>
+<!--
+  Hero: o símbolo da Backe como janela. O vídeo próprio da Backe passa dentro do “b”
+  e a frase fica contida no miolo da letra. Ao rolar, a câmera mergulha no disco do “b”
+  até o vídeo tomar a tela.
+-->
+<section class="hero" id="topo" aria-labelledby="hero-title" data-hero style={mask}>
+  <div class="hero__stick">
+    <div class="hero__halo" aria-hidden="true"></div>
+    <div class="hero__media" data-hero-media>
+      <video class="hero__video" data-hero-video muted loop playsinline autoplay preload="auto" poster={asset('video/reel-poster.jpg')} aria-hidden="true">
+        <source src={asset('video/reel-vertical.mp4')} type="video/mp4" media="(max-width: 900px)" />
+        <source src={asset('video/reel-1080.mp4')} type="video/mp4" />
+      </video>
+      <div class="hero__tint"></div>
     </div>
-    <div class="chip chip--b" data-float style="--fd:-2s">
-      <strong>3.8x</strong>
-      <span>ROI médio entregue</span>
+
+    <div class="hero__copy" data-hero-copy>
+      <!-- TÍTULO PROVISÓRIO: aguardando definição da Backe -->
+      <h1 class="hero__title" id="hero-title">
+        <span class="line"><span data-hero-line style="--i:0">Estratégia</span></span>
+        <span class="line"><span data-hero-line style="--i:1">com criatividade.</span></span>
+      </h1>
+      <div class="hero__more">
+        <p class="hero__lede" data-hero-in style="--i:1">
+          Agência de marketing estratégico e criativo. Posicionamento, mídia, marca e imagem num único plano.
+        </p>
+        <div class="hero__actions" data-hero-in style="--i:2">
+          <Button href="#diagnostico" data-cta="hero" data-magnetic>Quero meu diagnóstico gratuito</Button>
+        </div>
+      </div>
     </div>
-  </div>
 
-  <div class="hero__in wrap">
-    <p class="hero__kicker" data-hero-in style="--i:0">Agência de marketing estratégico e criativo, de Brasília para todo o Brasil</p>
-
-    <!-- TÍTULO PROVISÓRIO: aguardando definição da Backe -->
-    <h1 class="hero__title" id="hero-title">
-      <span class="line"><span data-hero-line style="--i:0">Estratégia</span></span>
-      <span class="line"><span data-hero-line style="--i:1">com criatividade.</span></span>
-    </h1>
-
-    <p class="hero__lede" data-hero-in style="--i:1">
-      Posicionamento, mídia, marca e imagem num único plano, pensado por um time sênior que trata o seu negócio como
-      se fosse o nosso.
+    <p class="hero__after" data-hero-after aria-hidden="true">
+      Criatividade sem estratégia não escala. Estratégia sem criatividade não é lembrada.
     </p>
-    <div class="hero__actions" data-hero-in style="--i:2">
-      <Button href="#diagnostico" data-cta="hero" data-magnetic>Quero meu diagnóstico gratuito</Button>
-      <a class="link-arrow" href="#servicos" data-cta="hero-servicos">
-        Ver o que fazemos
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg>
-      </a>
-    </div>
+
+    <a class="hero__scroll" href="#custo" data-hero-in style="--i:4"><span aria-hidden="true"></span>Role para ver</a>
   </div>
-
-  <a class="hero__scroll" href="#custo" aria-label="Rolar para a próxima seção" data-hero-in style="--i:4">
-    <span></span>
-  </a>
 </section>
-
-<script>
-  import { mountHero3D } from '../scripts/hero3d';
-  const stage = document.querySelector<HTMLElement>('[data-hero-stage]');
-  if (stage) {
-    // depois da entrada do pôster e com o navegador ocioso
-    const go = () => mountHero3D(stage).catch(() => {});
-    setTimeout(() => ('requestIdleCallback' in window ? requestIdleCallback(go, { timeout: 1200 }) : go()), 1900);
-  }
-</script>
 
 <style>
   .hero {
+    /* tamanho do símbolo e onde fica o miolo do “b” (frações do quadro 504x506 do vetor) */
+    --S0: max(104vw, 168vh);
+    --ax: 0.476;
+    --ay: 0.613;
+    --cx: 50vw;
+    --cy: 50svh;
     position: relative;
-    min-height: 100svh;
-    display: flex;
-    align-items: center;
-    overflow: hidden;
+    height: 230vh;
     background: #000;
-    padding: calc(var(--header-h) + 32px) 0 96px;
+  }
+  .hero__stick {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    overflow: hidden;
     isolation: isolate;
   }
-  .hero__bg {
+  .hero__media,
+  .hero__halo {
     position: absolute;
     inset: 0;
-    z-index: -1;
-    pointer-events: none;
+    -webkit-mask-image: var(--mask);
+    mask-image: var(--mask);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size: var(--S, var(--S0)) auto;
+    mask-size: var(--S, var(--S0)) auto;
+    -webkit-mask-position: calc(var(--cx) - var(--axz, var(--ax)) * var(--S, var(--S0))) calc(var(--cy) - var(--ayz, var(--ay)) * var(--S, var(--S0)) * 1.004);
+    mask-position: calc(var(--cx) - var(--axz, var(--ax)) * var(--S, var(--S0))) calc(var(--cy) - var(--ayz, var(--ay)) * var(--S, var(--S0)) * 1.004);
   }
-  .hero__sun {
-    position: absolute;
-    left: 66%;
-    top: 58%;
-    width: 110vmin;
-    aspect-ratio: 1;
-    translate: -50% -50%;
-    border-radius: 50%;
-    background: radial-gradient(
-      closest-side,
-      rgb(254 67 77 / 0.42),
-      rgb(234 104 50 / 0.24) 35%,
-      rgb(241 143 52 / 0.08) 62%,
-      transparent
-    );
+  .hero.is-open .hero__media {
+    -webkit-mask-image: none;
+    mask-image: none;
   }
-  .hero__horizon {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 66%;
-    width: 100%;
-    height: 200px;
-    filter: drop-shadow(0 0 12px rgb(255 106 0 / 0.6));
+  /* halo: o próprio símbolo no degradê da marca, desfocado atrás do vídeo */
+  .hero__halo {
+    background: linear-gradient(180deg, var(--sun-1), var(--sun-2) 50%, var(--sun-3));
+    filter: blur(28px);
+    opacity: 0.55;
+    transform: scale(1.01);
   }
-  .hero__grain {
-    position: absolute;
-    inset: 0;
-    opacity: 0.06;
-    mix-blend-mode: overlay;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-  .hero__stage {
-    position: absolute;
-    left: 66%;
-    top: 50%;
-    width: min(58vw, 860px);
-    aspect-ratio: 1;
-    translate: -50% -50%;
-    z-index: 0;
-  }
-  .hero__poster,
-  .hero__canvas {
-    position: absolute;
-    inset: 0;
+  .hero__video {
     width: 100%;
     height: 100%;
+    object-fit: cover;
   }
-  .hero__poster {
-    filter: drop-shadow(0 30px 80px rgb(254 67 77 / 0.35));
-  }
-
-  /* cartões de métrica orbitando o símbolo */
-  .chip {
+  .hero__tint {
     position: absolute;
-    display: grid;
-    gap: 2px;
-    padding: 14px 18px;
-    border-radius: 18px;
-    background: rgb(22 20 19 / 0.55);
-    box-shadow:
-      inset 0 0 0 1px rgb(255 255 255 / 0.1),
-      inset 0 1px 0 rgb(255 255 255 / 0.12),
-      0 20px 50px -20px rgb(0 0 0 / 0.8);
-    backdrop-filter: blur(14px) saturate(140%);
-    -webkit-backdrop-filter: blur(14px) saturate(140%);
-    animation: float 7s ease-in-out infinite;
-    animation-delay: var(--fd, 0s);
-  }
-  .chip strong {
-    font-family: var(--f-display);
-    font-size: 1.9rem;
-    font-weight: 600;
-    letter-spacing: -0.04em;
-    line-height: 1;
-  }
-  .chip span {
-    font-size: 0.82rem;
-    color: var(--mute);
-  }
-  .chip--a {
-    right: 0;
-    top: 14%;
-  }
-  .chip--b {
-    left: 26%;
-    bottom: 10%;
-  }
-  @keyframes float {
-    50% {
-      transform: translateY(-12px);
-    }
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgb(0 0 0 / 0.15), rgb(0 0 0 / 0.35)),
+      linear-gradient(0deg, rgb(254 67 77 / 0.18), transparent 50%);
+    opacity: var(--tint, 1);
   }
 
-  .hero__in {
-    position: relative;
-    z-index: 1;
-  }
-  .hero__kicker {
-    font-size: 0.95rem;
-    color: var(--mute);
-    margin-bottom: 28px;
+  /* a frase dentro do miolo do “b” */
+  .hero__copy {
+    position: absolute;
+    left: var(--cx);
+    top: var(--cy);
+    translate: -50% -50%;
+    width: calc(var(--S0) * 0.43);
+    max-width: calc(100vw - 2 * var(--gutter));
+    text-align: center;
+    z-index: 2;
+    will-change: opacity, transform;
   }
   .hero__title {
     font-family: var(--f-display);
     font-weight: 600;
-    font-size: clamp(3.2rem, 8.6vw, 9.4rem);
-    line-height: 0.86;
-    letter-spacing: -0.052em;
+    font-size: min(calc(var(--S0) * 0.05), 8.5vw);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
     font-variation-settings: 'opsz' 96;
-    max-width: 9.2ch;
-    padding-bottom: 0.06em;
   }
   .hero__title .line {
     display: block;
@@ -207,44 +128,69 @@ import { asset } from '../lib/url';
   }
   .hero__title .line > span {
     display: inline-block;
-    /* luz do horizonte: o título é iluminado de baixo, como tudo no site */
-    background: linear-gradient(180deg, #fff 0%, #fff 45%, #ffdcc4 80%, #ffa36b 108%);
+    background: linear-gradient(180deg, #fff 0%, #fff 50%, #ffdcc4 85%, #ffa36b 110%);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
     padding-bottom: 0.04em;
   }
-  .hero__lede {
-    margin-top: 32px;
-    max-width: 30rem;
-    font-size: clamp(1.05rem, 1.35vw, 1.22rem);
-    line-height: 1.6;
-    color: #bfbab4;
-    text-wrap: pretty;
+  .hero__more {
+    display: grid;
+    justify-items: center;
+    gap: 22px;
+    margin-top: 18px;
   }
-  .hero__actions {
-    margin-top: 36px;
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 16px 28px;
+  .hero__lede {
+    max-width: 34ch;
+    color: #c9c4be;
+    font-size: clamp(0.98rem, 1.15vw, 1.1rem);
+    line-height: 1.55;
+    text-wrap: balance;
+  }
+  .hero__after {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: clamp(3rem, 12vh, 7rem);
+    max-width: 18ch;
+    font-family: var(--f-display);
+    font-size: clamp(2.2rem, 5.4vw, 5.4rem);
+    font-weight: 600;
+    line-height: 0.95;
+    letter-spacing: -0.045em;
+    text-wrap: balance;
+    opacity: 0;
+    z-index: 2;
+    text-shadow: 0 10px 50px rgb(0 0 0 / 0.5);
   }
   .hero__scroll {
     position: absolute;
     left: 50%;
-    bottom: 28px;
+    bottom: 24px;
     translate: -50% 0;
-    width: 26px;
-    height: 42px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    font-size: 0.85rem;
+    color: var(--mute);
+    text-decoration: none;
+    z-index: 2;
+  }
+  .hero__scroll span {
+    position: relative;
+    width: 22px;
+    height: 34px;
     border-radius: 999px;
     box-shadow: inset 0 0 0 1.5px var(--line-strong);
   }
-  .hero__scroll span {
+  .hero__scroll span::after {
+    content: '';
     position: absolute;
     left: 50%;
-    top: 9px;
+    top: 7px;
     width: 3px;
-    height: 8px;
+    height: 7px;
     margin-left: -1.5px;
     border-radius: 2px;
     background: var(--orange);
@@ -252,7 +198,7 @@ import { asset } from '../lib/url';
   }
   @keyframes scrolldot {
     60% {
-      transform: translateY(14px);
+      transform: translateY(12px);
       opacity: 0;
     }
     61% {
@@ -261,53 +207,31 @@ import { asset } from '../lib/url';
     }
   }
 
-  /* ── entrada: o sol nasce, o título sobe ── */
+  /* entrada: o “b” acende e a frase sobe */
   @media (prefers-reduced-motion: no-preference) {
-    :global(.js) .hero__poster {
-      animation:
-        hero-rise 2s var(--ease-out) both,
-        poster-float 9s ease-in-out 2s infinite;
+    :global(.js) .hero__media {
+      animation: hero-open 1.8s var(--ease-out) both;
     }
-    :global(.js) .hero__sun {
-      animation: hero-glow 2.4s var(--ease-out) both;
-    }
-    :global(.js) .hero__horizon {
-      animation: hero-line-draw 2.2s var(--ease-out) 0.2s both;
+    :global(.js) .hero__halo {
+      animation: hero-halo 2.4s var(--ease-out) both;
     }
     :global(.js) [data-hero-line] {
-      animation: hero-line 1.3s var(--ease-out) both;
-      animation-delay: calc(0.2s + var(--i) * 0.12s);
+      animation: hero-line 1.2s var(--ease-out) both;
+      animation-delay: calc(0.35s + var(--i) * 0.12s);
     }
     :global(.js) [data-hero-in] {
-      animation: hero-in 1.1s var(--ease-out) both;
-      animation-delay: calc(0.5s + var(--i) * 0.09s);
-    }
-    :global(.js) .chip {
-      animation:
-        hero-in 1s var(--ease-out) 1.1s both,
-        float 7s ease-in-out 2.1s infinite;
+      animation: hero-in 1s var(--ease-out) both;
+      animation-delay: calc(0.6s + var(--i) * 0.09s);
     }
   }
-  @keyframes hero-rise {
+  @keyframes hero-open {
     from {
       opacity: 0;
-      transform: translateY(16%) scale(0.9);
+      transform: scale(1.06);
     }
   }
-  @keyframes poster-float {
-    50% {
-      transform: translateY(-2.5%) rotate(-1.5deg);
-    }
-  }
-  @keyframes hero-glow {
+  @keyframes hero-halo {
     from {
-      opacity: 0;
-      scale: 0.8;
-    }
-  }
-  @keyframes hero-line-draw {
-    from {
-      clip-path: inset(0 50% 0 50%);
       opacity: 0;
     }
   }
@@ -319,54 +243,40 @@ import { asset } from '../lib/url';
   @keyframes hero-in {
     from {
       opacity: 0;
-      transform: translateY(22px);
+      transform: translateY(18px);
     }
   }
 
   @media (max-width: 900px) {
     .hero {
-      align-items: flex-start;
-      padding-top: calc(var(--header-h) + 66vw);
-      padding-bottom: 56px;
+      --S0: 232vw;
+      --cy: 38svh;
+      height: 200vh;
     }
-    .hero__stage {
-      left: 56%;
-      top: calc(var(--header-h) + 30vw);
-      width: 78vw;
-    }
-    .hero__kicker {
-      font-size: 0.85rem;
-      margin-bottom: 18px;
-    }
-    .chip {
-      display: none;
-    }
-    .hero__sun {
-      left: 60%;
-      top: 32%;
-      width: 130vw;
-    }
-    .hero__horizon {
-      top: 44%;
-      height: 120px;
+    .hero__copy {
+      width: calc(100vw - 2 * var(--gutter));
+      translate: -50% -50%;
     }
     .hero__title {
-      font-size: clamp(3rem, 14vw, 5rem);
+      font-size: min(11.5vw, 3.4rem);
+    }
+    .hero__copy {
+      text-shadow: 0 2px 24px rgb(0 0 0 / 0.6);
+    }
+    .hero__actions :global(.btn) {
+      width: calc(100vw - 2 * var(--gutter));
+      justify-content: space-between;
     }
     .hero__scroll {
       display: none;
     }
   }
-  @media (max-width: 480px) {
-    .hero__actions :global(.btn) {
-      width: 100%;
-      justify-content: space-between;
+  @media (prefers-reduced-motion: reduce) {
+    .hero {
+      height: auto;
     }
-  }
-  @media (orientation: portrait) and (min-width: 600px) and (max-width: 1200px) {
-    .hero__stage {
-      width: 70vw;
-      top: calc(var(--header-h) + 30vw);
+    .hero__stick {
+      position: relative;
     }
   }
 </style>

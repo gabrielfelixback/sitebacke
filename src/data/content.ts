@@ -4,7 +4,7 @@
  */
 
 export const CONTACT = {
-  whatsappDisplay: '+55 61 9224-0234',
+  whatsappDisplay: '(61) 98264-0887',
   whatsappText: 'Olá! Vim pelo site da BACKE.co e gostaria de saber mais.',
   email: 'contato@backe.co',
   instagram: 'https://www.instagram.com/backe.co/',

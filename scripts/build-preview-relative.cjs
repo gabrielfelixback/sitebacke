@@ -32,6 +32,6 @@ for (const f of fs.readdirSync(astro)) {
 // a hospedagem de prévia reserva nomes iniciados por “_”: _astro → astro
 fs.renameSync(astro, path.join(out, 'astro'));
 for (const f of fs.readdirSync(out).filter((f) => f.endsWith('.html'))) {
-  rw(path.join(out, f), (s) => s.replaceAll('./_astro/', './astro/'));
+  rw(path.join(out, f), (s) => s.replaceAll('./_astro/', './astro/').replace(/ style="--mask:url\(\/\.\/[^"]*"/, ''));
 }
 console.log('prévia relativa pronta em dist-artifact/');
