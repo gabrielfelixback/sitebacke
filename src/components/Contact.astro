@@ -27,23 +27,6 @@ const next = [
         diagnóstico real do que pode ser feito agora. <strong>Sem custo e sem compromisso.</strong>
       </p>
 
-      <ol class="cta__next" data-reveal aria-label="O que acontece depois que você envia">
-        {
-          next.map((n, i) => (
-            <li>
-              <span class="cta__next-n">{i + 1}</span>
-              <div>
-                <strong>{n.t}</strong>
-                <span>{n.d}</span>
-              </div>
-            </li>
-          ))
-        }
-      </ol>
-
-      <ul class="cta__g" data-reveal>
-        {GUARANTEES.map((g) => <li>{g}</li>)}
-      </ul>
     </div>
 
     <div class="card" data-reveal style="--d:.1s">
@@ -169,6 +152,26 @@ const next = [
         </a>
       </div>
     </div>
+
+    <div class="cta__more">
+      <ol class="cta__next" aria-label="O que acontece depois que você envia">
+        {
+          next.map((n, i) => (
+            <li>
+              <span class="cta__next-n">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <strong>{n.t}</strong>
+                <span>{n.d}</span>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <ul class="cta__g" data-reveal>
+        {GUARANTEES.map((g) => <li>{g}</li>)}
+      </ul>
+    </div>
   </div>
 </section>
 
@@ -202,12 +205,23 @@ const next = [
   }
   .cta__grid {
     position: relative;
+    grid-template-areas: 'info card' 'more card';
     display: grid;
     grid-template-columns: 1fr minmax(0, 560px);
     gap: clamp(40px, 6vw, 96px);
     align-items: start;
   }
+  .cta__more {
+    grid-area: more;
+    display: grid;
+    gap: 28px;
+    align-content: start;
+  }
+  .card {
+    grid-area: card;
+  }
   .cta__info {
+    grid-area: info;
     display: grid;
     gap: 28px;
     align-content: start;
@@ -227,21 +241,22 @@ const next = [
   }
   .cta__next li {
     display: grid;
-    grid-template-columns: 40px 1fr;
+    grid-template-columns: 64px 1fr;
     gap: 12px;
+    align-items: baseline;
     padding: 18px 0;
     border-bottom: 1px solid var(--line);
   }
-  .cta__next-n {
-    display: grid;
-    place-items: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 50%;
-    font-size: 0.8rem;
+  .cta__next .cta__next-n {
+    font-family: var(--f-display);
+    font-size: 2.2rem;
     font-weight: 600;
-    color: var(--black);
-    background: var(--sun);
+    line-height: 0.9;
+    letter-spacing: -0.05em;
+    background: linear-gradient(180deg, var(--sun-1), var(--sun-3));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
   }
   .cta__next strong {
     display: block;
@@ -610,10 +625,8 @@ const next = [
 
   @media (max-width: 980px) {
     .cta__grid {
+      grid-template-areas: 'info' 'card' 'more';
       grid-template-columns: 1fr;
-    }
-    .cta__g {
-      display: none;
     }
   }
   @media (max-width: 560px) {
@@ -627,8 +640,6 @@ const next = [
     .card__progress {
       width: 80px;
     }
-    .cta__next {
-      display: none;
-    }
+
   }
 </style>

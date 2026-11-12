@@ -1,5 +1,6 @@
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { SplitText } from 'gsap/SplitText';
 import Lenis from 'lenis';
 import { asset } from '../lib/url';
 
@@ -10,7 +11,8 @@ const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
 /** Cenas guiadas pelo scroll. Carregado sob demanda por motion.ts (nunca com movimento reduzido). */
 export default function scenes() {
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, SplitText);
+  const tallFrame = document.documentElement.classList.contains('frame-tall');
   const fine = matchMedia('(pointer: fine)').matches;
 
   /* ───── Rolagem suave (só mouse/trackpad; toque mantém o nativo) ───── */
@@ -48,7 +50,7 @@ export default function scenes() {
 
   /* ───── Hero: a câmera mergulha no disco do “b” até o vídeo tomar a tela ───── */
   const hero = document.querySelector<HTMLElement>('[data-hero]');
-  if (hero) {
+  if (hero && !tallFrame) {
     const copy = hero.querySelector<HTMLElement>('[data-hero-copy]')!;
     const after = hero.querySelector<HTMLElement>('[data-hero-after]')!;
     const video = hero.querySelector<HTMLVideoElement>('[data-hero-video]');
@@ -94,9 +96,9 @@ export default function scenes() {
       if (!next) return;
       gsap.to(card, {
         scale: 0.94,
-        filter: 'brightness(0.55)',
+        filter: 'brightness(0.6)',
         ease: 'none',
-        scrollTrigger: { trigger: next, start: 'top bottom', end: 'top 20%', scrub: true },
+        scrollTrigger: { trigger: next, start: 'top 55%', end: 'top 15%', scrub: true },
       });
     });
   });
@@ -137,6 +139,35 @@ export default function scenes() {
       });
     });
   }
+
+
+  /* ───── Títulos entram palavra por palavra ao aparecer na tela ───── */
+  document.fonts?.ready.then(() => {
+    $$('main h2, .case__title, .fcard__promise').forEach((el) => {
+      if (getComputedStyle(el).backgroundClip === 'text' || el.closest('[data-hero]')) return; // texto com degradê não se divide bem
+      const split = SplitText.create(el, { type: 'words,lines', mask: 'lines', linesClass: 'split-line' });
+      gsap.from(split.words, {
+        yPercent: 110,
+        opacity: 0,
+        duration: 1,
+        ease: 'expo.out',
+        stagger: 0.035,
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+      });
+    });
+    ScrollTrigger.refresh();
+  });
+
+  /* ───── Faixas de palavras andam com a rolagem ───── */
+  $$('[data-band]').forEach((band) => {
+    const track = band.querySelector<HTMLElement>('[data-band-track]')!;
+    const dir = Number(band.dataset.dir || 1);
+    gsap.fromTo(
+      track,
+      { xPercent: dir > 0 ? 0 : -33.333 },
+      { xPercent: dir > 0 ? -33.333 : 0, ease: 'none', scrollTrigger: { trigger: band, start: 'top bottom', end: 'bottom top', scrub: 0.4 } },
+    );
+  });
 
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
 }

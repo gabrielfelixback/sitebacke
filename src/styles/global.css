@@ -211,14 +211,7 @@ ol {
   font-weight: 500;
   color: var(--mute);
 }
-.eyebrow::before {
-  /* o “sol”: meio-disco com o degradê da marca */
-  content: '';
-  width: 14px;
-  height: 7px;
-  border-radius: 14px 14px 0 0;
-  background: var(--sun);
-}
+
 .lede {
   font-size: clamp(1.05rem, 1.4vw, 1.25rem);
   line-height: 1.6;
@@ -417,5 +410,30 @@ ol {
   *::after {
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
+  }
+}
+
+/* ───── Página dentro de um quadro esticado (prévia embutida no iPhone) ─────
+   As unidades vh/svh passam a valer a altura do conteúdo inteiro; usamos a altura real da tela (--sh). */
+html.frame-tall .hero {
+  height: auto;
+  --cy: calc(var(--sh, 844px) * 0.5);
+}
+html.frame-tall .hero__stick {
+  position: relative;
+  height: var(--sh, 844px);
+}
+html.frame-tall .fcard {
+  position: relative;
+  top: auto;
+  min-height: 0;
+}
+html.frame-tall .mcta,
+html.frame-tall .consent {
+  display: none;
+}
+@media (max-width: 900px) {
+  html.frame-tall .hero {
+    --cy: calc(var(--sh, 844px) * 0.38);
   }
 }

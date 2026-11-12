@@ -2,9 +2,10 @@
 import { FRONTS } from '../data/content';
 import { asset } from '../lib/url';
 const media: Record<string, { img: string; video?: string }> = {
-  estrategia: { img: 'render/frente-estrategia.webp' },
-  demanda: { img: 'render/frente-demanda.webp' },
-  marca: { img: 'render/frente-marca.webp' },
+  // fotos de banco (Unsplash) até a Backe ter fotos próprias de cada frente
+  estrategia: { img: 'fotos/estrategia.webp' },
+  demanda: { img: 'fotos/demanda.webp' },
+  marca: { img: 'fotos/marca.webp' },
   imagem: { img: 'video/drone-poster.jpg', video: 'video/drone-loop.mp4' },
 };
 const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
@@ -37,6 +38,7 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
                     <a class="srv" href="#diagnostico" data-interest={s.title} data-cta="servico">
                       <span class="srv__t">{s.title}</span>
                       <span class="srv__d">{firstSentence(s.impact)}</span>
+                      <span class="srv__tags">{s.deliverables.map((d) => <span>{d}</span>)}</span>
                       <span class="srv__go" aria-hidden="true">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6" /></svg>
                       </span>
@@ -51,7 +53,7 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
                   <source src={asset(media[f.id].video!)} type="video/mp4" />
                 </video>
               ) : (
-                <img src={asset(media[f.id].img)} alt="" loading="lazy" decoding="async" />
+                <img src={asset(media[f.id].img)} alt="" loading="lazy" decoding="async" class="fcard__photo" />
               )}
             </div>
           </article>
@@ -148,7 +150,7 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
     position: relative;
     display: grid;
     grid-template-columns: 1fr 40px;
-    grid-template-areas: 't go' 'd go';
+    grid-template-areas: 't go' 'd go' 'g g';
     gap: 4px 16px;
     align-items: center;
     padding: 18px 0;
@@ -195,20 +197,48 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
     place-items: center;
     padding: 24px;
   }
-  .fcard__media img {
+  .fcard__media {
+    overflow: hidden;
+  }
+  .fcard__photo {
     width: 100%;
     height: 100%;
-    max-height: 560px;
-    object-fit: contain;
-    filter: drop-shadow(0 30px 60px rgb(254 67 77 / 0.3));
-    transition: transform 1.2s var(--ease-out);
+    object-fit: cover;
+    border-radius: 26px;
+    filter: saturate(0.9) contrast(1.05);
+    transition: transform 1.4s var(--ease-out);
   }
-  .fcard:hover .fcard__media img {
-    transform: scale(1.03) rotate(-1deg);
+  .fcard__media::after {
+    /* a luz da marca por cima da foto, para ela conversar com o resto do site */
+    content: '';
+    position: absolute;
+    inset: 14px;
+    border-radius: 26px;
+    pointer-events: none;
+    background:
+      linear-gradient(180deg, transparent 45%, rgb(14 13 12 / 0.55)),
+      radial-gradient(80% 60% at 100% 100%, rgb(254 67 77 / 0.28), transparent 70%);
   }
-  .fcard--marca .fcard__media {
-    padding: 0;
-    place-items: end;
+  .srv__tags {
+    grid-area: g;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+  }
+  .srv__tags span {
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    border-radius: 999px;
+    color: #d6d1cb;
+    background: rgb(255 255 255 / 0.05);
+    box-shadow: inset 0 0 0 1px var(--line);
+  }
+  .fcard:hover .fcard__photo {
+    transform: scale(1.03);
+  }
+  .fcard__media {
+    padding: 14px;
   }
   .fcard--imagem .fcard__media {
     padding: 14px;

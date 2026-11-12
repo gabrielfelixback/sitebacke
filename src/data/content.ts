@@ -62,7 +62,7 @@ export const FRONTS: Front[] = [
     id: 'estrategia',
     name: 'Estratégia',
     promise: 'Para onde ir e como chegar.',
-    intro: 'O ponto de partida de tudo: metas claras, dados lidos do jeito certo e um time comercial preparado para fechar.',
+    intro: 'O ponto de partida de tudo: metas claras, dados lidos do jeito certo e um plano que mostra onde investir primeiro.',
     services: [
       {
         id: 'estrategia-performance',
@@ -72,15 +72,6 @@ export const FRONTS: Front[] = [
         deliverables: ['Planejamento e metas', 'Análise de dados', 'Relatórios que fazem sentido', 'Otimização contínua'],
         impact:
           'Conecta marketing a metas comerciais, reduz decisões no escuro e direciona orçamento e esforço para as iniciativas com maior retorno.',
-      },
-      {
-        id: 'capacitacao-vendas',
-        title: 'Treinamento & Capacitação de Vendas',
-        description:
-          'Preparamos seu time comercial com metodologias modernas, scripts de abordagem, técnicas de fechamento e inteligência de mercado para vender mais e melhor.',
-        deliverables: ['Metodologia comercial', 'Scripts de abordagem', 'Técnicas de fechamento', 'Inteligência de mercado'],
-        impact:
-          'Aumenta a qualidade do atendimento, reduz oportunidades perdidas e dá ao time um processo replicável para conduzir contatos até o fechamento.',
       },
     ],
   },
@@ -180,7 +171,7 @@ export const DIFFERENTIALS = [
   { theme: 'Estratégia antes da execução', them: 'Começa pelo post e pelo anúncio.', us: 'Começa pelo diagnóstico do seu negócio, mercado e oportunidades reais.' },
   { theme: 'Plano sob medida', them: 'Pacote padrão que serve para todo mundo.', us: 'Cada estratégia é construída do zero para a sua empresa.' },
   { theme: 'Criatividade com objetivo', them: 'Peça bonita que não sabe o que precisa gerar.', us: 'Execução criativa que nasce dos dados e trabalha por uma meta.' },
-  { theme: 'Visão de negócio', them: 'Fala de curtidas e alcance.', us: 'Conecta o marketing às metas comerciais e ao seu time de vendas.' },
+  { theme: 'Visão de negócio', them: 'Fala de curtidas e alcance.', us: 'Conecta cada ação de marketing às metas comerciais da empresa.' },
   { theme: 'Tudo integrado', them: 'Um fornecedor para cada coisa, ninguém responsável pelo todo.', us: 'Estratégia, mídia, marca e imagem no mesmo time, no mesmo plano.' },
   { theme: 'Responsabilidade', them: 'Relatório que ninguém entende.', us: 'Time sênior, sem terceirizar atendimento, com acompanhamento transparente.' },
 ];
@@ -244,5 +235,4 @@ export const INTEREST_OPTIONS = [
   'Branding & Identidade Visual',
   'Sites & Landing Pages',
   'Captação Audiovisual / Drone',
-  'Capacitação de Vendas',
 ];
