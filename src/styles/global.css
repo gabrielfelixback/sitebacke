@@ -123,6 +123,68 @@ ol {
   display: none !important;
 }
 
+/* ───── Sol que percorre a página (criado por public/sol.js; só desktop) ───── */
+.sol {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 30;
+  width: 78vmax;
+  height: 78vmax;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+.sol__in {
+  position: absolute;
+  inset: 0;
+  animation: sol-breathe 6s ease-in-out infinite;
+}
+.sol__in > i {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+/* 3. brilho externo (o de antes) */
+.sol__glow {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    closest-side,
+    rgb(241 143 52 / 0.5) 0%,
+    rgb(234 104 50 / 0.26) 24%,
+    rgb(254 67 77 / 0.1) 50%,
+    transparent
+  );
+}
+/* 2. coroa */
+.sol__corona {
+  width: 40vmin;
+  height: 40vmin;
+  opacity: 0.5;
+  background: radial-gradient(closest-side, rgb(255 140 60 / 0.95), rgb(255 106 0 / 0.45) 55%, transparent);
+}
+/* 1. núcleo visível */
+.sol__core {
+  width: 14vmin;
+  height: 14vmin;
+  background: var(--sun);
+  filter: blur(2px);
+}
+@keyframes sol-breathe {
+  50% {
+    transform: scale(1.04);
+  }
+}
+@media (max-width: 900px) {
+  .sol {
+    display: none;
+  }
+}
+
 /* palavra em destaque dentro de títulos (cor sólida: os h2 passam pelo SplitText) */
 .hl {
   font-family: var(--f-serif);
@@ -225,7 +287,15 @@ ol {
   font-family: var(--f-body);
   font-size: 0.95rem;
   font-weight: 500;
-  color: var(--mute);
+  color: var(--sun-2);
+}
+@media (max-width: 900px) {
+  /* topo das seções centralizado no celular */
+  .eyebrow {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
 }
 
 .lede {

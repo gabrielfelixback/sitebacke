@@ -8,7 +8,7 @@ import Vbox from './Vbox.astro';
   <div class="show__shade" aria-hidden="true"></div>
 
   <div class="wrap show__copy">
-    <h2 class="show__title" id="show-title">Do planejamento à câmera, é tudo Backe.</h2>
+    <h2 class="show__title" id="show-title">Do planejamento à câmera, é tudo <em class="hl">Backe</em>.</h2>
     <a class="link-arrow" href="#diagnostico" data-interest="Captação Audiovisual / Drone" data-cta="audiovisual">
       Quero imagens assim para a minha marca
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg>
@@ -60,5 +60,14 @@ import Vbox from './Vbox.astro';
     font-variation-settings: 'opsz' 96;
     text-wrap: balance;
     text-shadow: 0 10px 40px rgb(0 0 0 / 0.45);
+  }
+  @media (max-width: 900px) {
+    .show__copy {
+      justify-items: center;
+      text-align: center;
+    }
+    .show__title {
+      margin-inline: auto;
+    }
   }
 </style>

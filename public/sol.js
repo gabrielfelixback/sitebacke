@@ -15,15 +15,14 @@
   /* ───── O sol fixo ───── */
   var sol = null;
   // dentro de um quadro esticado (prévia no iPhone) elementos fixos não acompanham a tela: sem sol
+  // celular: sem sol fixo (lá entram os nasceres do sol estáticos entre as seções)
+  var desktop = window.matchMedia('(min-width: 901px)');
   if (!reduce && !doc.classList.contains('frame-tall')) {
     sol = document.createElement('div');
     sol.className = 'sol';
     sol.setAttribute('aria-hidden', 'true');
-    sol.style.cssText = [
-      'position:fixed', 'left:0', 'top:0', 'width:78vmax', 'height:78vmax', 'border-radius:50%',
-      'mix-blend-mode:screen', 'pointer-events:none', 'z-index:30', 'opacity:0', 'will-change:transform,opacity',
-      'background:radial-gradient(closest-side, rgb(241 143 52 / .5) 0%, rgb(234 104 50 / .26) 24%, rgb(254 67 77 / .1) 50%, transparent)',
-    ].join(';');
+    // brilho externo, coroa e núcleo; a “respiração” fica no .sol__in
+    sol.innerHTML = '<div class="sol__in"><i class="sol__glow"></i><i class="sol__corona"></i><i class="sol__core"></i></div>';
     document.body.appendChild(sol);
   }
 
@@ -81,15 +80,14 @@
     ticking = false;
     var vw = window.innerWidth;
     var vh = window.innerHeight;
-    var mobile = vw <= 900;
 
-    if (sol) {
+    if (sol && desktop.matches) {
       var s = sunState(window.scrollY, vh);
       if (s) {
         var size = Math.max(vw, vh) * 0.78;
-        var x = mobile ? 0.5 : s.x;
-        var y = mobile ? 1.02 : s.y;
-        var o = mobile ? s.o * 0.7 : s.o;
+        var x = s.x;
+        var y = s.y;
+        var o = s.o;
         sol.style.transform = 'translate3d(' + (x * vw - size / 2) + 'px,' + (y * vh - size / 2) + 'px,0)';
         sol.style.opacity = o.toFixed(3);
       }

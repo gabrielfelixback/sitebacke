@@ -705,4 +705,43 @@ const next = [
     }
 
   }
+  @media (max-width: 980px) {
+    .cta__info {
+      justify-items: center;
+      text-align: center;
+      gap: 18px;
+    }
+    .cta__title,
+    .cta__info :global(.lede) {
+      margin-inline: auto;
+    }
+  }
+  @media (max-width: 980px) {
+    .cta {
+      padding-block: 4rem 3.5rem;
+    }
+    .cta__grid {
+      gap: 28px;
+    }
+    .cta__more {
+      gap: 18px;
+    }
+    .cta__next li {
+      grid-template-columns: 44px 1fr;
+      padding: 12px 0;
+    }
+    .cta__next .cta__next-n {
+      font-size: 1.6rem;
+    }
+    .cta__next span {
+      font-size: 0.86rem;
+    }
+    .cta__g {
+      gap: 6px;
+    }
+    .cta__g li {
+      font-size: 0.76rem;
+      padding: 5px 11px 5px 9px;
+    }
+  }
 </style>
