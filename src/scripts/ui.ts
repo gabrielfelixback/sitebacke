@@ -185,26 +185,3 @@ heroEl?.style.setProperty('--mask', `url("${new URL(asset('backe-symbol.svg'), l
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 if (!location.hash) scrollTo(0, 0);
 
-/* ───── Vídeo do hero: pôster certo no celular e play garantido (iOS bloqueia autoplay às vezes) ───── */
-const heroVideo = document.querySelector<HTMLVideoElement>('[data-hero-video]');
-if (heroVideo && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  if (matchMedia('(max-width: 900px)').matches) heroVideo.poster = asset('video/reel-vertical-poster.jpg');
-  heroVideo.muted = true;
-  heroVideo.setAttribute('webkit-playsinline', '');
-  const kick = () => heroVideo.play().catch(() => {});
-  kick();
-  heroVideo.addEventListener('canplay', kick, { once: true });
-  // iOS (ex.: modo de pouca energia) só libera vídeo após um gesto real: “soltar o dedo” ou clique.
-  // No primeiro gesto, dá play em todos os vídeos visíveis da página.
-  const unlock = () => {
-    kick();
-    document.querySelectorAll<HTMLVideoElement>('video[data-autoplay]').forEach((v) => {
-      const r = v.getBoundingClientRect();
-      if (r.bottom > 0 && r.top < innerHeight) v.play().catch(() => {});
-    });
-  };
-  ['touchend', 'click', 'keydown'].forEach((ev) => addEventListener(ev, unlock, { once: true, passive: true }));
-  addEventListener('scroll', kick, { once: true, passive: true });
-  // se o vídeo travar sem tocar, tenta de novo quando a página volta a ficar visível
-  document.addEventListener('visibilitychange', () => !document.hidden && kick());
-}

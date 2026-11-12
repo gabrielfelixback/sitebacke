@@ -38,7 +38,6 @@ export default function scenes() {
   if (hero && !tallFrame) {
     const copy = hero.querySelector<HTMLElement>('[data-hero-copy]')!;
     const after = hero.querySelector<HTMLElement>('[data-hero-after]')!;
-    const video = hero.querySelector<HTMLVideoElement>('[data-hero-video]');
     const tint = hero.querySelector<HTMLElement>('.hero__tint');
     // miolo (onde está a frase) → ponto sólido do disco inferior
     const A0 = { x: 0.476, y: 0.613 };
@@ -67,9 +66,6 @@ export default function scenes() {
     apply(0);
     ScrollTrigger.create({ trigger: hero, start: 'top top', end: 'bottom bottom', scrub: true, onUpdate: (st) => apply(st.progress) });
     addEventListener('resize', () => apply(0));
-    if (video) {
-      new IntersectionObserver(([e]) => (e.isIntersecting ? video.play().catch(() => {}) : video.pause())).observe(hero);
-    }
   }
 
   /* ───── Frentes: cada card empilha sobre o anterior, que recua ───── */
@@ -145,7 +141,7 @@ export default function scenes() {
 
   /* ───── Celular: cards das frentes e dos cases entram crescendo ───── */
   mm.add('(max-width: 900px)', () => {
-    $$('[data-fcard], .case').forEach((card) => {
+    $$('.case').forEach((card) => {
       gsap.from(card, {
         y: 70,
         scale: 0.92,
@@ -157,16 +153,6 @@ export default function scenes() {
     });
   });
 
-  /* ───── Faixas de palavras andam com a rolagem ───── */
-  $$('[data-band]').forEach((band) => {
-    const track = band.querySelector<HTMLElement>('[data-band-track]')!;
-    const dir = Number(band.dataset.dir || 1);
-    gsap.fromTo(
-      track,
-      { xPercent: dir > 0 ? 0 : -33.333 },
-      { xPercent: dir > 0 ? -33.333 : 0, ease: 'none', scrollTrigger: { trigger: band, start: 'top bottom', end: 'bottom top', scrub: 0.4 } },
-    );
-  });
 
   document.fonts?.ready.then(() => ScrollTrigger.refresh());
 }

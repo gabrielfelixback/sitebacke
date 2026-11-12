@@ -99,6 +99,9 @@ const ld = [
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
 
+    <!-- capa do hero = imagem LCP; o vídeo só entra depois do load -->
+    <link rel="preload" as="image" type="image/webp" href={asset('video/reel-mobile-poster.webp')} media="(max-width: 900px)" fetchpriority="high" />
+    <link rel="preload" as="image" type="image/webp" href={asset('video/reel-desktop-poster.webp')} media="(min-width: 901px)" fetchpriority="high" />
     <link rel="preload" href={fontDisplay} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={fontSerif} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />

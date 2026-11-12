@@ -5,7 +5,6 @@ import Hero from '../components/Hero.astro';
 import Clients from '../components/Clients.astro';
 import Cost from '../components/Cost.astro';
 import Reel from '../components/Reel.astro';
-import Band from '../components/Band.astro';
 import Services from '../components/Services.astro';
 import Differentials from '../components/Differentials.astro';
 import Proof from '../components/Proof.astro';
@@ -23,7 +22,6 @@ import { asset } from '../lib/url';
     <Hero />
     <Clients />
     <Cost />
-    <Band words={['Menos achismo', 'Mais clientes']} />
     <Services />
     <Reel />
     <Differentials />
@@ -38,6 +36,7 @@ import { asset } from '../lib/url';
   <!-- sol que percorre a página (script sem build, em public/sol.js) -->
   <script is:inline src={asset('sol.js')} defer></script>
   <script>
+    import '../scripts/video';
     import '../scripts/ui';
     import '../scripts/form';
     import '../scripts/motion';

@@ -1,5 +1,6 @@
 ---
 import Button from './Button.astro';
+import Vbox from './Vbox.astro';
 import { asset } from '../lib/url';
 const mask = `--mask:url(${asset('backe-symbol.svg')})`;
 ---
@@ -12,10 +13,7 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
   <div class="hero__stick">
     <div class="hero__halo" aria-hidden="true"></div>
     <div class="hero__media" data-hero-media>
-      <video class="hero__video" data-hero-video muted loop playsinline autoplay preload="auto" poster={asset('video/reel-poster.jpg')} aria-hidden="true">
-        <source src={asset('video/reel-vertical.mp4')} type="video/mp4" media="(max-width: 900px)" />
-        <source src={asset('video/reel-1080.mp4')} type="video/mp4" />
-      </video>
+      <Vbox base="reel" mode="hero" id="hero-vbox" class="hero__vbox" externalPlay />
       <div class="hero__tint"></div>
     </div>
 
@@ -38,6 +36,10 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
     <p class="hero__after" data-hero-after aria-hidden="true">
       Criatividade sem estratégia não <em class="hl">escala</em>. Estratégia sem criatividade não é <em class="hl">lembrada</em>.
     </p>
+
+    <button class="vbox__play hero__play" type="button" aria-label="Reproduzir vídeo" data-play-for="hero-vbox" hidden>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"></path></svg>
+    </button>
 
     <a class="hero__scroll" href="#custo" data-hero-in style="--i:4"><span aria-hidden="true"></span>Role para ver</a>
   </div>
@@ -86,10 +88,16 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
     opacity: 0.55;
     transform: scale(1.01);
   }
-  .hero__video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  .hero__media :global(.hero__vbox) {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+  }
+  /* sobre o disco do “b”, abaixo do miolo onde está a frase */
+  .hero__play {
+    left: calc(var(--cx) + var(--S0) * 0.074);
+    top: calc(var(--cy) + var(--S0) * 0.268);
+    z-index: 3;
   }
   .hero__tint {
     position: absolute;

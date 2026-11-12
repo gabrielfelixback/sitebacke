@@ -49,18 +49,7 @@ const cio = new IntersectionObserver(
 
 if (reduce) {
   $$('.proc [data-step]').forEach((s) => s.classList.add('is-active'));
-  // sem autoplay: os vídeos ficam no pôster
-  $$<HTMLVideoElement>('video').forEach((v) => {
-    v.removeAttribute('autoplay');
-    v.pause();
-  });
 } else {
-  // vídeos de cards e do showreel tocam só quando visíveis
-  $$<HTMLVideoElement>('video[data-autoplay]').forEach((v) =>
-    new IntersectionObserver(([e]) => (e.isIntersecting ? v.play().catch(() => {}) : v.pause()), {
-      rootMargin: '100px 0px',
-    }).observe(v),
-  );
   $$('[data-count]').forEach((el) => cio.observe(el));
   const loadScenes = () => import('./scenes').then((m) => m.default());
   if ('requestIdleCallback' in window) requestIdleCallback(loadScenes, { timeout: 1500 });
