@@ -9,6 +9,24 @@ const $$ = <T extends Element = HTMLElement>(s: string, root: ParentNode = docum
 const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 
+/**
+ * Chama `fn` uma vez quando o elemento aparece na tela. Usa IntersectionObserver e não a posição de rolagem:
+ * dentro de uma prévia embutida (quadro esticado na altura da página, quem rola é o app) a rolagem da página
+ * não muda, mas o observador continua enxergando a tela de verdade.
+ */
+const onSeen = (el: Element, fn: () => void, threshold = 0.2) => {
+  const io = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        io.disconnect();
+        fn();
+      }
+    },
+    { rootMargin: '0px 0px -10% 0px', threshold },
+  );
+  io.observe(el);
+};
+
 /** Cenas guiadas pelo scroll. Carregado sob demanda por motion.ts (nunca com movimento reduzido). */
 export default function scenes() {
   gsap.registerPlugin(ScrollTrigger, SplitText);
@@ -86,7 +104,21 @@ export default function scenes() {
 
   /* ───── Método: o sol sobe a cada etapa ───── */
   const proc = document.querySelector<HTMLElement>('[data-process]');
-  if (proc) {
+  if (proc && tallFrame) {
+    // quadro esticado: cada etapa acende ao aparecer e o sol sobe junto
+    const sun = proc.querySelector<HTMLElement>('[data-proc-sun]');
+    const steps = $$('[data-step]', proc);
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => e.target.classList.toggle('is-active', e.intersectionRatio > 0.55));
+        const n = steps.filter((s) => s.classList.contains('is-active')).length;
+        const last = steps.reduce((m, s, i) => (s.classList.contains('is-active') ? i + 1 : m), 0);
+        if (n) sun?.style.setProperty('--p', String(0.25 + (last / steps.length) * 0.75));
+      },
+      { threshold: [0, 0.55, 1] },
+    );
+    steps.forEach((s) => io.observe(s));
+  } else if (proc) {
     const sun = proc.querySelector<HTMLElement>('[data-proc-sun]');
     ScrollTrigger.create({
       trigger: proc.querySelector('.proc__steps'),
@@ -127,14 +159,15 @@ export default function scenes() {
     $$('main h2, .case__title').forEach((el) => {
       if (getComputedStyle(el).backgroundClip === 'text' || el.closest('[data-hero]')) return; // texto com degradê não se divide bem
       const split = SplitText.create(el, { type: 'words,lines', mask: 'lines', linesClass: 'split-line' });
-      gsap.from(split.words, {
+      const tween = gsap.from(split.words, {
         yPercent: 110,
         opacity: 0,
-        duration: 1,
+        duration: 1.1,
         ease: 'expo.out',
-        stagger: 0.035,
-        scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+        stagger: 0.04,
+        paused: true,
       });
+      onSeen(el, () => tween.play(), 0.35);
     });
     ScrollTrigger.refresh();
   });

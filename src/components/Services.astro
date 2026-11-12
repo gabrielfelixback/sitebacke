@@ -54,7 +54,7 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
               </button>
             </div>
             <div class="fcard__media" aria-hidden="true">
-              <div class="fcard__frame">
+              <div class="fcard__frame" data-img>
                 {media[f.id].video ? (
                   <Vbox base={media[f.id].video!} class="fcard__vbox" />
                 ) : (
@@ -134,7 +134,7 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
     will-change: transform;
     transition: box-shadow 1.2s var(--ease-out);
   }
-  /* aceso pelo sol (public/efeitos.js) quando o topo do card passa de 62% da tela */
+  /* aceso pelo sol (public/sol.js) quando o topo do card passa de 62% da tela */
   .fcard.is-lit {
     box-shadow:
       inset 0 1px rgb(241 143 52 / 0.55),

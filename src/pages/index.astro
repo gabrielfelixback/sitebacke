@@ -9,6 +9,7 @@ import Services from '../components/Services.astro';
 import Differentials from '../components/Differentials.astro';
 import Proof from '../components/Proof.astro';
 import Testimonials from '../components/Testimonials.astro';
+import Sunrise from '../components/Sunrise.astro';
 import Process from '../components/Process.astro';
 import Faq from '../components/Faq.astro';
 import Contact from '../components/Contact.astro';
@@ -23,10 +24,10 @@ import { asset } from '../lib/url';
     <Hero />
     <Clients />
     <Cost />
-    <div class="rise3d" aria-hidden="true"><canvas data-sol3d data-mode="horizon"></canvas></div>
+    <Sunrise />
     <Services />
     <Reel />
-    <div class="rise3d" aria-hidden="true"><canvas data-sol3d data-mode="horizon"></canvas></div>
+    <Sunrise />
     <Differentials />
     <Proof />
     <Testimonials />
@@ -37,9 +38,8 @@ import { asset } from '../lib/url';
   <Footer />
   <MobileCta />
   <Consent />
-  <!-- scripts sem build: o pôr do sol em WebGL e os efeitos de rolagem sem biblioteca -->
-  <script is:inline src={asset('sol3d.js')} defer></script>
-  <script is:inline src={asset('efeitos.js')} defer></script>
+  <!-- sol que percorre a página (script sem build, em public/sol.js) -->
+  <script is:inline src={asset('sol.js')} defer></script>
   <script>
     import '../scripts/video';
     import '../scripts/ui';

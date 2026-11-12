@@ -28,8 +28,7 @@ node scripts/build-preview-relative.cjs  # build de prévia com caminhos relativ
 | `src/components/*.astro` | Uma seção por componente. |
 | `src/scripts/` | `ui.ts` (cabeçalho, menus, acordeões, consentimento), `form.ts` (formulário em 3 etapas), `motion.ts` (revelações leves), `scenes.ts` (cenas de scroll com GSAP, lazy). |
 | `src/scripts/video.ts` + `src/components/Vbox.astro` | Todos os vídeos: capa sempre visível, fonte por JS (celular/desktop), botão de play quando o autoplay é bloqueado, carregamento a uma tela de distância. |
-| `public/sol3d.js` | Sol em WebGL (canvas `data-sol3d`, modos `full` e `horizon`), com degradê estático sem WebGL ou com “reduzir movimento”. |
-| `public/efeitos.js` | Manifesto do Custo e borda acesa das frentes, guiados pela rolagem. |
+| `public/sol.js` | Sol que percorre a página (desktop), manifesto do Custo, sol do formulário e pôr do sol do rodapé. |
 | `assets-originais/video/` | Vídeos originais (fora de `public/`, não vão para o site). |
 | `public/` | Logos de clientes otimizados, ícones, OG image, `privacidade.html`, robots, sitemap. |
 | `referencia/` | Briefing, análise da Fase 01, referências e arquivos originais da marca. |
