@@ -12,7 +12,8 @@
 | Formulário e fluxo de envio de leads (código em produção) | ✅ |
 | Hospedagem, CSP, pixel, Turnstile, worker de leads | ✅ |
 | Logo oficial (PNG do site + 3 imagens enviadas) | ✅ |
-| **6 referências do Behance** | ❌ **Bloqueadas.** O Behance responde 403 com desafio anti-robô para o navegador automatizado e para a ferramenta de leitura. Não contornei a proteção. **Nenhuma análise das referências foi feita — preciso de prints/exports (ver §10).** |
+| **Kontour Studios** — site real no ar (kontour.studio), analisado em navegador | ✅ ver §3.1 |
+| **5 referências do Behance** (Biorg, Marketing Agency, Pure Lines, Nymera, OCTO) | ❌ **Bloqueadas.** O Behance responde 403 com desafio anti-robô para o navegador automatizado e para a ferramenta de leitura. Não contornei a proteção. **Nenhuma análise das referências foi feita — preciso de prints/exports (ver §10).** |
 | Código-fonte do site atual | ❌ Não está neste repositório (vazio). Ver §7. |
 
 ---
@@ -78,6 +79,20 @@ A logo já é estratégia (o corte reto e racional da haste) encontrando criativ
 **Requisito:** preciso da **logo em vetor (SVG/AI/PDF)**. O PNG de 1080px não permite máscaras e animações com qualidade, e vetorizar por conta própria arrisca alterar a forma.
 
 ---
+
+## 3.1 Referência analisada: Kontour Studios (site ao vivo)
+Print: `refs/kontour-site-ao-vivo.png`. Fontes: Urbanist (títulos) + Manrope (texto).
+
+**O que fazem bem:**
+- **Hero com luz dramática:** fundo preto com uma forma 3D em tecido/ondas iluminada lateralmente em verde escuro. Profundidade sem nenhum elemento "gritando". Título enorme em peso light, alinhado à esquerda; lista de serviços pequena no canto inferior direito, numa composição assimétrica.
+- **Manifesto revelado palavra a palavra** no scroll ("At Kontour simplicity meets strategy…"), com mockups dos cases flutuando em volta do texto.
+- **Portfólio fixado (sticky):** o título "Featured Work" fica parado à esquerda enquanto os cases passam à direita, em imagem grande com legenda e seta. É editorial e dá peso a cada trabalho.
+- **Serviços como índice editorial:** número "01 ——", nome, parágrafo e, ao lado, sub-entregas em lista com linhas finas. Nada de cards com ícone. Seção clara (branca) quebrando o ritmo escuro.
+- **Restrição cromática:** uma cor (verde) usada só como luz. É exatamente o papel que propomos para o laranja Backe.
+
+**O que NÃO trazer:** títulos em peso light demais (perde força comercial para o público da Backe); repetição do bloco "Featured Work" idêntico 5 vezes; tabela de preços em dólar (a Backe vende por diagnóstico); CTA fraco ("Get in touch" pequeno).
+
+**Incorporar na Backe:** luz lateral dramática sobre o preto (com o sol/degradê da logo no lugar do verde); manifesto revelado no scroll (seção 2 — "O custo do improviso"); serviços como índice editorial numerado com sub-entregas; título fixo + conteúdo rolando para Prova/Cases; seção clara pontual para respiro.
 
 ## 4. Cor, degradê e luz
 
