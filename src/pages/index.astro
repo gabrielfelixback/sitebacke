@@ -15,6 +15,7 @@ import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import MobileCta from '../components/MobileCta.astro';
 import Consent from '../components/Consent.astro';
+import { asset } from '../lib/url';
 ---
 <Base>
   <Header />
@@ -23,9 +24,8 @@ import Consent from '../components/Consent.astro';
     <Clients />
     <Cost />
     <Band words={['Estratégia', 'Criatividade', 'Performance']} />
-    <Reel />
     <Services />
-    <Band words={['Marca', 'Demanda', 'Imagem']} reverse />
+    <Reel />
     <Differentials />
     <Proof />
     <Process />
@@ -35,6 +35,8 @@ import Consent from '../components/Consent.astro';
   <Footer />
   <MobileCta />
   <Consent />
+  <!-- sol que percorre a página (script sem build, em public/sol.js) -->
+  <script is:inline src={asset('sol.js')} defer></script>
   <script>
     import '../scripts/ui';
     import '../scripts/form';

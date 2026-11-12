@@ -169,11 +169,9 @@ export const FRONTS: Front[] = [
 
 export const DIFFERENTIALS = [
   { theme: 'Estratégia antes da execução', them: 'Começa pelo post e pelo anúncio.', us: 'Começa pelo diagnóstico do seu negócio, mercado e oportunidades reais.' },
-  { theme: 'Plano sob medida', them: 'Pacote padrão que serve para todo mundo.', us: 'Cada estratégia é construída do zero para a sua empresa.' },
   { theme: 'Criatividade com objetivo', them: 'Peça bonita que não sabe o que precisa gerar.', us: 'Execução criativa que nasce dos dados e trabalha por uma meta.' },
   { theme: 'Visão de negócio', them: 'Fala de curtidas e alcance.', us: 'Conecta cada ação de marketing às metas comerciais da empresa.' },
   { theme: 'Tudo integrado', them: 'Um fornecedor para cada coisa, ninguém responsável pelo todo.', us: 'Estratégia, mídia, marca e imagem no mesmo time, no mesmo plano.' },
-  { theme: 'Responsabilidade', them: 'Relatório que ninguém entende.', us: 'Time sênior, sem terceirizar atendimento, com acompanhamento transparente.' },
 ];
 
 export const STEPS = [
@@ -189,12 +187,8 @@ export const FAQ = [
     a: 'Em tráfego pago, os primeiros dados já aparecem nos dias iniciais de campanha ativa. Porém, é entre 60 e 90 dias que a estratégia se consolida e os resultados começam a crescer de forma consistente.',
   },
   {
-    q: 'Preciso contratar todos os serviços?',
-    a: 'Não. O diagnóstico mostra onde está o maior gargalo do seu negócio, e o plano começa por ele. Cada proposta é personalizada de acordo com escopo, nicho e objetivos.',
-  },
-  {
-    q: 'Qual o investimento mínimo para começar?',
-    a: 'Cada proposta é personalizada de acordo com escopo, nicho e objetivos. Na reunião de diagnóstico apresentamos uma proposta sob medida, com valores claros e sem surpresa.',
+    q: 'Preciso contratar todos os serviços? Qual o investimento?',
+    a: 'Não. O diagnóstico mostra onde está o maior gargalo do seu negócio, e o plano começa por ele. Por isso não existe pacote fechado: na reunião de diagnóstico apresentamos uma proposta sob medida, com valores claros e sem surpresa.',
   },
   {
     q: 'Como funciona o contrato?',

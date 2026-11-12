@@ -1,116 +1,77 @@
 ---
 import { asset } from '../lib/url';
-// No desktop o hero usa o vídeo horizontal, então aqui entra o vertical (formato de redes).
-// No celular é o contrário: o hero usa o vertical e aqui entra o horizontal.
+// Vídeo em tela cheia logo depois dos Serviços. Desktop: horizontal; até 900px: vertical.
 ---
-<section class="show" id="audiovisual" aria-labelledby="show-title">
-  <div class="wrap show__grid">
-    <div class="show__copy">
-      <h2 class="show__title" id="show-title">Do planejamento à câmera, é tudo Backe.</h2>
-      <p class="show__p">
-        A mesma equipe que pensa a estratégia da sua campanha também capta as imagens dela. Sem terceiros no meio e sem a
-        ideia se perder no caminho.
-      </p>
-      <ul class="show__list">
-        <li>Captação aérea com drone</li>
-        <li>Vídeos para campanhas e redes</li>
-        <li>Direção, gravação e edição</li>
-      </ul>
-      <a class="link-arrow" href="#diagnostico" data-interest="Captação Audiovisual / Drone" data-cta="audiovisual">
-        Quero imagens assim para a minha marca
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg>
-      </a>
-    </div>
+<section class="show" id="audiovisual" aria-labelledby="show-title" data-sun-zenith>
+  <video
+    class="show__video"
+    data-autoplay
+    muted
+    loop
+    playsinline
+    preload="none"
+    poster={asset('video/reel-poster.jpg')}
+    aria-label="Vídeo de captação aérea e audiovisual feito pela Backe"
+  >
+    <source src={asset('video/reel-vertical.mp4')} type="video/mp4" media="(max-width: 900px)" />
+    <source src={asset('video/reel-720.mp4')} type="video/mp4" />
+  </video>
+  <div class="show__shade" aria-hidden="true"></div>
 
-    <div class="show__frame">
-      <video class="show__video" data-autoplay muted loop playsinline preload="none" poster={asset('video/reel-vertical-poster.jpg')} aria-label="Vídeo de captação aérea feito pela Backe">
-        <source src={asset('video/reel-720.mp4')} type="video/mp4" media="(max-width: 900px)" />
-        <source src={asset('video/reel-vertical.mp4')} type="video/mp4" />
-      </video>
-    </div>
+  <div class="wrap show__copy">
+    <h2 class="show__title" id="show-title">Do planejamento à câmera, é tudo Backe.</h2>
+    <a class="link-arrow" href="#diagnostico" data-interest="Captação Audiovisual / Drone" data-cta="audiovisual">
+      Quero imagens assim para a minha marca
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"></path></svg>
+    </a>
   </div>
 </section>
 
 <style>
   .show {
     position: relative;
-    background:
-      radial-gradient(60% 70% at 80% 50%, rgb(254 67 77 / 0.16), transparent 70%),
-      var(--ink);
-    padding-block: clamp(5rem, 10vw, 8rem);
+    display: flex;
+    align-items: flex-end;
+    min-height: calc(var(--vh, 1svh) * 92);
     overflow: hidden;
+    background: #000;
+    isolation: isolate;
   }
-  .show__grid {
-    display: grid;
-    grid-template-columns: 1.15fr 0.85fr;
-    gap: clamp(32px, 6vw, 96px);
-    align-items: center;
+  .show__video {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .show__shade {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(
+      180deg,
+      rgb(0 0 0 / 0.85) 0%,
+      rgb(0 0 0 / 0.15) 28%,
+      rgb(0 0 0 / 0.1) 55%,
+      rgb(0 0 0 / 0.88) 100%
+    );
   }
   .show__copy {
     display: grid;
-    gap: 26px;
+    gap: 22px;
     justify-items: start;
+    padding-bottom: clamp(2.5rem, 7vw, 5rem);
   }
   .show__title {
+    max-width: 14ch;
     font-family: var(--f-display);
-    font-size: clamp(2.4rem, 5vw, 5rem);
+    font-size: clamp(2.4rem, 5.6vw, 5.6rem);
     font-weight: 600;
     line-height: 0.94;
     letter-spacing: -0.045em;
     font-variation-settings: 'opsz' 96;
     text-wrap: balance;
-  }
-  .show__p {
-    color: var(--mute);
-    font-size: 1.1rem;
-    max-width: 42ch;
-  }
-  .show__list {
-    display: grid;
-    gap: 10px;
-  }
-  .show__list li {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .show__list li::before {
-    content: '';
-    width: 16px;
-    height: 1.5px;
-    background: var(--sun);
-  }
-  .show__frame {
-    justify-self: center;
-    width: min(100%, 400px);
-    aspect-ratio: 9 / 16;
-    padding: 10px;
-    border-radius: 40px;
-    background: linear-gradient(160deg, #2a2624, #0e0d0c);
-    box-shadow:
-      inset 0 0 0 1px rgb(255 255 255 / 0.1),
-      0 40px 120px -30px rgb(254 67 77 / 0.5);
-  }
-  .show__video {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 31px;
-    background: #000;
-  }
-  @media (max-width: 900px) {
-    .show__grid {
-      grid-template-columns: 1fr;
-    }
-    .show__frame {
-      order: -1;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      padding: 6px;
-      border-radius: 24px;
-    }
-    .show__video {
-      border-radius: 19px;
-    }
+    text-shadow: 0 10px 40px rgb(0 0 0 / 0.45);
   }
 </style>

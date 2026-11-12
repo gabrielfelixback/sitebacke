@@ -9,6 +9,14 @@ const year = new Date().getFullYear();
   <div class="wrap">
     <div class="ftr__top">
       <a class="ftr__big" href="#diagnostico" data-cta="footer">
+        <span class="ftr__sunset" aria-hidden="true">
+          <span class="ftr__sun"></span>
+          <svg class="ftr__ground" viewBox="0 0 1440 200" preserveAspectRatio="none" focusable="false">
+            <!-- o mesmo horizonte em curva da seção Método -->
+            <path class="ftr__ground-fill" d="M0 70 C 260 70 380 18 640 22 C 900 26 1020 92 1240 84 C 1330 81 1400 66 1440 58 L1440 200 L0 200 Z"></path>
+            <path class="ftr__ground-line" d="M0 70 C 260 70 380 18 640 22 C 900 26 1020 92 1240 84 C 1330 81 1400 66 1440 58"></path>
+          </svg>
+        </span>
         <span>Vamos</span>
         <span>conversar?</span>
       </a>
@@ -70,7 +78,53 @@ const year = new Date().getFullYear();
     gap: 48px;
     align-items: end;
   }
+  /* pôr do sol atrás do “Vamos conversar?”: --set vem de public/sol.js (0 → 1 conforme o rodapé entra) */
+  .ftr__sunset {
+    --sun-size: clamp(170px, 22vw, 360px);
+    position: absolute;
+    z-index: -1;
+    left: 0;
+    right: 0;
+    bottom: 0.06em;
+    height: var(--sun-size);
+    pointer-events: none;
+    clip-path: inset(-100vh -100vw calc(var(--sun-size) * -0.2) -100vw);
+  }
+  .ftr__sun {
+    position: absolute;
+    left: 62%;
+    bottom: 0;
+    width: var(--sun-size);
+    height: var(--sun-size);
+    margin-left: calc(var(--sun-size) / -2);
+    border-radius: 50%;
+    background: var(--sun);
+    box-shadow: 0 0 50px rgb(254 67 77 / 0.4);
+    transform: translateY(calc(50% - 85% * (1 - var(--set, 1))));
+    will-change: transform;
+  }
+  .ftr__ground {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: calc(var(--sun-size) * 0.7);
+    top: calc(100% - var(--sun-size) * 0.7 * 0.25);
+    overflow: visible;
+    -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent);
+    mask-image: linear-gradient(90deg, #000 88%, transparent);
+  }
+  .ftr__ground-fill {
+    fill: #000;
+  }
+  .ftr__ground-line {
+    fill: none;
+    stroke: url(#sun-v);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+  }
   .ftr__big {
+    position: relative;
+    isolation: isolate;
     display: grid;
     font-family: var(--f-display);
     font-weight: 600;
@@ -86,6 +140,9 @@ const year = new Date().getFullYear();
     transform: translateX(16px);
   }
   .ftr__cols {
+    /* acima do horizonte do pôr do sol, que é um elemento posicionado */
+    position: relative;
+    z-index: 1;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 32px;
@@ -170,6 +227,12 @@ const year = new Date().getFullYear();
     }
   }
   @media (max-width: 640px) {
+    .ftr__sunset {
+      --sun-size: min(56vw, 260px);
+    }
+    .ftr__sun {
+      left: 66%;
+    }
     .ftr__cols {
       grid-template-columns: 1fr 1fr;
     }
