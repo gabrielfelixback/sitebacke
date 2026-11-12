@@ -1,8 +1,11 @@
+---
+import { asset } from '../lib/url';
+---
 <div class="consent" data-consent hidden role="dialog" aria-modal="false" aria-labelledby="consent-title">
   <p class="consent__t" id="consent-title">Privacidade e medição</p>
   <p class="consent__p">
     Usamos o Meta Pixel para medir campanhas somente com sua permissão. A proteção do formulário continua funcionando se
-    você recusar. <a href="/privacidade.html">Política de Privacidade</a>.
+    você recusar. <a href={asset('privacidade.html')}>Política de Privacidade</a>.
   </p>
   <div class="consent__a">
     <button type="button" class="consent__no" data-consent-choice="rejected">Recusar</button>

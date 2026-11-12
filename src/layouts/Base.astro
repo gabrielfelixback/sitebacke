@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { createHash } from 'node:crypto';
 import { SYMBOL_PATH } from '../lib/logo-paths';
+import { asset, absolute, IS_PREVIEW } from '../lib/url';
 import fontDisplay from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url';
 import fontSerif from '@fontsource/instrument-serif/files/instrument-serif-latin-400-italic.woff2?url';
 
@@ -17,8 +18,9 @@ const {
   description = 'Estratégia com criatividade. A Backe estrutura posicionamento, demanda, marca e imagem para empresas que querem crescer com método. Peça seu diagnóstico estratégico gratuito.',
 } = Astro.props;
 
-const site = 'https://backe.com.br';
-const ogImage = `${site}/og-image.png`;
+const site = absolute('').replace(/\/$/, '');
+const canonical = absolute('');
+const ogImage = absolute('og-image.png');
 
 // CSP herdada do site atual, ajustada: scripts só do próprio domínio + Turnstile, Meta Pixel e Cloudflare Analytics.
 const csp = [
@@ -49,7 +51,7 @@ const ld = [
     telephone: '+556192240234',
     email: 'contato@backe.co',
     image: ogImage,
-    logo: `${site}/backe-symbol.svg`,
+    logo: absolute('backe-symbol.svg'),
     priceRange: '$$',
     areaServed: { '@type': 'Country', name: 'Brasil' },
     sameAs: ['https://www.instagram.com/backe.co/'],
@@ -76,12 +78,13 @@ const ld = [
     <meta name="description" content={description} />
     <meta name="author" content="BACKE.co" />
     <meta name="theme-color" content="#000000" />
-    <link rel="canonical" href={`${site}/`} />
+    <link rel="canonical" href={canonical} />
+    {IS_PREVIEW && <meta name="robots" content="noindex, nofollow" />}
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
     <meta property="og:site_name" content="BACKE.co" />
-    <meta property="og:url" content={`${site}/`} />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
@@ -95,10 +98,10 @@ const ld = [
 
     <link rel="preload" href={fontDisplay} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={fontSerif} as="font" type="font/woff2" crossorigin />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />
+    <link rel="icon" href={asset('favicon-32.png')} sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href={asset('apple-touch-icon.png')} />
+    <link rel="manifest" href={asset('site.webmanifest')} />
 
     <script type="application/ld+json" set:html={JSON.stringify(ld)} />
     <script is:inline set:html={jsFlag} />

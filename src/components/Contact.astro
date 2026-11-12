@@ -1,4 +1,5 @@
 ---
+import { asset } from '../lib/url';
 import { GUARANTEES, INTEREST_OPTIONS, CONTACT } from '../data/content';
 import { NICHES, REVENUE_RANGES, whatsappLink } from '../lib/lead';
 import Symbol from './Symbol.astro';
@@ -150,7 +151,7 @@ const next = [
           </div>
 
           <p class="form__legal">
-            Seus dados são usados só para retornar o contato. Veja a <a href="/privacidade.html" target="_blank" rel="noopener">Política de Privacidade</a>.
+            Seus dados são usados só para retornar o contato. Veja a <a href={asset('privacidade.html')} target="_blank" rel="noopener">Política de Privacidade</a>.
           </p>
         </form>
       </div>

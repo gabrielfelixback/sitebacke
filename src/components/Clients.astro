@@ -1,4 +1,5 @@
 ---
+import { asset } from '../lib/url';
 import { CLIENTS } from '../data/content';
 ---
 <section class="clients" aria-label="Marcas que já trabalharam com a Backe">
@@ -11,7 +12,7 @@ import { CLIENTS } from '../data/content';
         <ul class="clients__row" aria-hidden={copy === 1 ? 'true' : undefined}>
           {CLIENTS.map((c) => (
             <li>
-              <img src={`/clientes/${c.file}.webp`} alt={copy === 0 ? c.name : ''} loading="lazy" decoding="async" height="160" />
+              <img src={asset(`clientes/${c.file}.webp`)} alt={copy === 0 ? c.name : ''} loading="lazy" decoding="async" height="160" />
             </li>
           ))}
         </ul>
