@@ -63,6 +63,20 @@ const cio = new IntersectionObserver(
 if (reduce) {
   $$('[data-words] .w').forEach((w) => w.classList.add('on'));
   $$('.proc [data-step]').forEach((s) => s.classList.add('is-active'));
+  // sem autoplay: o vídeo só toca se a pessoa pedir
+  const v = document.querySelector<HTMLVideoElement>('[data-reel-video]');
+  const btn = document.querySelector<HTMLButtonElement>('[data-reel-toggle]');
+  if (v && btn) {
+    btn.setAttribute('aria-pressed', 'true');
+    btn.querySelector('[data-reel-toggle-label]')!.textContent = 'Tocar vídeo';
+    btn.addEventListener('click', () => {
+      const play = v.paused;
+      if (play) v.play().catch(() => {});
+      else v.pause();
+      btn.setAttribute('aria-pressed', String(!play));
+      btn.querySelector('[data-reel-toggle-label]')!.textContent = play ? 'Pausar vídeo' : 'Tocar vídeo';
+    });
+  }
 } else {
   $$('[data-count]').forEach((el) => cio.observe(el));
   const loadScenes = () => import('./scenes').then((m) => m.default());
