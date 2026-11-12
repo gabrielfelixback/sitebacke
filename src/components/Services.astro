@@ -2,9 +2,10 @@
 import { FRONTS } from '../data/content';
 import { asset } from '../lib/url';
 const media: Record<string, { img: string; video?: string }> = {
-  // fotos de banco (Unsplash) até a Backe ter fotos próprias de cada frente
+  // cada frente aceita foto (img) ou vídeo em loop (video + img como capa).
+  // fotos de banco (Unsplash) só até a Backe mandar o vídeo próprio de cada frente
   estrategia: { img: 'fotos/estrategia.webp' },
-  demanda: { img: 'fotos/demanda.webp' },
+  demanda: { img: 'video/frente-demanda-poster.jpg', video: 'video/frente-demanda.mp4' },
   marca: { img: 'fotos/marca.webp' },
   imagem: { img: 'video/drone-poster.jpg', video: 'video/drone-loop.mp4' },
 };

@@ -1,6 +1,5 @@
 ---
 /** Faixa de palavras gigantes que anda com a rolagem. Preenche a transição entre seções. */
-import Symbol from './Symbol.astro';
 interface Props {
   words: string[];
   reverse?: boolean;
@@ -12,10 +11,7 @@ const row = [...words, ...words, ...words];
   <div class="band__track" data-band-track>
     {
       row.map((w, i) => (
-        <>
-          <span class={`band__w ${i % words.length === 1 ? 'band__w--lit' : ''}`}>{w}</span>
-          <Symbol class="band__sym" />
-        </>
+        <span class="band__w">{w}</span>
       ))
     }
   </div>
@@ -32,29 +28,21 @@ const row = [...words, ...words, ...words];
   .band__track {
     display: flex;
     align-items: center;
-    gap: clamp(20px, 3vw, 48px);
+    gap: clamp(32px, 5vw, 80px);
     width: max-content;
     will-change: transform;
   }
   .band__w {
     font-family: var(--f-display);
-    font-size: clamp(3.2rem, 10vw, 9.5rem);
+    font-size: clamp(4.4rem, 12vw, 9.5rem);
     font-weight: 600;
-    line-height: 1;
+    line-height: 1.05;
     letter-spacing: -0.05em;
-    color: transparent;
-    -webkit-text-stroke: 1.5px rgb(255 255 255 / 0.22);
     white-space: nowrap;
-  }
-  .band__w--lit {
-    -webkit-text-stroke: 0;
+    padding-right: 0.08em;
     background: linear-gradient(180deg, var(--sun-1), var(--sun-2) 55%, var(--sun-3));
     -webkit-background-clip: text;
     background-clip: text;
-  }
-  .band__sym {
-    flex: none;
-    width: clamp(36px, 6vw, 84px);
-    height: auto;
+    color: transparent;
   }
 </style>

@@ -158,6 +158,20 @@ export default function scenes() {
     ScrollTrigger.refresh();
   });
 
+  /* ───── Celular: cards das frentes e dos cases entram crescendo ───── */
+  mm.add('(max-width: 900px)', () => {
+    $$('[data-fcard], .case').forEach((card) => {
+      gsap.from(card, {
+        y: 70,
+        scale: 0.92,
+        opacity: 0,
+        duration: 1.1,
+        ease: 'expo.out',
+        scrollTrigger: { trigger: card, start: 'top 94%', once: true },
+      });
+    });
+  });
+
   /* ───── Faixas de palavras andam com a rolagem ───── */
   $$('[data-band]').forEach((band) => {
     const track = band.querySelector<HTMLElement>('[data-band-track]')!;
