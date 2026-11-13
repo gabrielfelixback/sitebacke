@@ -4,6 +4,14 @@ import { GUARANTEES, INTEREST_OPTIONS, CONTACT } from '../data/content';
 import { NICHES, REVENUE_RANGES, whatsappLink } from '../lib/lead';
 import Symbol from './Symbol.astro';
 import Arrow from './Arrow.astro';
+// desenhos das garantias (traço único; pathLength=1 permite “desenhar” o ícone quando o cartão entra)
+const ICONS: Record<string, string> = {
+  free: '<path pathLength="1" d="M4.5 11h15v9h-15z"/><path pathLength="1" d="M3.5 7.5h17V11h-17z"/><path pathLength="1" d="M12 7.5V20"/><path pathLength="1" d="M12 7.5C10.6 4.6 7 4.3 7 6.3c0 1.2 2.4 1.2 5 1.2Zm0 0c1.4-2.9 5-3.2 5-1.2 0 1.2-2.4 1.2-5 1.2Z"/>',
+  clock: '<circle pathLength="1" cx="12" cy="12" r="8.5"/><path pathLength="1" d="M12 7.5V12l3.2 2"/>',
+  target: '<circle pathLength="1" cx="12" cy="12" r="8.5"/><circle pathLength="1" cx="12" cy="12" r="4.2"/><path pathLength="1" d="M12 12 18.5 5.5M15.5 5.5h3v3"/>',
+  team: '<circle pathLength="1" cx="9" cy="8.5" r="3.2"/><path pathLength="1" d="M3.5 19.5c.6-3.3 2.8-5.2 5.5-5.2s4.9 1.9 5.5 5.2"/><circle pathLength="1" cx="17" cy="9.5" r="2.4"/><path pathLength="1" d="M16.2 14.3c2.4.2 3.9 1.9 4.3 4.6"/>',
+  unlock: '<rect pathLength="1" x="5" y="10.5" width="14" height="10" rx="2.4"/><path pathLength="1" d="M8.5 10.5V7.7a3.5 3.5 0 0 1 6.8-1.2"/><path pathLength="1" d="M12 14.4v2.4"/>',
+};
 const next = [
   { t: 'Você conta sobre a sua empresa', d: 'Leva menos de um minuto.' },
   { t: 'Um especialista analisa o seu cenário', d: 'Negócio, mercado e oportunidades reais.' },
@@ -172,8 +180,18 @@ const next = [
         }
       </ol>
 
-      <ul class="cta__g" data-reveal>
-        {GUARANTEES.map((g) => <li>{g}</li>)}
+      <ul class="cta__g" aria-label="Garantias do diagnóstico">
+        {
+          GUARANTEES.map((g, i) => (
+            <li class:list={['gt', i === 0 && 'gt--hl']} data-card data-spot style={`--d:${i * 0.08}s`}>
+              <span class="gt__ic" aria-hidden="true">
+                <svg viewBox="0 0 24 24" focusable="false" set:html={ICONS[g.icon]} />
+              </span>
+              <strong class="gt__t">{g.t}</strong>
+              <span class="gt__d">{g.d}</span>
+            </li>
+          ))
+        }
       </ul>
     </div>
   </div>
@@ -288,28 +306,109 @@ const next = [
     color: var(--mute);
     font-size: 0.92rem;
   }
+  /* garantias: cartões (não são botões), o primeiro em destaque com a borda do sol */
   .cta__g {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
   }
-  .cta__g li {
-    font-size: 0.82rem;
-    padding: 7px 14px 7px 12px;
-    border-radius: 999px;
-    color: #d6d2cd;
-    background: rgb(255 255 255 / 0.04);
-    box-shadow: inset 0 0 0 1px var(--line);
-    display: inline-flex;
+  .gt {
+    --spot: 0;
+    position: relative;
+    display: grid;
+    grid-template-columns: 42px 1fr;
+    grid-template-areas: 'i t' 'i d';
+    column-gap: 14px;
+    row-gap: 2px;
     align-items: center;
-    gap: 8px;
+    align-content: center;
+    padding: 16px 18px 16px 16px;
+    border-radius: 18px;
+    background:
+      radial-gradient(180px circle at var(--mx, 30%) var(--my, 0%), rgb(255 106 0 / calc(var(--spot) * 0.16)), transparent 70%),
+      rgb(255 255 255 / 0.03);
+    box-shadow: inset 0 0 0 1px var(--line);
+    transition: transform 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out), --spot 0.4s;
   }
-  .cta__g li::before {
+  .gt__ic {
+    grid-area: i;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 13px;
+    color: var(--sun-2);
+    background: radial-gradient(circle at 30% 20%, rgb(241 143 52 / 0.22), rgb(254 67 77 / 0.06) 70%);
+    box-shadow: inset 0 0 0 1px rgb(255 106 0 / 0.28);
+    transition: transform 0.6s var(--ease-out), box-shadow 0.6s var(--ease-out);
+  }
+  .gt__ic svg {
+    width: 22px;
+    height: 22px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  /* o ícone se desenha quando o cartão entra */
+  :global(.js) .gt__ic :global(:is(path, circle, rect)) {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+    transition: stroke-dashoffset 1.3s var(--ease-out) calc(var(--d, 0s) + 0.35s);
+  }
+  :global(.js) .gt:global(.is-in) .gt__ic :global(:is(path, circle, rect)) {
+    stroke-dashoffset: 0;
+  }
+  .gt__t {
+    grid-area: t;
+    font-weight: 600;
+    font-size: 0.98rem;
+    line-height: 1.25;
+    color: var(--text);
+  }
+  .gt__d {
+    grid-area: d;
+    font-size: 0.85rem;
+    line-height: 1.4;
+    color: var(--mute);
+  }
+  .gt--hl {
+    grid-column: 1 / -1;
+    background:
+      radial-gradient(220px circle at var(--mx, 20%) var(--my, 0%), rgb(255 106 0 / calc(0.1 + var(--spot) * 0.14)), transparent 70%),
+      linear-gradient(120deg, rgb(241 143 52 / 0.1), rgb(254 67 77 / 0.04));
+    box-shadow: 0 24px 60px -36px rgb(254 67 77 / 0.6);
+  }
+  .gt--hl::before {
     content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--orange);
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(120deg, var(--sun-1), var(--sun-2) 45%, rgb(254 67 77 / 0.2));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .gt--hl .gt__ic {
+    color: var(--black);
+    background: var(--sun);
+    box-shadow: 0 8px 24px -8px rgb(254 67 77 / 0.7);
+  }
+  .gt--hl .gt__t {
+    font-size: 1.08rem;
+  }
+  @media (hover: hover) and (pointer: fine) {
+    .gt:hover {
+      --spot: 1;
+      transform: translateY(-3px);
+      box-shadow: inset 0 0 0 1px rgb(255 106 0 / 0.35), 0 22px 50px -30px rgb(255 106 0 / 0.55);
+    }
+    .gt:hover .gt__ic {
+      transform: rotate(-8deg) scale(1.06);
+    }
   }
 
   /* ───── card do formulário ───── */
@@ -737,11 +836,46 @@ const next = [
       font-size: 0.86rem;
     }
     .cta__g {
-      gap: 6px;
+      gap: 8px;
     }
-    .cta__g li {
-      font-size: 0.76rem;
-      padding: 5px 11px 5px 9px;
+    /* celular: ícone em cima, texto embaixo (o destaque continua deitado) */
+    .gt {
+      grid-template-columns: 1fr;
+      grid-template-areas: 'i' 't' 'd';
+      align-content: start;
+      row-gap: 4px;
+      padding: 14px;
+      border-radius: 16px;
+    }
+    .gt__ic {
+      width: 36px;
+      height: 36px;
+      border-radius: 11px;
+      margin-bottom: 6px;
+    }
+    .gt__ic svg {
+      width: 20px;
+      height: 20px;
+    }
+    .gt__t {
+      font-size: 0.9rem;
+    }
+    .gt__d {
+      font-size: 0.78rem;
+    }
+    .gt--hl {
+      grid-template-columns: 40px 1fr;
+      grid-template-areas: 'i t' 'i d';
+      column-gap: 12px;
+      align-items: center;
+    }
+    .gt--hl .gt__ic {
+      width: 40px;
+      height: 40px;
+      margin: 0;
+    }
+    .gt--hl .gt__t {
+      font-size: 1rem;
     }
   }
 </style>

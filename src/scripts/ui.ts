@@ -185,3 +185,36 @@ heroEl?.style.setProperty('--mask', `url("${new URL(asset('backe-symbol.svg'), l
 if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 if (!location.hash) scrollTo(0, 0);
 
+
+/* ───── Botões: onda no ponto tocado e luz que segue o mouse ───── */
+if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.addEventListener(
+    'pointerdown',
+    (e) => {
+      const el = (e.target as Element).closest<HTMLElement>('.btn, .mcta__main, .mcta__wa');
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const size = Math.max(r.width, r.height) * 2.2;
+      const s = document.createElement('span');
+      s.className = 'ripple';
+      s.setAttribute('aria-hidden', 'true');
+      s.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - r.left - size / 2}px;top:${e.clientY - r.top - size / 2}px`;
+      el.appendChild(s);
+      s.addEventListener('animationend', () => s.remove());
+    },
+    { passive: true },
+  );
+}
+if (matchMedia('(pointer: fine)').matches) {
+  document.addEventListener(
+    'pointermove',
+    (e) => {
+      const el = (e.target as Element).closest<HTMLElement>('[data-spot], .btn--ghost');
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      el.style.setProperty('--my', `${e.clientY - r.top}px`);
+    },
+    { passive: true },
+  );
+}

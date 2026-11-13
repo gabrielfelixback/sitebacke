@@ -40,25 +40,27 @@
     .rise {
       position: relative;
       display: block;
-      height: 96px;
+      /* alto o bastante para o disco e o brilho não serem cortados no topo */
+      height: 170px;
       overflow: hidden;
       background: #000;
     }
     .rise__sun {
       position: absolute;
       left: 50%;
-      bottom: 10px;
-      width: 150px;
-      height: 150px;
-      margin-left: -75px;
+      /* o centro do disco para na crista do horizonte: a metade de cima aparece inteira */
+      bottom: -28px;
+      width: 140px;
+      height: 140px;
+      margin-left: -70px;
       border-radius: 50%;
       background: var(--sun);
       box-shadow: 0 0 60px rgb(254 67 77 / 0.5);
-      transform: translateY(70%);
+      transform: translateY(55%);
       transition: transform 1.6s var(--ease-out);
     }
     .rise.is-up .rise__sun {
-      transform: translateY(40%);
+      transform: none;
     }
     .rise__ground {
       position: absolute;

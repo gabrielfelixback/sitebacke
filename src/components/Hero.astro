@@ -183,6 +183,8 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
     text-wrap: balance;
     opacity: 0;
     z-index: 2;
+    /* só texto: invisível no começo, não pode roubar o toque do botão do hero que fica embaixo */
+    pointer-events: none;
     text-shadow: 0 10px 50px rgb(0 0 0 / 0.5);
   }
   .hero__after .hl {
