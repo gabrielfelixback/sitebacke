@@ -177,11 +177,15 @@ export const DIFFERENTIALS = [
 export const STEPS = [
   { n: '01', title: 'Diagnóstico gratuito', text: 'Mapeamos seu negócio, mercado e oportunidades reais. Sem compromisso, sem pressão de venda.' },
   { n: '02', title: 'Plano personalizado', text: 'Cada estratégia é construída do zero para o seu negócio. Nada de pacote padrão que serve pra todo mundo.' },
-  { n: '03', title: 'Execução com responsabilidade', text: 'Time focado, prazo cumprido. Você acompanha tudo com transparência e em tempo real.' },
-  { n: '04', title: 'Crescimento sustentável', text: 'Otimizamos continuamente. O objetivo é construir um motor de crescimento que trabalha por você.' },
+  { n: '03', title: 'Execução que você acompanha', text: 'Você vê o que está sendo feito, quanto está sendo investido e o que está trazendo de retorno, todo mês.' },
+  { n: '04', title: 'Otimização contínua', text: 'O que funciona ganha mais verba. O que não funciona sai. Assim o marketing vira um motor de crescimento, não uma aposta.' },
 ];
 
 export const FAQ = [
+  {
+    q: 'Para que tipo de empresa a Backe é indicada?',
+    a: 'Para empresas que já vendem e querem crescer com previsibilidade: negócios locais, prestadores de serviço, varejo, imobiliárias, saúde, eventos e marcas pessoais. Se você está começando do zero, o diagnóstico mostra se faz sentido começar agora ou o que preparar antes.',
+  },
   {
     q: 'Quanto tempo leva para ver resultados?',
     a: 'Em tráfego pago, os primeiros dados já aparecem nos dias iniciais de campanha ativa. Porém, é entre 60 e 90 dias que a estratégia se consolida e os resultados começam a crescer de forma consistente.',
