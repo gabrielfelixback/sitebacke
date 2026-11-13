@@ -32,7 +32,7 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
     <article class="case" data-card aria-labelledby="case-title">
       <div class="case__copy">
         <p class="case__tag"><span aria-hidden="true"></span>Caso real em Meta Ads, com 24 campanhas de vendas</p>
-        <h3 class="case__title" id="case-title">R$ 35,9 mil em mídia. R$ 310,9 mil em vendas.</h3>
+        <h3 class="case__title" id="case-title">R$ 35,9 mil em mídia. <span class="case__win">R$ 310,9 mil em vendas.</span></h3>
         <p class="case__p">
           Números de um cliente da Backe, tirados direto do gerenciador de anúncios: cada real investido voltou quase nove
           vezes em compras no site.
@@ -146,6 +146,11 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
     border-radius: 50%;
     background: #25d366;
     box-shadow: 0 0 0 4px rgb(37 211 102 / 0.15);
+  }
+  /* o retorno em laranja, com o mesmo brilho dos destaques (mesma fonte do título: número forte) */
+  .case__win {
+    color: var(--sun-2);
+    text-shadow: 0 0 28px rgb(254 67 77 / 0.35);
   }
   .case__title {
     font-family: var(--f-display);
