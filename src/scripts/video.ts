@@ -3,8 +3,12 @@
  *
  * - A capa (<picture>) fica sempre por baixo; o vídeo só aparece (fade de 400 ms) quando dispara `playing`.
  * - A fonte é escolhida por JS (data-src-mobile / data-src-desktop), o que funciona em qualquer Android.
- * - Autoplay bloqueado (Modo de Pouca Energia, alguns WebViews): play() rejeita ou o vídeo continua pausado
- *   1,5 s depois → o wrapper ganha .needs-tap e aparece o botão laranja de play.
+ * - Autoplay bloqueado (Modo de Pouca Energia do iPhone, alguns WebViews): play() rejeita ou o vídeo continua
+ *   pausado 1,2 s depois de visível. Aí entra a escada de fallback, sem depender de toque:
+ *     1. o mesmo MP4 num <img> (o Safari toca como GIF, mudo e em loop, mesmo no Modo de Pouca Energia);
+ *     2. se o navegador não aceita MP4 em <img> (Chrome, Firefox): o loop curto em WebP animado (data-loop-webp-*);
+ *     3. último recurso: a capa com o botão laranja de play (.needs-tap).
+ *   O <img> fica dentro do mesmo wrapper, então herda a máscara do “b” no hero.
  * - Erro de carregamento → .is-error: o vídeo some e a capa continua.
  * - "Reduzir movimento" NÃO pausa vídeo (só desliga as animações de rolagem).
  *
@@ -20,6 +24,8 @@ interface Box {
   btn: HTMLButtonElement | null;
   visible: boolean;
   wantsPlay: boolean;
+  /** fallback em andamento ou concluído (o <video> foi ou está sendo trocado por <img>) */
+  fallback: 'none' | 'trying' | 'img' | 'tap';
 }
 
 const boxes: Box[] = [];
@@ -50,16 +56,63 @@ function needTap(b: Box, on: boolean) {
   if (b.btn) b.btn.hidden = !on;
 }
 
+/** Autoplay bloqueado: troca o <video> por <img> (MP4 → WebP animado → botão de play). */
+function fallbackFor(b: Box) {
+  if (b.fallback !== 'none' || b.el.classList.contains('is-error')) return;
+  b.fallback = 'trying';
+  const v = b.video;
+  const mobile = matchMedia(MOBILE).matches;
+  const mp4 = v.currentSrc || v.getAttribute('src') || (mobile ? v.dataset.srcMobile : v.dataset.srcDesktop);
+  const webp = mobile ? v.dataset.loopWebpMobile : v.dataset.loopWebpDesktop;
+  const img = new Image();
+  img.className = 'vbox__video video-as-img';
+  img.alt = '';
+  img.setAttribute('aria-hidden', 'true');
+  img.decoding = 'async';
+  img.onload = () => {
+    // o vídeo pode ter começado a tocar enquanto o <img> carregava (ex.: toque na página): fica o vídeo
+    if (!v.paused && v.isConnected) {
+      b.fallback = 'none';
+      return;
+    }
+    v.pause();
+    v.removeAttribute('src');
+    v.load(); // solta a conexão do vídeo
+    v.replaceWith(img);
+    b.fallback = 'img';
+    b.el.classList.add('is-playing', 'is-img');
+    needTap(b, false);
+  };
+  img.onerror = () => {
+    if (webp && img.src.indexOf(webp) === -1) {
+      img.src = webp; // degrau 2: loop em WebP animado
+      return;
+    }
+    b.fallback = 'tap'; // degrau 3: capa com o botão de play
+    if (b.wantsPlay) needTap(b, true);
+  };
+  if (mp4) img.src = mp4; // degrau 1: MP4 dentro de <img>
+  else if (webp) img.src = webp;
+  else img.onerror(new Event('error'));
+}
+
+function blocked(b: Box) {
+  if (b.fallback === 'none') fallbackFor(b);
+  else if (b.fallback === 'tap') needTap(b, true);
+}
+
 function tryPlay(b: Box) {
   b.wantsPlay = true;
-  if (b.el.classList.contains('is-error')) return;
+  if (b.el.classList.contains('is-error') || b.fallback === 'img') return;
   setSource(b);
   const v = b.video;
+  v.muted = true;
+  v.playsInline = true;
   let p: Promise<void> | undefined;
   try {
     p = v.play();
   } catch {
-    needTap(b, true);
+    blocked(b);
     return;
   }
   p?.catch((err: DOMException) => {
@@ -70,17 +123,17 @@ function tryPlay(b: Box) {
       return;
     }
     // AbortError = a fonte mudou ou o vídeo foi pausado no meio: não é bloqueio
-    if (err?.name !== 'AbortError' && b.wantsPlay) needTap(b, true);
+    if (err?.name !== 'AbortError' && b.wantsPlay) blocked(b);
   });
-  // o Modo de Pouca Energia às vezes não rejeita: confere depois de 1,5 s
+  // o Modo de Pouca Energia às vezes não rejeita: confere 1,2 s depois
   window.setTimeout(() => {
-    if (b.wantsPlay && b.visible && v.paused && !b.el.classList.contains('is-error')) needTap(b, true);
-  }, 1500);
+    if (b.wantsPlay && b.visible && v.isConnected && v.paused && !b.el.classList.contains('is-error')) blocked(b);
+  }, 1200);
 }
 
 function pause(b: Box) {
   b.wantsPlay = false;
-  if (!b.video.paused) b.video.pause();
+  if (b.fallback !== 'img' && !b.video.paused) b.video.pause();
 }
 
 function init(el: HTMLElement) {
@@ -90,7 +143,7 @@ function init(el: HTMLElement) {
   const btn =
     el.querySelector<HTMLButtonElement>('.vbox__play') ||
     (el.id ? document.querySelector<HTMLButtonElement>(`[data-play-for="${el.id}"]`) : null);
-  const b: Box = { el, video, btn, visible: false, wantsPlay: false };
+  const b: Box = { el, video, btn, visible: false, wantsPlay: false, fallback: 'none' };
   boxes.push(b);
 
   video.addEventListener('playing', () => {
@@ -107,6 +160,7 @@ function init(el: HTMLElement) {
   btn?.addEventListener('click', () => {
     setSource(b);
     b.wantsPlay = true;
+    if (!video.isConnected) return;
     video.play().then(
       () => needTap(b, false),
       () => needTap(b, true),
@@ -163,7 +217,8 @@ const retry = () =>
 addEventListener('scroll', retry, { once: true, passive: true });
 // ao voltar para a aba, retoma o que estava tocando
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden) boxes.forEach((b) => b.visible && b.wantsPlay && b.video.paused && tryPlay(b));
+  if (!document.hidden)
+    boxes.forEach((b) => b.visible && b.wantsPlay && b.fallback === 'none' && b.video.paused && tryPlay(b));
 });
 
 export {};

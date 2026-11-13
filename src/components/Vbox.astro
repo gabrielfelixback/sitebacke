@@ -4,6 +4,7 @@
  *   video/{base}-mobile.mp4, video/{base}-desktop.mp4 e as capas {…}-poster.webp
  * O comportamento (fonte, play, botão de toque, erro) fica em src/scripts/video.ts.
  */
+import { existsSync } from 'node:fs';
 import { asset } from '../lib/url';
 interface Props {
   base: string;
@@ -17,6 +18,11 @@ interface Props {
 const { base, mode = 'auto', class: cls, id, label, externalPlay = false } = Astro.props;
 const v = (s: string) => asset(`video/${base}-${s}`);
 const hero = mode === 'hero';
+// loop em WebP animado (último degrau do fallback, gerado por scripts/encode-loops.sh):
+// versões próprias de celular e desktop quando existem (reel), senão um arquivo só ({base}-loop.webp)
+const own = existsSync(`public/video/${base}-desktop-loop.webp`);
+const loopMobile = own ? v('mobile-loop.webp') : v('loop.webp');
+const loopDesktop = own ? v('desktop-loop.webp') : v('loop.webp');
 ---
 <div class:list={['vbox', cls]} data-vbox={mode} id={id}>
   <picture class="vbox__poster" aria-hidden="true">
@@ -38,6 +44,8 @@ const hero = mode === 'hero';
     preload="none"
     data-src-mobile={v('mobile.mp4')}
     data-src-desktop={v('desktop.mp4')}
+    data-loop-webp-mobile={loopMobile}
+    data-loop-webp-desktop={loopDesktop}
     aria-label={label}
     aria-hidden={label ? undefined : 'true'}
   ></video>
@@ -71,6 +79,14 @@ const hero = mode === 'hero';
   }
   .vbox.is-playing .vbox__video {
     opacity: 1;
+  }
+  /* fallback: o mesmo MP4 (Safari toca como GIF) ou o loop WebP num <img>, no lugar do <video> */
+  .video-as-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .vbox.is-error .vbox__video {
     display: none;
