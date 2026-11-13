@@ -1,8 +1,11 @@
 ---
-import Button from './Button.astro';
+import { STATS } from '../data/content';
 import Vbox from './Vbox.astro';
 import { asset } from '../lib/url';
 const mask = `--mask:url(${asset('backe-symbol.svg')})`;
+// três números de prova no lugar do botão (os mesmos da seção Resultados)
+const proof = STATS.slice(0, 3);
+const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractionDigits: d, maximumFractionDigits: d });
 ---
 <!--
   Hero: o símbolo da Backe como janela. O vídeo próprio da Backe passa dentro do “b”
@@ -27,9 +30,16 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
         <p class="hero__lede" data-hero-in style="--i:1">
           Marketing para empresas que querem crescer com método, não com sorte. Estratégia, mídia, marca e imagem num plano só.
         </p>
-        <div class="hero__actions" data-hero-in style="--i:2">
-          <Button href="#diagnostico" data-cta="hero" data-magnetic>Quero meu diagnóstico gratuito</Button>
-        </div>
+        <ul class="hero__proof" data-hero-in style="--i:2" aria-label="A Backe em números">
+          {
+            proof.map((n) => (
+              <li>
+                <b><i>{n.prefix}</i>{fmt(n.value, n.decimals)}<i>{n.suffix}</i></b>
+                <span>{n.label}</span>
+              </li>
+            ))
+          }
+        </ul>
       </div>
     </div>
 
@@ -41,8 +51,14 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z" fill="currentColor"></path></svg>
     </button>
 
-    <a class="hero__scroll" href="#custo" data-hero-in style="--i:4"><span aria-hidden="true"></span>Role para ver</a>
+    <!-- setinha no canto: convida a rolar; o toque leva até o fim do efeito do “b” -->
+    <a class="hero__cue" href="#hero-fim" data-hero-in style="--i:4" aria-label="Rolar para ver mais">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 5v14M6 13l6 6 6-6"></path></svg>
+    </a>
   </div>
+  <!-- marcadores invisíveis: “já rolou um pouco” (botões fixos aparecem) e o fim do efeito (destino da setinha) -->
+  <span class="hero__mark" data-hero-mark aria-hidden="true"></span>
+  <span class="hero__end" id="hero-fim" aria-hidden="true"></span>
 </section>
 
 <style>
@@ -169,6 +185,115 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
     line-height: 1.55;
     text-wrap: balance;
   }
+  /* números de prova logo abaixo do texto */
+  .hero__proof {
+    display: flex;
+    justify-content: center;
+    margin: 4px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+  .hero__proof li {
+    padding-inline: clamp(14px, 1.6vw, 22px);
+    text-align: center;
+  }
+  .hero__proof li + li {
+    border-left: 1px solid rgb(255 255 255 / 0.16);
+  }
+  .hero__proof b {
+    display: block;
+    font-family: var(--f-display);
+    font-size: clamp(1.5rem, 2vw, 2rem);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    font-variant-numeric: tabular-nums;
+    color: var(--text);
+  }
+  .hero__proof b i {
+    font-style: normal;
+    color: var(--sun-2);
+  }
+  .hero__proof span {
+    display: block;
+    max-width: 11ch;
+    margin: 6px auto 0;
+    font-size: 0.78rem;
+    line-height: 1.3;
+    color: #b9b3ad;
+  }
+  /* setinha no canto: anel laranja girando e a seta descendo */
+  .hero__cue {
+    position: absolute;
+    right: var(--gutter);
+    bottom: calc(22px + env(safe-area-inset-bottom));
+    z-index: 3;
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    color: var(--text);
+    text-decoration: none;
+    background: rgb(0 0 0 / 0.4);
+    box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.14);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    transition: opacity 0.5s var(--ease-out), translate 0.5s var(--ease-out);
+  }
+  .hero__cue::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: conic-gradient(from 0deg, var(--sun-1), var(--sun-3) 30%, transparent 55%);
+    -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1px));
+    mask: radial-gradient(farthest-side, transparent calc(100% - 1.5px), #000 calc(100% - 1px));
+    animation: cue-spin 2.8s linear infinite;
+  }
+  .hero__cue svg {
+    width: 18px;
+    height: 18px;
+    animation: cue-bob 1.8s var(--ease-in-out) infinite;
+  }
+  /* no primeiro acesso o aviso de cookies ocupa o rodapé da tela: a setinha espera a resposta */
+  :global(body:has([data-consent]:not([hidden]))) .hero__cue,
+  .hero.is-moved .hero__cue {
+    opacity: 0;
+    translate: 0 12px;
+    pointer-events: none;
+  }
+  @keyframes cue-spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+  @keyframes cue-bob {
+    0%,
+    100% {
+      transform: translateY(-3px);
+    }
+    50% {
+      transform: translateY(4px);
+    }
+  }
+  .hero__mark,
+  .hero__end {
+    position: absolute;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+  }
+  /* “rolou um pouco”: 1/5 de tela */
+  .hero__mark {
+    top: calc(var(--sh, 100svh) * 0.2);
+  }
+  /* fim do efeito: o topo deste marcador no topo da tela = última tela do hero */
+  .hero__end {
+    top: calc(100% - var(--sh, 100svh));
+    scroll-margin-top: 0;
+  }
   .hero__after {
     position: absolute;
     left: var(--gutter);
@@ -192,53 +317,10 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
     font-style: italic;
     font-weight: 400;
     letter-spacing: -0.02em;
-    color: var(--sun-1);
+    color: var(--sun-2);
     text-shadow:
       0 2px 30px rgb(0 0 0 / 0.6),
       0 0 24px rgb(254 67 77 / 0.35);
-  }
-  .hero__scroll {
-    position: absolute;
-    left: 50%;
-    bottom: 24px;
-    translate: -50% 0;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    min-height: 44px;
-    font-size: 0.85rem;
-    color: var(--mute);
-    text-decoration: none;
-    z-index: 2;
-  }
-  .hero__scroll span {
-    position: relative;
-    width: 22px;
-    height: 34px;
-    border-radius: 999px;
-    box-shadow: inset 0 0 0 1.5px var(--line-strong);
-  }
-  .hero__scroll span::after {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 7px;
-    width: 3px;
-    height: 7px;
-    margin-left: -1.5px;
-    border-radius: 2px;
-    background: var(--orange);
-    animation: scrolldot 2s var(--ease-in-out) infinite;
-  }
-  @keyframes scrolldot {
-    60% {
-      transform: translateY(12px);
-      opacity: 0;
-    }
-    61% {
-      transform: none;
-      opacity: 0;
-    }
   }
 
   /* entrada: o “b” acende e a frase sobe */
@@ -306,15 +388,21 @@ const mask = `--mask:url(${asset('backe-symbol.svg')})`;
     .hero__lede {
       font-size: 0.98rem;
     }
-    .hero__actions :global(.btn) {
-      width: calc(100vw - 2 * var(--gutter));
-      justify-content: space-between;
+    .hero__proof b {
+      font-size: 1.6rem;
     }
-    .hero__scroll {
-      display: none;
+    .hero__proof li {
+      padding-inline: 14px;
+    }
+    .hero__proof span {
+      font-size: 0.74rem;
     }
   }
   @media (prefers-reduced-motion: reduce) {
+    .hero__cue::before,
+    .hero__cue svg {
+      animation: none;
+    }
     .hero {
       height: auto;
     }

@@ -13,23 +13,36 @@ import { whatsappLink } from '../lib/lead';
 </div>
 
 <style>
+  /* celular: “Diagnóstico gratuito” + WhatsApp; desktop: só o WhatsApp no canto (o cabeçalho já tem o CTA) */
   .mcta {
-    display: none;
+    position: fixed;
+    right: 24px;
+    bottom: calc(24px + env(safe-area-inset-bottom));
+    z-index: 40;
+    display: flex;
+    gap: 8px;
+    pointer-events: none;
+  }
+  .mcta > a {
+    pointer-events: auto;
+    transition: transform 0.6s var(--ease-out), opacity 0.4s;
+  }
+  .mcta:not(.is-visible) .mcta__wa,
+  .mcta:not(.is-cta) .mcta__main {
+    transform: translateY(160%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  @media (min-width: 861px) {
+    .mcta__main {
+      display: none !important;
+    }
   }
   @media (max-width: 860px) {
     .mcta {
-      position: fixed;
       left: 12px;
       right: 12px;
       bottom: calc(12px + env(safe-area-inset-bottom));
-      z-index: 40;
-      display: flex;
-      gap: 8px;
-      transform: translateY(140%);
-      transition: transform 0.6s var(--ease-out);
-    }
-    .mcta.is-visible {
-      transform: none;
     }
   }
   .mcta__main {
@@ -60,7 +73,6 @@ import { whatsappLink } from '../lib/lead';
   }
   .mcta__wa {
     position: relative;
-    overflow: hidden;
     flex: none;
     display: grid;
     place-items: center;
@@ -72,6 +84,34 @@ import { whatsappLink } from '../lib/lead';
     box-shadow: inset 0 0 0 1px var(--line-strong), 0 12px 40px -8px rgb(0 0 0 / 0.7);
   }
   .mcta__wa svg {
+    position: relative;
+    z-index: 1;
     width: 26px;
+  }
+  .mcta__wa::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgb(37 211 102 / 0.45);
+    animation: wa-pulse 3.2s var(--ease-out) 1.5s infinite;
+    pointer-events: none;
+  }
+  .mcta__wa:hover {
+    transform: scale(1.06);
+  }
+  @keyframes wa-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgb(37 211 102 / 0.45);
+    }
+    45%,
+    100% {
+      box-shadow: 0 0 0 14px rgb(37 211 102 / 0);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .mcta__wa::after {
+      animation: none;
+    }
   }
 </style>

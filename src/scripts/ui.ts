@@ -131,23 +131,37 @@ $$<HTMLButtonElement>('[data-consent-choice]').forEach((b) =>
 );
 $('[data-consent-open]')?.addEventListener('click', () => showBanner(true));
 
-/* ───── CTA fixo no mobile: aparece depois do hero, some perto do formulário ───── */
+/* ───── Botões fixos: aparecem depois de rolar um pouco ─────
+   WhatsApp acompanha a página inteira (celular e desktop). “Diagnóstico gratuito” (só celular) some perto do
+   formulário e do rodapé. Usa IntersectionObserver num marcador do hero, então funciona também na prévia do app. */
 const mcta = $('[data-mobile-cta]');
-if (mcta && hero) {
+const mark = $('[data-hero-mark]');
+if (mcta && hero && mark) {
   const contact = $('[data-contact]');
   const footer = $('footer');
-  let pastHero = false;
+  const main = $('.mcta__main', mcta);
+  const wa = $('.mcta__wa', mcta);
+  let moved = false;
   const near = new Set<Element>();
+  const show = (el: HTMLElement | null, on: boolean) => {
+    if (!el) return;
+    el.setAttribute('aria-hidden', String(!on));
+    el.tabIndex = on ? 0 : -1;
+  };
   const update = () => {
-    const visible = pastHero && near.size === 0 && !(banner && !banner.hidden);
-    mcta.classList.toggle('is-visible', visible);
-    mcta.setAttribute('aria-hidden', String(!visible));
-    mcta.querySelectorAll('a').forEach((a) => (a.tabIndex = visible ? 0 : -1));
+    const free = moved && !(banner && !banner.hidden);
+    const cta = free && near.size === 0;
+    mcta.classList.toggle('is-visible', free);
+    mcta.classList.toggle('is-cta', cta);
+    mcta.setAttribute('aria-hidden', String(!free));
+    show(wa, free);
+    show(main, cta);
   };
   new IntersectionObserver(([e]) => {
-    pastHero = !e.isIntersecting;
+    moved = !e.isIntersecting && e.boundingClientRect.top < 0;
+    hero.classList.toggle('is-moved', moved);
     update();
-  }).observe(hero);
+  }).observe(mark);
   const formObs = new IntersectionObserver(
     (entries) => {
       entries.forEach((e) => (e.isIntersecting ? near.add(e.target) : near.delete(e.target)));
@@ -191,7 +205,7 @@ if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
   document.addEventListener(
     'pointerdown',
     (e) => {
-      const el = (e.target as Element).closest<HTMLElement>('.btn, .mcta__main, .mcta__wa');
+      const el = (e.target as Element).closest<HTMLElement>('.btn, .mcta__main');
       if (!el) return;
       const r = el.getBoundingClientRect();
       const size = Math.max(r.width, r.height) * 2.2;
