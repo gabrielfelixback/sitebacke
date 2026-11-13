@@ -13,6 +13,11 @@ import { loadTurnstile, mountTurnstile, type TurnstileHandle } from '../lib/turn
 import { track, trackLead } from '../lib/tracking';
 
 const DRAFT_KEY = 'backe_form_draft';
+// O servidor de leads e a verificação de segurança só aceitam o domínio oficial.
+// Em qualquer outro endereço (prévia no claude.ai, testes) o envio é recusado; aí avisamos com clareza.
+const OFFICIAL_HOST = /(^|\.)backe\.com\.br$/.test(location.hostname);
+const PREVIEW_MSG =
+  'Esta é uma prévia do site. Por segurança, o envio só funciona no endereço oficial, backe.com.br. Seus dados não foram enviados.';
 const STEPS = [
   { name: 'sobre você', next: 'Continuar' },
   { name: 'sobre o seu negócio', next: 'Continuar' },
@@ -145,7 +150,12 @@ function init(form: HTMLFormElement) {
     ts = await mountTurnstile(tsEl, (t) => {
       token = t;
     });
-    if (!ts) setAlert('Não foi possível carregar a verificação de segurança. Recarregue a página ou fale conosco pelo WhatsApp.');
+    if (!ts)
+      setAlert(
+        OFFICIAL_HOST
+          ? 'Não foi possível carregar a verificação de segurança. Recarregue a página ou fale conosco pelo WhatsApp.'
+          : PREVIEW_MSG,
+      );
   };
 
   nextBtn.addEventListener('click', () => {
@@ -274,7 +284,8 @@ function init(form: HTMLFormElement) {
     // o token do Turnstile é de uso único: renova para a próxima tentativa
     token = '';
     ts?.reset();
-    setAlert(result.message, result.retryable);
+    if (OFFICIAL_HOST) setAlert(result.message, result.retryable);
+    else setAlert(PREVIEW_MSG);
   });
 
   retryBtn.addEventListener('click', () => {

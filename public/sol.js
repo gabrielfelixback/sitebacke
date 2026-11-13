@@ -36,7 +36,8 @@
 
   // roteiro: [seletor, borda, deslocamento em vh, x, y, opacidade]
   var ROTEIRO = [
-    ['[data-hero]', 'bottom', -0.2, 0.5, 1.3, 0],
+    // o formulário vem logo depois do hero e já tem o próprio sol: o sol que percorre a página só nasce depois dele
+    ['#diagnostico', 'bottom', -0.2, 0.5, 1.3, 0],
     ['#custo', 'top', -0.1, 0.14, 1.04, 0.5],
     ['#custo', 'bottom', -0.6, 0.16, 0.98, 0.6],
     ['#servicos', 'top', 0, 0.22, 0.8, 0.8],
