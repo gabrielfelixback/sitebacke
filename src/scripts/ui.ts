@@ -1,4 +1,4 @@
-import { readConsent, saveConsent, loadPixel, track } from '../lib/tracking';
+import { loadPixel, track } from '../lib/tracking';
 import { asset } from '../lib/url';
 
 const $ = <T extends Element = HTMLElement>(s: string, root: ParentNode = document) => root.querySelector<T>(s);
@@ -105,7 +105,7 @@ if (hero && light && matchMedia('(pointer: fine)').matches) {
   });
 }
 
-/* ───── Rastreamento de CTAs (só dispara com consentimento) ───── */
+/* ───── Rastreamento de CTAs (não dispara para quem recusou) ───── */
 document.addEventListener('click', (e) => {
   const el = (e.target as Element).closest<HTMLElement>('[data-cta]');
   if (!el) return;
@@ -115,21 +115,8 @@ document.addEventListener('click', (e) => {
   else track('cta_click', { source: src, destination: el.getAttribute('href') });
 });
 
-/* ───── Consentimento ───── */
-const banner = $('[data-consent]');
-function showBanner(show: boolean) {
-  if (banner) banner.hidden = !show;
-}
-const consent = readConsent();
-if (consent === 'accepted') loadPixel();
-if (consent === null) setTimeout(() => showBanner(true), 1200);
-$$<HTMLButtonElement>('[data-consent-choice]').forEach((b) =>
-  b.addEventListener('click', () => {
-    saveConsent(b.dataset.consentChoice as 'accepted' | 'rejected');
-    showBanner(false);
-  }),
-);
-$('[data-consent-open]')?.addEventListener('click', () => showBanner(true));
+/* ───── Meta Pixel: carrega em toda visita e já registra o PageView (decisão da Backe: sem aviso de consentimento) ───── */
+loadPixel();
 
 /* ───── Botões fixos: aparecem depois de rolar um pouco ─────
    WhatsApp acompanha a página inteira (celular e desktop). “Diagnóstico gratuito” (só celular) some perto do
@@ -149,7 +136,7 @@ if (mcta && hero && mark) {
     el.tabIndex = on ? 0 : -1;
   };
   const update = () => {
-    const free = moved && !(banner && !banner.hidden);
+    const free = moved;
     const cta = free && near.size === 0;
     mcta.classList.toggle('is-visible', free);
     mcta.classList.toggle('is-cta', cta);
@@ -171,7 +158,6 @@ if (mcta && hero && mark) {
   );
   if (contact) formObs.observe(contact);
   if (footer) formObs.observe(footer);
-  if (banner) new MutationObserver(update).observe(banner, { attributes: true, attributeFilter: ['hidden'] });
 }
 
 /* ───── Prints dos cases: ampliar ao clicar ───── */

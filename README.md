@@ -23,7 +23,7 @@ node scripts/build-preview-relative.cjs  # build de prévia com caminhos relativ
 |---|---|
 | `src/lib/lead.ts` | Validação, normalização e envio de leads. **Payload idêntico ao do site anterior** (provado em `tests/lead.test.ts` contra o código de produção). |
 | `src/lib/turnstile.ts` | Cloudflare Turnstile (mesma sitekey/action). |
-| `src/lib/tracking.ts` | Meta Pixel com consentimento (mesma chave `backe_marketing_consent`, mesmos eventos). |
+| `src/lib/tracking.ts` | Meta Pixel (carrega em toda visita, sem aviso de consentimento; mesmos eventos do site anterior). |
 | `src/lib/logo-paths.ts` | Vetores do símbolo e do wordmark (vetorizados do PNG oficial — trocar pelo vetor original quando disponível). |
 | `src/data/content.ts` | **Todo o conteúdo** (serviços, FAQ, números, clientes, etapas). Edite aqui. |
 | `src/components/*.astro` | Uma seção por componente. |
@@ -40,7 +40,7 @@ node scripts/build-preview-relative.cjs  # build de prévia com caminhos relativ
 - O worker **valida o Turnstile no servidor** e aceita CORS só de `https://backe.com.br`.
 - Proteções no cliente: honeypot (`website`), validação por etapa, token obrigatório, timeout de 15s, bloqueio de duplo envio, token renovado após erro.
 - UTMs persistidos na sessão (`backe_utm_params`).
-- Eventos do Pixel (só com consentimento): `PageView`, `Lead`, `form_start`, `form_step_complete`, `form_validation_error`, `form_submit_attempt`, `form_submit_error`, `cta_click`, `contact_whatsapp`, `contact_instagram`, `service_open`, `faq_open`.
+- Eventos do Pixel (em toda visita): `PageView`, `Lead`, `form_start`, `form_step_complete`, `form_validation_error`, `form_submit_attempt`, `form_submit_error`, `cta_click`, `contact_whatsapp`, `contact_instagram`, `service_open`, `faq_open`.
 
 ## Deploy
 
@@ -52,5 +52,5 @@ Para testar o envio real em outro domínio (preview), o domínio precisa ser inc
 1. Abrir `https://backe.com.br/?utm_source=teste&utm_campaign=redesign`.
 2. Enviar o formulário com dados identificáveis como teste (ex.: nome “TESTE redesign”).
 3. Conferir no destino dos leads: nome, telefone `55…`, e-mail, empresa, mensagem com nicho e faturamento, interesse e UTMs.
-4. Aceitar cookies e repetir: conferir o evento `Lead` no Meta Events Manager.
+4. Conferir os eventos `PageView` e `Lead` no Meta Events Manager → Testar eventos.
 5. Testar no celular: CTA fixo, menu, formulário, botão de WhatsApp.

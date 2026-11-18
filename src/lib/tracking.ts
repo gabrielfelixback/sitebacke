@@ -66,7 +66,7 @@ export function loadPixel(): boolean {
   return true;
 }
 
-/** Eventos customizados — mesmos nomes do site atual. Só disparam com consentimento. */
+/** Eventos customizados (mesmos nomes do site atual). O pixel carrega em toda visita. */
 export function track(event: string, params: Record<string, unknown> = {}) {
   window.fbq?.('trackCustom', event, params);
 }

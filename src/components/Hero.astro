@@ -390,8 +390,6 @@ const proof = STATS.slice(0, 3).map((n, i) => {
     height: 18px;
     animation: cue-bob 1.8s var(--ease-in-out) infinite;
   }
-  /* no primeiro acesso o aviso de cookies ocupa o rodapé da tela: a setinha espera a resposta */
-  :global(body:has([data-consent]:not([hidden]))) .hero__cue,
   .hero.is-moved .hero__cue {
     opacity: 0;
     translate: 0 12px;
