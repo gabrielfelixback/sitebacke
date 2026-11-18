@@ -1,0 +1,23 @@
+# Modelo. Antes de publicar, confira com o wrangler.toml do Worker que está no ar hoje
+# (nome, rota, KV e o nome do segredo do Turnstile podem ser diferentes).
+name = "backe-lead-proxy"
+main = "src/index.js"
+compatibility_date = "2025-06-01"
+
+[vars]
+SHEET_URL = ""        # link da planilha "Leads – Site Backe" (vai no fim da mensagem do WhatsApp)
+EXTRA_ORIGINS = ""    # opcional: domínio de preview, ex. "https://gabrielfelixback.github.io"
+
+# Limite de 5 envios a cada 10 min por IP. Crie com: npx wrangler kv namespace create RATE_KV
+# e cole o id aqui. Sem este bloco o limite fica desligado.
+# [[kv_namespaces]]
+# binding = "RATE_KV"
+# id = "COLE_O_ID_AQUI"
+
+# Segredos (nunca neste arquivo):
+#   npx wrangler secret put TURNSTILE_SECRET
+#   npx wrangler secret put SHEETS_WEBHOOK_URL
+#   npx wrangler secret put SHEETS_SECRET
+#   npx wrangler secret put WA_PROVIDER          (callmebot)
+#   npx wrangler secret put CALLMEBOT_PHONES     (+5561...,+5561...)
+#   npx wrangler secret put CALLMEBOT_APIKEYS    (na mesma ordem dos números)
