@@ -27,7 +27,7 @@ node scripts/build-preview-relative.cjs  # build de prévia com caminhos relativ
 | `src/lib/logo-paths.ts` | Vetores do símbolo e do wordmark (vetorizados do PNG oficial — trocar pelo vetor original quando disponível). |
 | `src/data/content.ts` | **Todo o conteúdo** (serviços, FAQ, números, clientes, etapas). Edite aqui. |
 | `src/components/*.astro` | Uma seção por componente. |
-| `src/scripts/` | `ui.ts` (cabeçalho, menus, acordeões, consentimento), `form.ts` (formulário em 3 etapas), `motion.ts` (revelações leves), `scenes.ts` (cenas de scroll com GSAP, lazy). |
+| `src/scripts/` | `ui.ts` (cabeçalho, menus, acordeões, Meta Pixel, botões fixos), `drawer.ts` (gaveta do formulário), `form.ts` (formulário em 3 etapas), `motion.ts` (revelações leves), `scenes.ts` (cenas de scroll com GSAP, lazy). |
 | `src/scripts/video.ts` + `src/components/Vbox.astro` | Todos os vídeos: capa sempre visível, fonte por JS (celular/desktop), carregamento a uma tela de distância. Autoplay bloqueado (ex.: Modo de Pouca Energia do iPhone): o vídeo vira `<img>` com o mesmo MP4 (Safari toca como GIF); sem suporte, o loop WebP animado; por último, botão de play. |
 | `public/sol.js` | Sol que percorre a página (desktop), manifesto do Custo, sol do formulário e pôr do sol do rodapé. |
 | `assets-originais/video/` | Vídeos originais (fora de `public/`, não vão para o site). |
