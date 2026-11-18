@@ -13,6 +13,8 @@ import Testimonials from '../components/Testimonials.astro';
 import Sunrise from '../components/Sunrise.astro';
 import Process from '../components/Process.astro';
 import Faq from '../components/Faq.astro';
+import FinalCta from '../components/FinalCta.astro';
+import FormDrawer from '../components/FormDrawer.astro';
 import Contact from '../components/Contact.astro';
 import Footer from '../components/Footer.astro';
 import MobileCta from '../components/MobileCta.astro';
@@ -37,9 +39,12 @@ import { asset } from '../lib/url';
     <Testimonials />
     <Process />
     <Faq />
+    <!-- chamada final no lugar antigo do formulário: o botão abre a gaveta -->
+    <FinalCta />
   </main>
   <Footer />
   <MobileCta />
+  <FormDrawer />
   <Consent />
   <!-- sol que percorre a página (script sem build, em public/sol.js) -->
   <script is:inline src={asset('sol.js')} defer></script>
@@ -47,6 +52,7 @@ import { asset } from '../lib/url';
     import '../scripts/video';
     import '../scripts/ui';
     import '../scripts/form';
+    import '../scripts/drawer';
     import '../scripts/motion';
   </script>
 </Base>

@@ -293,5 +293,12 @@ function init(form: HTMLFormElement) {
     form.requestSubmit(submitBtn);
   });
 
+  // a gaveta move o cartão de lugar: o iframe do Turnstile recarrega e o token antigo deixa de valer
+  card.addEventListener('form:moved', () => {
+    if (!ts) return;
+    token = '';
+    ts.reset();
+  });
+
   go(1, 1, false);
 }

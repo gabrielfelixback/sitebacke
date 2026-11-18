@@ -15,7 +15,7 @@ export const CONTACT = {
 
 /** Confirmados pela Backe em 12/11/2026. */
 export const STATS = [
-  { prefix: '+', value: 200, suffix: '', decimals: 0, label: 'marcas atendidas' },
+  { prefix: '+', value: 100, suffix: '', decimals: 0, label: 'clientes atendidos' },
   { prefix: '', value: 3.8, suffix: 'x', decimals: 1, label: 'ROI médio entregue' },
   { prefix: '+R$', value: 5, suffix: 'M', decimals: 0, label: 'investidos em mídia' },
   { prefix: '', value: 98, suffix: '%', decimals: 0, label: 'de clientes satisfeitos' },

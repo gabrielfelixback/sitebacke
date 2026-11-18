@@ -39,9 +39,12 @@ export default function scenes() {
     lenis.on('scroll', ScrollTrigger.update);
     gsap.ticker.add((t) => lenis.raf(t * 1000));
     gsap.ticker.lagSmoothing(0);
+    // gaveta do formulário aberta: a página por trás fica parada
+    addEventListener('drawer:open', () => lenis.stop());
+    addEventListener('drawer:close', () => lenis.start());
     document.addEventListener('click', (e) => {
       const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#"]');
-      if (!a) return;
+      if (!a || e.defaultPrevented) return;
       const id = a.getAttribute('href')!;
       const el = id.length > 1 ? document.querySelector<HTMLElement>(id) : null;
       if (!el) return;
