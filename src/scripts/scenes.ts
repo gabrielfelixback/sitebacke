@@ -49,7 +49,8 @@ export default function scenes() {
       const el = id.length > 1 ? document.querySelector<HTMLElement>(id) : null;
       if (!el) return;
       e.preventDefault();
-      lenis.scrollTo(el, { offset: -72 });
+      // a distância do topo já vem do scroll-padding-top do CSS (altura do cabeçalho + 16px)
+      lenis.scrollTo(el);
       history.replaceState(null, '', id);
     });
   }

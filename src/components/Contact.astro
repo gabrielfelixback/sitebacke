@@ -665,7 +665,13 @@ const next = [
     box-shadow: inset 0 0 0 1px var(--text);
   }
   .form__nav .btn {
+    min-width: 0;
     flex: 1;
+  }
+  .form__nav .btn :global(.btn__label) {
+    white-space: normal;
+    line-height: 1.15;
+    text-align: left;
   }
   .form__nav .btn.is-loading .btn__disc {
     animation: spin 1s linear infinite;
@@ -779,7 +785,7 @@ const next = [
   @media (max-width: 980px) {
     .cta__grid {
       grid-template-areas: 'info' 'card' 'more';
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
     .cta__rise {
       --rise-size: min(44vw, 220px);

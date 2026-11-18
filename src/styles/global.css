@@ -310,6 +310,37 @@ ol {
   font-weight: 500;
 }
 
+/* ───── Piso de legibilidade no celular: nenhum texto de leitura abaixo de 14px ─────
+   (os estilos dos componentes são escopados e mais específicos; por isso o !important, concentrado só aqui).
+   Exceção deliberada: os rótulos dos números do hero (.72rem, pedido explícito do layout). */
+@media (max-width: 900px) {
+  .card__badge,
+  .card__kicker,
+  .card__kicker span,
+  .field label,
+  .form__legal,
+  .form__legal a,
+  .cta__next span,
+  .gt__d,
+  .clients__label p,
+  .cost__n,
+  .cost__list p,
+  .fcard__count,
+  .srv__t,
+  .srv__tags span,
+  .dcard__who,
+  .report__grid dt,
+  .print__zoom,
+  .voice__time,
+  .ftr__h,
+  .ftr__bottom,
+  .ftr__bottom p,
+  .ftr__legal a,
+  .ftr__legal button {
+    font-size: 14px !important;
+  }
+}
+
 /* ───────────────────────── Botões ───────────────────────── */
 .btn {
   --h: 60px;

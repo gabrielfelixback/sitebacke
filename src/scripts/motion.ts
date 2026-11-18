@@ -30,7 +30,8 @@ function countUp(el: HTMLElement) {
     const k = Math.min(1, (t - t0) / dur);
     const eased = 1 - Math.pow(1 - k, 4);
     const v = target * eased;
-    el.textContent = dec ? v.toFixed(dec) : Math.round(v).toLocaleString('pt-BR');
+    // vírgula decimal (3,8) e ponto de milhar, como no resto do site
+    el.textContent = v.toLocaleString('pt-BR', { minimumFractionDigits: dec, maximumFractionDigits: dec });
     if (k < 1) requestAnimationFrame(tick);
   };
   requestAnimationFrame(tick);

@@ -68,7 +68,8 @@ const year = new Date().getFullYear();
     position: relative;
     background: var(--black);
     padding-top: clamp(5rem, 10vw, 8rem);
-    padding-bottom: calc(32px + env(safe-area-inset-bottom));
+    /* espaço para o botão flutuante do WhatsApp não cobrir os links do fim da página */
+    padding-bottom: calc(96px + env(safe-area-inset-bottom));
     border-top: 1px solid var(--line);
     overflow: hidden;
   }
@@ -148,7 +149,7 @@ const year = new Date().getFullYear();
     gap: 32px;
   }
   .ftr__h {
-    font-size: 0.72rem;
+    font-size: 0.8rem;
     font-weight: 600;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -235,6 +236,8 @@ const year = new Date().getFullYear();
     }
     .ftr__cols {
       grid-template-columns: 1fr 1fr;
+      /* abaixo da linha do horizonte do pôr do sol */
+      margin-top: 28px;
     }
     .ftr__cols > div:last-child {
       display: none;

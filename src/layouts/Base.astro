@@ -15,9 +15,12 @@ const jsFlagHash = `'sha256-${createHash('sha256').update(jsFlag).digest('base64
 interface Props {
   title?: string;
   description?: string;
+  /** páginas que não devem ir para o Google (ex.: 404) */
+  noindex?: boolean;
 }
 const {
   title = 'Backe | Agência de marketing em Brasília: estratégia, tráfego, marca e audiovisual',
+  noindex = false,
   description = 'Agência de marketing em Brasília que une estratégia, tráfego pago, branding e produção audiovisual num plano só. Peça seu diagnóstico gratuito e descubra onde seu marketing está perdendo dinheiro.',
 } = Astro.props;
 
@@ -82,7 +85,7 @@ const ld = [
     <meta name="author" content="BACKE.co" />
     <meta name="theme-color" content="#000000" />
     <link rel="canonical" href={canonical} />
-    {IS_PREVIEW && <meta name="robots" content="noindex, nofollow" />}
+    {(IS_PREVIEW || noindex) && <meta name="robots" content="noindex, nofollow" />}
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="pt_BR" />
@@ -100,8 +103,8 @@ const ld = [
     <meta name="twitter:image" content={ogImage} />
 
     <!-- capa do hero = imagem LCP; o vídeo só entra depois do load -->
-    <link rel="preload" as="image" type="image/webp" href={asset('video/reel-mobile-poster.webp')} media="(max-width: 900px)" fetchpriority="high" />
-    <link rel="preload" as="image" type="image/webp" href={asset('video/reel-desktop-poster.webp')} media="(min-width: 901px)" fetchpriority="high" />
+    {!noindex && <link rel="preload" as="image" type="image/webp" href={asset('video/reel-mobile-poster.webp')} media="(max-width: 900px)" fetchpriority="high" />}
+    {!noindex && <link rel="preload" as="image" type="image/webp" href={asset('video/reel-desktop-poster.webp')} media="(min-width: 901px)" fetchpriority="high" />}
     <link rel="preload" href={fontDisplay} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={fontSerif} as="font" type="font/woff2" crossorigin />
     <link rel="icon" href={asset('favicon.svg')} type="image/svg+xml" />
