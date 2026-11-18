@@ -94,6 +94,22 @@ describe('mensagem do WhatsApp', () => {
   });
 });
 
+describe('fase 1: só a planilha (CallMeBot ainda sem número e apikey)', () => {
+  const SO_PLANILHA = { ...ENV, CALLMEBOT_PHONES: undefined, CALLMEBOT_APIKEYS: undefined };
+  it('lead cai na planilha e o visitante vê sucesso; o WhatsApp não é chamado e não gera erro', async () => {
+    const r = await handle(req(PAYLOAD), SO_PLANILHA);
+    expect(r.status).toBe(200);
+    expect(calls.sheet).toHaveLength(1);
+    expect(calls.wa).toHaveLength(0);
+    expect(console.error).not.toHaveBeenCalledWith(expect.stringMatching(/^wa_/), expect.anything());
+  });
+  it('planilha fora do ar e sem WhatsApp → 502 (o visitante vê o erro que já existe)', async () => {
+    behave.sheet = 'throw';
+    const r = await handle(req(PAYLOAD), SO_PLANILHA);
+    expect(r.status).toBe(502);
+  });
+});
+
 describe('/api/leads', () => {
   it('entrega na planilha e nos dois WhatsApp → 200', async () => {
     const r = await handle(req(PAYLOAD), ENV);

@@ -5,7 +5,7 @@ main = "src/index.js"
 compatibility_date = "2025-06-01"
 
 [vars]
-SHEET_URL = ""        # link da planilha "Leads – Site Backe" (vai no fim da mensagem do WhatsApp)
+SHEET_URL = "https://docs.google.com/spreadsheets/d/1_KAOrnZHaKEpD6lx8wuPGmZe1D7Edv7k3Y3lfCcFHKs/edit"  # planilha "Leads – Site Backe" (link no fim da mensagem do WhatsApp)
 EXTRA_ORIGINS = ""    # opcional: domínio de preview, ex. "https://gabrielfelixback.github.io"
 
 # Limite de 5 envios a cada 10 min por IP. Crie com: npx wrangler kv namespace create RATE_KV

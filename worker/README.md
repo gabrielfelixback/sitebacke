@@ -21,8 +21,9 @@ honeypot, Turnstile inválido, sem token, CORS e limite por IP.
 ## Testes depois de publicar (seção 4 do pedido)
 
 ```bash
-# 1. senha errada no Apps Script: deve responder {"ok":false,"error":"unauthorized"} e não criar linha
-curl -sL -X POST "$SHEETS_WEBHOOK_URL" -H 'Content-Type: application/json' -d '{"secret":"errada","lead":{"id":"teste-senha"}}'
+# 1. senha errada no Apps Script: deve responder {"ok":false,"error":"unauthorized"} e não criar linha.
+#    Sem "-X POST": o /exec responde 302 e o curl precisa seguir com GET (como o fetch do Worker faz).
+curl -sL "$SHEETS_WEBHOOK_URL" -H 'Content-Type: application/json' -d '{"secret":"errada","lead":{"id":"teste-senha"}}'
 ```
 
 2. Envio real pelo celular em https://backe.com.br com nome **TESTE – pode apagar**: linha no topo da planilha,
