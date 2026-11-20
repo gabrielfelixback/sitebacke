@@ -412,4 +412,18 @@ const firstSentence = (t: string) => t.split(/(?<=\.)\s/)[0];
       margin-inline: auto;
     }
   }
+  /* computador: a foto da Marca é paisagem (1671×941); o quadro assume a proporção dela e fica no topo
+     da coluna, para aparecerem copo, caderno, sacola e caneta. O resto da coluna fica com o fundo do card.
+     O object-position vem escrito no HTML (78% 50%, para o celular), por isso o !important aqui. */
+  @media (min-width: 901px) {
+    .fcard--marca .fcard__frame {
+      aspect-ratio: 1671 / 941;
+      height: auto;
+      min-height: 0;
+      align-self: start;
+    }
+    .fcard--marca .fcard__photo {
+      object-position: 50% 50% !important;
+    }
+  }
 </style>

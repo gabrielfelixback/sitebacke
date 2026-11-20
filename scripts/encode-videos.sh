@@ -11,8 +11,9 @@ mkdir -p "$OUT"
 # hero + tela cheia (um arquivo para as duas seções)
 ffmpeg -v error -y -i "$SRC/reel-1080.mp4" -an -c:v libx264 -preset slow -crf "${DESKTOP_CRF:-32}" -profile:v high -level 4.1 \
   -pix_fmt yuv420p -vf "scale=-2:1080" -movflags +faststart "$OUT/reel-desktop.mp4"
-ffmpeg -v error -y -i "$SRC/reel-vertical.mp4" -an -c:v libx264 -preset slow -crf "${MOBILE_CRF:-32}" -profile:v main -level 3.1 \
-  -pix_fmt yuv420p -vf "scale=720:-2" -t "${MOBILE_T:-15}" -movflags +faststart "$OUT/reel-mobile.mp4"
+# reel do celular: 540px e 30 fps, CRF 33 → ~1 MB (é o que o celular baixa no topo)
+ffmpeg -v error -y -i "$SRC/reel-vertical.mp4" -an -c:v libx264 -preset slow -crf "${MOBILE_CRF:-33}" -profile:v main -level 3.1 \
+  -pix_fmt yuv420p -vf "scale=540:-2,fps=30" -t "${MOBILE_T:-15}" -movflags +faststart "$OUT/reel-mobile.mp4"
 # frentes
 for v in frente-demanda drone-loop; do
   ffmpeg -v error -y -i "$SRC/$v.mp4" -an -c:v libx264 -preset slow -crf 29 -profile:v high -pix_fmt yuv420p \

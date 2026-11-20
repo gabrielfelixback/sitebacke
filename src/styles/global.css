@@ -123,12 +123,22 @@ ol {
   display: none !important;
 }
 
+/* conteúdo das seções acima do sol que percorre a página (só existe no computador) */
+@media (min-width: 901px) {
+  main .wrap,
+  footer .wrap {
+    position: relative;
+    z-index: 1;
+  }
+}
 /* ───── Sol que percorre a página (criado por public/sol.js; só desktop) ───── */
 .sol {
   position: fixed;
   left: 0;
   top: 0;
-  z-index: 30;
+  /* camada 0: acima dos fundos das seções (o sol continua aparecendo no preto) e abaixo do conteúdo,
+     que fica na camada 1 (regra logo abaixo). Tamanho, cor e trajeto não mudam. */
+  z-index: 0;
   width: 78vmax;
   height: 78vmax;
   pointer-events: none;

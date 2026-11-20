@@ -70,4 +70,10 @@ import Vbox from './Vbox.astro';
       margin-inline: auto;
     }
   }
+  /* celular: a barra fixa (56px + 12px de margem) não cobre "Quero imagens assim para a minha marca" */
+  @media (max-width: 860px) {
+    .show {
+      padding-bottom: calc(68px + env(safe-area-inset-bottom));
+    }
+  }
 </style>

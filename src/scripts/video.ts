@@ -26,6 +26,8 @@ interface Box {
   wantsPlay: boolean;
   /** fallback em andamento ou concluído (o <video> foi ou está sendo trocado por <img>) */
   fallback: 'none' | 'trying' | 'img' | 'tap';
+  /** vigia de reprodução em andamento (ver watch) */
+  watching?: boolean;
 }
 
 const boxes: Box[] = [];
@@ -125,10 +127,40 @@ function tryPlay(b: Box) {
     // AbortError = a fonte mudou ou o vídeo foi pausado no meio: não é bloqueio
     if (err?.name !== 'AbortError' && b.wantsPlay) blocked(b);
   });
-  // o Modo de Pouca Energia às vezes não rejeita: confere 1,2 s depois
-  window.setTimeout(() => {
-    if (b.wantsPlay && b.visible && v.isConnected && v.paused && !b.el.classList.contains('is-error')) blocked(b);
-  }, 1200);
+  watch(b);
+}
+
+/* Vigia: o Modo de Pouca Energia do iPhone às vezes não rejeita o play(): a promessa fica pendurada,
+   volta AbortError ou o vídeo "toca" sem sair do lugar. Enquanto a caixa estiver na tela e devendo tocar,
+   confere a cada 0,6 s (até ~5 s): se o vídeo segue parado ou o tempo não anda, entra o plano B. */
+function watch(b: Box) {
+  if (b.watching) return;
+  b.watching = true;
+  const v = b.video;
+  let last = v.currentTime;
+  let checks = 0;
+  const tick = () => {
+    checks++;
+    const done = !b.wantsPlay || b.fallback !== 'none' || b.el.classList.contains('is-error') || !v.isConnected;
+    if (done) {
+      b.watching = false;
+      return;
+    }
+    const stuck = v.paused || (v.readyState >= 2 && v.currentTime === last);
+    last = v.currentTime;
+    if (b.visible && stuck && checks >= 2) {
+      b.watching = false;
+      blocked(b);
+      return;
+    }
+    if (!stuck && checks >= 3) {
+      b.watching = false; // tocando de verdade
+      return;
+    }
+    if (checks < 9) window.setTimeout(tick, 600);
+    else b.watching = false;
+  };
+  window.setTimeout(tick, 600);
 }
 
 function pause(b: Box) {

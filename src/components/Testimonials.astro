@@ -349,4 +349,15 @@ const fmt = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).p
       gap: 1.5px;
     }
   }
+  /* computador: com um depoimento só, o card fica no centro (no celular não muda) */
+  @media (min-width: 901px) {
+    .tst__list {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .voice {
+      width: 100%;
+      max-width: 640px;
+      margin-inline: auto;
+    }
+  }
 </style>

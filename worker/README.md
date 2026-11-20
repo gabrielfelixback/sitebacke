@@ -4,13 +4,25 @@ Código do Worker que recebe o formulário do site (`POST /api/leads`) e entrega
 Google Planilha (Apps Script) e no WhatsApp (CallMeBot). Foi escrito **sem acesso ao Worker que está no ar**:
 antes de publicar, quem tem acesso à Cloudflare precisa juntar com o código atual.
 
-## Antes de publicar (obrigatório)
+## Publicar pelo painel da Cloudflare (sem wrangler)
 
-1. Abrir o Worker atual (painel da Cloudflare → Workers → `backe-lead-proxy` → Edit code, ou o repositório dele) e
-   anotar **para onde os leads vão hoje**. Colar essa entrega em `sendToCurrentDestination()` (em `src/index.js`),
-   para ela continuar funcionando junto com os dois destinos novos.
-2. Conferir o nome do segredo do Turnstile no Worker atual. Aqui ele se chama `TURNSTILE_SECRET`.
-3. Cadastrar os segredos (lista no `wrangler.toml`). Nada disso vai para o front-end nem para o repositório.
+O Bruno confirmou em 19/11 que os leads do site atual não caíam em lugar nenhum, então este Worker substitui o atual inteiro.
+
+1. Cloudflare → **Workers & Pages → backe-lead-proxy → Edit code**. Antes de apagar, copie o código atual para um arquivo à parte (backup).
+2. Apague tudo e cole o conteúdo de `worker/dist/backe-lead-proxy.js` (gerado por `node worker/build-paste.cjs`). Clique em **Deploy**.
+3. **Settings → Variables and Secrets**:
+   - Secret `SHEETS_WEBHOOK_URL`: a URL `/exec` do Apps Script.
+   - Secret `SHEETS_SECRET`: a mesma senha do `SECRET` do Apps Script (digitar direto aqui, sem passar por chat).
+   - Variable `SHEET_URL`: o link da planilha.
+   - Secret `WA_PROVIDER`: `callmebot` (os números e apikeys entram depois).
+   - Confira se já existe o segredo do Turnstile. O código aceita os nomes `TURNSTILE_SECRET`, `TURNSTILE_SECRET_KEY`,
+     `TURNSTILE_SECRETKEY`, `CF_TURNSTILE_SECRET` ou `TURNSTILE_KEY`. Se não existir, crie `TURNSTILE_SECRET` com a
+     Secret Key do widget (Cloudflare → Turnstile → o widget do site → Settings).
+4. Opcional (limite de 5 envios a cada 10 min por IP): Storage & Databases → KV → criar `RATE_KV` e, em
+   Settings → Bindings do Worker, ligar como **KV namespace** com o nome `RATE_KV`.
+5. Abrir **Logs → Begin log stream** (é o `wrangler tail` do painel) e fazer o envio de teste pelo celular com o nome
+   **TESTE – pode apagar**. A linha esperada é `{"leadId":"…","test":true,"sheetOk":true,"waOk":false,"currentOk":null}`.
+   Se aparecer `turnstile_secret_missing`, o segredo do Turnstile está com outro nome (passo 3).
 
 ## Testes automáticos
 

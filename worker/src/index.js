@@ -1,15 +1,16 @@
 /**
  * backe-lead-proxy — POST /api/leads
  *
- * ATENÇÃO: este arquivo foi escrito sem acesso ao Worker que está no ar hoje.
- * Antes de publicar, junte com o código atual: a função `sendToCurrentDestination` precisa receber
- * a entrega que já existe hoje (CRM, e-mail, KV…), para ela continuar funcionando em paralelo.
+ * Destino atual: nenhum. O Bruno confirmou em 19/11 que os leads do site atual não caíam em lugar
+ * nenhum; por isso `sendToCurrentDestination` devolve null. Se um dia houver outro destino, ele entra lá.
+ * Para publicar pelo painel: colar worker/dist/backe-lead-proxy.js em Workers & Pages → backe-lead-proxy → Edit code.
  *
  * Fluxo: CORS → limite por IP → JSON → honeypot → Turnstile (siteverify, no servidor)
  *        → normaliza e corta os campos → entrega em paralelo (planilha + WhatsApp + destino atual)
  *        → 200 se pelo menos um destino recebeu; 502 se todos falharam.
  *
- * Segredos (wrangler secret put): TURNSTILE_SECRET, SHEETS_WEBHOOK_URL, SHEETS_SECRET,
+ * Segredos (wrangler secret put): TURNSTILE_SECRET (aceita também os nomes TURNSTILE_SECRET_KEY,
+ *   TURNSTILE_SECRETKEY, CF_TURNSTILE_SECRET e TURNSTILE_KEY, para servir com o segredo que já existe), SHEETS_WEBHOOK_URL, SHEETS_SECRET,
  *   WA_PROVIDER, CALLMEBOT_PHONES, CALLMEBOT_APIKEYS.
  * Variáveis comuns (wrangler.toml): SHEET_URL, EXTRA_ORIGINS (opcional, ex.: domínio de preview).
  * KV opcional: RATE_KV (limite de 5 envios a cada 10 min por IP).
@@ -80,9 +81,8 @@ export async function handle(request, env, ctx = { waitUntil() {} }) {
   return json({ ok: true });
 }
 
-/* ───────────────── destino que já existe hoje ─────────────────
-   PREENCHER com a entrega do Worker atual antes de publicar (ou deixar retornando null se hoje
-   os leads não vão para lugar nenhum). Deve devolver uma Promise<boolean>. */
+/* ───────────────── destino que existia antes ─────────────────
+   Nenhum (confirmado pelo Bruno em 19/11). Se um dia houver outro destino, devolver aqui uma Promise<boolean>. */
 export function sendToCurrentDestination(env, payload, lead) {
   return null;
 }
@@ -193,11 +193,18 @@ async function sendWhatsAppCloud(env, lead) {
 }
 
 /* ───────────────── Turnstile, limite, utilidades ───────────────── */
+// o segredo do Turnstile pode ter sido cadastrado com outro nome no Worker que já existe
+const turnstileSecret = (env) => env.TURNSTILE_SECRET || env.TURNSTILE_SECRET_KEY || env.TURNSTILE_SECRETKEY || env.CF_TURNSTILE_SECRET || env.TURNSTILE_KEY || '';
+
 export async function verifyTurnstile(env, token, ip) {
-  if (!token || typeof token !== 'string' || token.length > 2048 || !env.TURNSTILE_SECRET) return false;
+  const secret = turnstileSecret(env);
+  if (!token || typeof token !== 'string' || token.length > 2048 || !secret) {
+    if (!secret) console.error('turnstile_secret_missing');
+    return false;
+  }
   try {
     const form = new FormData();
-    form.append('secret', env.TURNSTILE_SECRET);
+    form.append('secret', secret);
     form.append('response', token);
     if (ip) form.append('remoteip', ip);
     const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: form });
