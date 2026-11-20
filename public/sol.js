@@ -36,10 +36,12 @@
 
   // roteiro: [seletor, borda, deslocamento em vh, x, y, opacidade]
   var ROTEIRO = [
-    // o formulário vem logo depois do hero e já tem o próprio sol: o sol que percorre a página só nasce depois dele
-    ['#diagnostico', 'bottom', -0.2, 0.5, 1.3, 0],
+    ['[data-hero]', 'bottom', -0.2, 0.5, 1.3, 0],
     ['#custo', 'top', -0.1, 0.14, 1.04, 0.5],
     ['#custo', 'bottom', -0.6, 0.16, 0.98, 0.6],
+    // o formulário vem logo depois do custo e já tem o próprio sol: o que percorre a página apaga e volta depois dele
+    ['#diagnostico', 'top', -0.2, 0.18, 0.96, 0],
+    ['#diagnostico', 'bottom', -0.2, 0.2, 0.9, 0],
     ['#servicos', 'top', 0, 0.22, 0.8, 0.8],
     ['[data-sun-zenith]', 'top', -0.15, 0.5, 0.1, 1],
     ['[data-sun-zenith]', 'bottom', -0.5, 0.56, 0.1, 0.8],

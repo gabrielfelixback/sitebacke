@@ -216,13 +216,13 @@ export const FAQ = [
   },
 ];
 
-/** Garantias ao lado do formulário. `icon` é a chave do desenho em Contact.astro. */
+/** Garantias ao lado do formulário. `icon` é a chave do desenho em Contact.astro; `t` tem a palavra-chave em <em>. */
 export const GUARANTEES = [
-  { icon: 'free', t: 'Diagnóstico 100% gratuito', d: 'Sem custo e sem compromisso.' },
-  { icon: 'clock', t: 'Resposta em até 24h', d: 'Em dias úteis, direto no seu WhatsApp.' },
-  { icon: 'target', t: 'Feito para o seu nicho', d: 'Estratégia personalizada, nada de pacote pronto.' },
-  { icon: 'team', t: 'Time sênior', d: 'Sem terceirizar o seu atendimento.' },
-  { icon: 'unlock', t: 'Sem fidelidade forçada', d: 'Você fica pelo resultado, não pelo contrato.' },
+  { icon: 'free', t: 'Diagnóstico 100% <em>gratuito</em>', d: 'Sem custo e sem compromisso.' },
+  { icon: 'clock', t: 'Resposta em até <em>24h</em>', d: 'Em dias úteis, direto no seu WhatsApp.' },
+  { icon: 'target', t: 'Feito para o seu <em>nicho</em>', d: 'Estratégia personalizada, nada de pacote pronto.' },
+  { icon: 'team', t: 'Time <em>sênior</em>', d: 'Sem terceirizar o seu atendimento.' },
+  { icon: 'unlock', t: 'Sem <em>fidelidade</em> forçada', d: 'Você fica pelo resultado, não pelo contrato.' },
 ];
 
 /** Opções da etapa 3 do formulário → campo `serviceInterest` do worker. */
