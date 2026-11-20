@@ -42,6 +42,8 @@ const pains = [
   .cost {
     background: var(--ink);
     overflow: hidden;
+    /* clip: corta igual, mas o navegador não consegue rolar a seção para o lado ao focar um campo */
+    overflow: clip;
   }
   .cost__title {
     margin-top: 24px;

@@ -201,6 +201,8 @@ const next = [
   .cta {
     position: relative;
     overflow: hidden;
+    /* clip: corta igual, mas o navegador não consegue rolar a seção para o lado ao focar um campo */
+    overflow: clip;
     padding-block: clamp(5rem, 11vw, 9rem);
     background:
       radial-gradient(90% 60% at 50% 115%, rgb(254 67 77 / 0.35), rgb(234 104 50 / 0.18) 40%, transparent 70%),

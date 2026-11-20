@@ -111,6 +111,8 @@ const fmt = (v: number, d: number) => v.toLocaleString('pt-BR', { minimumFractio
     position: relative;
     background: var(--black);
     overflow: hidden;
+    /* clip: corta igual, mas o navegador não consegue rolar a seção para o lado ao focar um campo */
+    overflow: clip;
   }
   .case {
     position: relative;

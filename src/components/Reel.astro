@@ -23,6 +23,8 @@ import Vbox from './Vbox.astro';
     align-items: flex-end;
     min-height: calc(var(--vh, 1svh) * 92);
     overflow: hidden;
+    /* clip: corta igual, mas o navegador não consegue rolar a seção para o lado ao focar um campo */
+    overflow: clip;
     background: #000;
     isolation: isolate;
   }

@@ -52,7 +52,9 @@ if (reduce) {
   $$('.proc [data-step]').forEach((s) => s.classList.add('is-active'));
 } else {
   $$('[data-count]').forEach((el) => cio.observe(el));
+  // as cenas (GSAP) só carregam depois que a página terminou de abrir e o navegador está livre
   const loadScenes = () => import('./scenes').then((m) => m.default());
-  if ('requestIdleCallback' in window) requestIdleCallback(loadScenes, { timeout: 1500 });
-  else setTimeout(loadScenes, 600);
+  const start = () => ('requestIdleCallback' in window ? requestIdleCallback(loadScenes, { timeout: 1200 }) : setTimeout(loadScenes, 300));
+  if (document.readyState === 'complete') start();
+  else addEventListener('load', start, { once: true });
 }

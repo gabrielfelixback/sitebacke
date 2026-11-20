@@ -57,6 +57,8 @@ const no = ['Você procura só alguém para postar.', 'Você espera resultado em
     position: relative;
     background: var(--ink);
     overflow: hidden;
+    /* clip: corta igual, mas o navegador não consegue rolar a seção para o lado ao focar um campo */
+    overflow: clip;
     padding-block: clamp(3rem, 7vw, 6rem) clamp(4rem, 9vw, 8rem);
   }
   .fit__in {

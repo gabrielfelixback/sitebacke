@@ -115,8 +115,12 @@ document.addEventListener('click', (e) => {
   else track('cta_click', { source: src, destination: el.getAttribute('href') });
 });
 
-/* ───── Meta Pixel: carrega em toda visita e já registra o PageView (decisão da Backe: sem aviso de consentimento) ───── */
-loadPixel();
+/* ───── Meta Pixel: carrega em toda visita e registra o PageView (decisão da Backe: sem aviso de consentimento).
+   Entra logo depois que a página terminou de abrir: os scripts do Meta (~0,5 s de processador no celular)
+   não disputam mais a abertura da página. ───── */
+const startPixel = () => ('requestIdleCallback' in window ? requestIdleCallback(() => loadPixel(), { timeout: 1500 }) : setTimeout(loadPixel, 300));
+if (document.readyState === 'complete') startPixel();
+else addEventListener('load', startPixel, { once: true });
 
 /* ───── Botões fixos: aparecem depois de rolar um pouco ─────
    WhatsApp acompanha a página inteira (celular e desktop). “Diagnóstico gratuito” (só celular) some perto do

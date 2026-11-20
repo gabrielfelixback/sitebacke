@@ -28,7 +28,10 @@ const onSeen = (el: Element, fn: () => void, threshold = 0.2) => {
 };
 
 /** Cenas guiadas pelo scroll. Carregado sob demanda por motion.ts (nunca com movimento reduzido). */
-export default function scenes() {
+/** Devolve a vez ao navegador entre partes do trabalho (nenhuma tarefa longa travando o toque). */
+const yieldToMain = () => new Promise<void>((r) => setTimeout(r, 0));
+
+export default async function scenes() {
   gsap.registerPlugin(ScrollTrigger, SplitText);
   const tallFrame = document.documentElement.classList.contains('frame-tall');
   const fine = matchMedia('(pointer: fine)').matches;
@@ -55,6 +58,7 @@ export default function scenes() {
     });
   }
 
+  await yieldToMain();
   /* ───── Hero: a câmera mergulha no disco do “b” até o vídeo tomar a tela ───── */
   const hero = document.querySelector<HTMLElement>('[data-hero]');
   if (hero && !tallFrame) {
@@ -90,6 +94,7 @@ export default function scenes() {
     addEventListener('resize', () => apply(0));
   }
 
+  await yieldToMain();
   /* ───── Frentes: cada card empilha sobre o anterior, que recua ───── */
   const mm = gsap.matchMedia();
   mm.add('(min-width: 901px)', () => {
@@ -106,6 +111,7 @@ export default function scenes() {
     });
   });
 
+  await yieldToMain();
   /* ───── Método: o sol sobe a cada etapa ───── */
   const proc = document.querySelector<HTMLElement>('[data-process]');
   if (proc && tallFrame) {
@@ -159,21 +165,33 @@ export default function scenes() {
 
 
   /* ───── Títulos entram palavra por palavra ao aparecer na tela ───── */
+  // Cada título só é dividido em palavras quando está chegando perto da tela (antes eram os 35 de uma vez,
+  // no carregamento, o que travava o celular por ~0,3 s). A animação é a mesma.
+  await yieldToMain();
   document.fonts?.ready.then(() => {
-    $$('main h2, .case__title').forEach((el) => {
-      if (getComputedStyle(el).backgroundClip === 'text' || el.closest('[data-hero]')) return; // texto com degradê não se divide bem
-      const split = SplitText.create(el, { type: 'words,lines', mask: 'lines', linesClass: 'split-line' });
-      const tween = gsap.from(split.words, {
-        yPercent: 110,
-        opacity: 0,
-        duration: 1.1,
-        ease: 'expo.out',
-        stagger: 0.04,
-        paused: true,
-      });
-      onSeen(el, () => tween.play(), 0.35);
-    });
-    ScrollTrigger.refresh();
+    const heads = $$('main h2, .case__title').filter((el) => !el.closest('[data-hero]'));
+    const prep = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          prep.unobserve(e.target);
+          const el = e.target as HTMLElement;
+          if (getComputedStyle(el).backgroundClip === 'text') continue; // texto com degradê não se divide bem
+          const split = SplitText.create(el, { type: 'words,lines', mask: 'lines', linesClass: 'split-line' });
+          const tween = gsap.from(split.words, {
+            yPercent: 110,
+            opacity: 0,
+            duration: 1.1,
+            ease: 'expo.out',
+            stagger: 0.04,
+            paused: true,
+          });
+          onSeen(el, () => tween.play(), 0.35);
+        }
+      },
+      { rootMargin: '0px 0px 60% 0px' },
+    );
+    heads.forEach((h) => prep.observe(h));
   });
 
 

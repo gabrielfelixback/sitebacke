@@ -71,6 +71,8 @@ const year = new Date().getFullYear();
     padding-bottom: calc(96px + env(safe-area-inset-bottom));
     border-top: 1px solid var(--line);
     overflow: hidden;
+    /* clip: corta igual, mas o navegador não consegue rolar a seção para o lado ao focar um campo */
+    overflow: clip;
   }
   .ftr__top {
     display: grid;

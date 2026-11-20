@@ -29,6 +29,8 @@ import { CLIENTS } from '../data/content';
     border-top: 1px solid var(--line);
     border-bottom: 1px solid var(--line);
     overflow: hidden;
+    /* clip: corta igual, mas o navegador não consegue rolar a seção para o lado ao focar um campo */
+    overflow: clip;
   }
   .clients__label p {
     font-size: 0.75rem;
