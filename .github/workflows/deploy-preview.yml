@@ -1,6 +1,10 @@
-# Publica o site no GitHub Pages (preview): https://gabrielfelixback.github.io/sitebacke/
-# A versão de preview sai com "noindex" para não competir com backe.com.br no Google.
-name: Deploy preview (GitHub Pages)
+# Publica o site no GitHub Pages deste repositório.
+#
+# PRÉVIA (padrão): https://gabrielfelixback.github.io/sitebacke/ , com "noindex" para não competir no Google.
+# PRODUÇÃO: em Settings → Secrets and variables → Actions → Variables, criar a variável PRODUCTION = true.
+#   A partir daí cada publicação sai para https://backe.com.br/ (sem noindex, com CNAME). O passo a passo
+#   completo da troca de domínio está em LANCAMENTO.md.
+name: Deploy (GitHub Pages)
 
 on:
   push:
@@ -19,6 +23,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      PROD: ${{ vars.PRODUCTION == 'true' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -27,11 +33,22 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
-      - run: npm run build
+      - name: Build (${{ vars.PRODUCTION == 'true' && 'produção backe.com.br' || 'prévia github.io' }})
+        run: npm run build
         env:
-          SITE_URL: https://gabrielfelixback.github.io
-          BASE_PATH: /sitebacke
-          PUBLIC_PREVIEW: 'true'
+          SITE_URL: ${{ vars.PRODUCTION == 'true' && 'https://backe.com.br' || 'https://gabrielfelixback.github.io' }}
+          BASE_PATH: ${{ vars.PRODUCTION == 'true' && '/' || '/sitebacke' }}
+          PUBLIC_PREVIEW: ${{ vars.PRODUCTION == 'true' && 'false' || 'true' }}
+      - name: Domínio próprio (só produção)
+        if: env.PROD == 'true'
+        run: echo "backe.com.br" > dist/CNAME
+      - name: Trava de segurança (produção sem noindex e apontando para backe.com.br)
+        if: env.PROD == 'true'
+        run: |
+          if grep -q 'name="robots" content="noindex' dist/index.html; then echo "::error::produção saiu com noindex"; exit 1; fi
+          grep -q 'rel="canonical" href="https://backe.com.br/"' dist/index.html || { echo "::error::canonical errado"; exit 1; }
+          grep -q 'src="/_astro/' dist/index.html || { echo "::error::caminhos dos scripts não estão na raiz"; exit 1; }
+          echo "ok: produção pronta para backe.com.br"
       - uses: actions/configure-pages@v5
         with:
           enablement: true

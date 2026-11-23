@@ -28,7 +28,7 @@ const form = document.querySelector<HTMLFormElement>('[data-form]');
 if (form) init(form);
 
 function init(form: HTMLFormElement) {
-  const card = form.closest('.card')!;
+  const card = form.closest<HTMLElement>('.card')!;
   const stateEl = card.querySelector<HTMLElement>('[data-form-state]')!;
   const success = card.querySelector<HTMLElement>('[data-success]')!;
   const steps = Array.from(form.querySelectorAll<HTMLFieldSetElement>('[data-step]'));

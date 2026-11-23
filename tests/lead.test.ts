@@ -12,7 +12,7 @@ import {
   type LeadForm,
   type PageContext,
 } from '../src/lib/lead';
-// @ts-expect-error — JS literal copiado do bundle de produção
+// JS literal copiado do bundle de produção
 import { makeLegacy } from './legacy-bundle-snippet.js';
 
 const NOW = new Date('2026-11-12T15:00:00.000Z');
