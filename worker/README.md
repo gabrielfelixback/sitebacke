@@ -1,3 +1,8 @@
+> **NÃO PUBLICAR.** Decisão de 23/11/2026 (documento "Backe: infraestrutura, perguntas e configuração do
+> WhatsApp"): a Backe mantém o sistema de leads que já está no ar no Worker `backe-lead-proxy`
+> (leads gravados no banco D1 da Cloudflare, reenvio automático, API oficial do WhatsApp da Meta).
+> Esta pasta é só uma proposta antiga, guardada como referência. Publicá-la **apagaria** o sistema atual.
+
 # backe-lead-proxy (proposta: planilha + WhatsApp)
 
 Código do Worker que recebe o formulário do site (`POST /api/leads`) e entrega cada lead, em paralelo, na

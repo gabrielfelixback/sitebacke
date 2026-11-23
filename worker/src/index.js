@@ -1,4 +1,7 @@
 /**
+ * NÃO PUBLICAR (decisão de 23/11/2026): a Backe mantém o sistema de leads que já está no ar
+ * (D1 + API oficial do WhatsApp). Este arquivo é só uma proposta antiga, guardada como referência.
+ *
  * backe-lead-proxy — POST /api/leads
  *
  * Destino atual: nenhum. O Bruno confirmou em 19/11 que os leads do site atual não caíam em lugar

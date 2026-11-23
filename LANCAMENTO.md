@@ -10,12 +10,14 @@ Roteiro para trocar o site atual pelo novo. Situação conferida em 23/11/2026.
 | Registros A | 185.199.108.153, .109.153, .110.153, .111.153 (GitHub Pages) — **não mudam** |
 | `www` | CNAME para **`ahbreu.github.io`** (o site atual é publicado pela conta do GitHub **ahbreu**) |
 | Site novo | `gabrielfelixback/sitebacke`, publicado pelo fluxo `.github/workflows/deploy-preview.yml` |
-| Formulário | o site atual e o novo mandam para o mesmo Worker (`backe-lead-proxy`), que hoje **não entrega os leads em lugar nenhum** |
+| Formulário | o site atual e o novo mandam para o mesmo Worker (`backe-lead-proxy`), no mesmo formato. Ele grava os leads no banco D1 da Cloudflare; falta configurar o **aviso por WhatsApp** (API oficial da Meta) |
 
 ## 1. Antes da troca (bloqueios)
 
-1. **Leads.** Publicar o Worker novo pelo painel da Cloudflare, seguindo `worker/README.md`, e mandar um lead
-   "TESTE – pode apagar" pelo site atual. Só seguir quando a linha aparecer na planilha.
+1. **Leads.** O sistema de leads que já está no ar fica como está (decisão de 23/11). **Não publicar a pasta
+   `worker/`**: ela é uma proposta antiga e apagaria o sistema atual. Seguir o documento "Backe: infraestrutura,
+   perguntas e configuração do WhatsApp" (Partes 1 a 3) com o responsável pela infraestrutura. A troca do site só
+   acontece depois que um lead de teste gerar o aviso no WhatsApp.
 2. **E-mail de contato.** O site usa `contato@backe.co`, mas o domínio **backe.co não existe mais**: todo e-mail
    para esse endereço volta. Definir um e-mail que funcione (por exemplo, criar `contato@backe.com.br` no
    Google Workspace ou na GoDaddy) e trocar em `src/data/content.ts` (`CONTACT.email`) e em
@@ -40,7 +42,7 @@ Roteiro para trocar o site atual pelo novo. Situação conferida em 23/11/2026.
 - [ ] `https://backe.com.br` abre o site novo (testar no celular, em aba anônima).
 - [ ] `https://www.backe.com.br` e `http://backe.com.br` redirecionam para `https://backe.com.br`.
 - [ ] Ver o código da página: **sem** `noindex`, `canonical` = `https://backe.com.br/`.
-- [ ] Enviar um lead "TESTE – pode apagar": tela de sucesso, linha na planilha, e-mail de cópia.
+- [ ] Enviar um lead "TESTE – pode apagar": tela de sucesso, lead gravado no sistema e aviso no WhatsApp.
 - [ ] Meta Events Manager → Testar eventos: `PageView` ao abrir e `Lead` no envio.
 - [ ] `https://backe.com.br/privacidade.html` abre e `https://backe.com.br/qualquer-coisa` mostra a página 404 da Backe.
 - [ ] Google Search Console: adicionar a propriedade `backe.com.br` e enviar `https://backe.com.br/sitemap.xml`
